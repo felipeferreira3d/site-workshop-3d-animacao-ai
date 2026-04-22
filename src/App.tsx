@@ -13,6 +13,7 @@ import {
   Play, 
   Pause,
   Zap,
+  Calendar,
   Mail,
   MessageSquare,
   ArrowRight,
@@ -157,12 +158,29 @@ export default function App() {
               transition={{ duration: 0.8 }}
               className="text-center lg:text-left w-full lg:order-1"
             >
-              <div className="mb-2 lg:mb-6">
+              <div className="mb-6 lg:mb-12 flex flex-col items-center lg:items-start gap-4">
                 <SectionLabel>
                   Workshop Intensivo <br className="md:hidden" />
-                  <span className="hidden md:inline"> - </span>
+                  <span className="hidden md:inline">&nbsp;</span>
                   1 Dia Inteiro
                 </SectionLabel>
+
+                <div className="flex items-center gap-3 md:gap-5">
+                  <div className="relative w-8 h-8 md:w-10 md:h-10 shrink-0">
+                    <div className="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-red-500" />
+                    <div className="absolute -top-1 -right-1 w-2 h-2 border-t-2 border-r-2 border-red-500" />
+                    <div className="absolute -bottom-1 -left-1 w-2 h-2 border-b-2 border-l-2 border-red-500" />
+                    <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-red-500" />
+                    <div className="w-full h-full bg-[#FF1F3D] flex items-center justify-center">
+                      <Calendar size={18} className="text-white fill-white" />
+                    </div>
+                  </div>
+                  <div className="text-white text-[13px] md:text-2xl font-black tracking-wider uppercase flex items-center gap-2 md:gap-3">
+                    <span>9 DE MAIO</span>
+                    <span className="text-white/30 font-light">|</span>
+                    <span className="text-white/80">AO VIVO</span>
+                  </div>
+                </div>
               </div>
               <h1 className="text-[32px] md:text-5xl lg:text-[72px] font-black leading-[1] lg:leading-[0.9] tracking-[-0.04em] mb-4 lg:mb-8 uppercase italic">
                 CINEMA & <br />
@@ -170,7 +188,7 @@ export default function App() {
                 <span className="text-cyan-400">COM IA</span>
               </h1>
               <p className="text-[14px] md:text-xl text-zinc-400 max-w-xl mx-auto lg:mx-0 leading-relaxed mb-4 lg:mb-10 font-medium opacity-90">
-                Qualquer pessoa consegue. Você vai sair daqui criando vídeos de cinema com Inteligência Artificial — e transformando isso em renda.
+                Qualquer pessoa consegue. Você vai sair daqui criando vídeos de cinema com Inteligência Artificial e transformando isso em renda.
               </p>
             </motion.div>
 
@@ -227,13 +245,13 @@ export default function App() {
                   <div className="h-1.5 lg:h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
                     <motion.div 
                       initial={{ width: 0 }}
-                      animate={{ width: "36%" }}
+                      animate={{ width: "37%" }}
                       transition={{ duration: 1.5, delay: 0.5, ease: "circOut" }}
                       className="h-full bg-cyan-500 shadow-[0_0_15px_rgba(34,211,238,0.5)] rounded-full"
                     />
                   </div>
                   <div className="flex justify-between items-center text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.05em] text-white">
-                    <span>36% dos ingressos vendidos no Lote 01</span>
+                    <span>37% dos ingressos vendidos no Lote 01</span>
                     <span className="text-cyan-400 animate-pulse italic font-black">Está esgotando rápido</span>
                   </div>
                 </div>
@@ -498,23 +516,25 @@ export default function App() {
                  <p className="text-zinc-500 text-xs md:text-sm font-black uppercase tracking-[0.4em] mb-6">Pagamento único de apenas</p>
                  <div className="flex justify-center items-center gap-3">
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">R$</span>
-                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">47</span>
+                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">37</span>
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">,00</span>
                   </div>
                 </div>
              </div>
              
-             <div className="max-w-md mx-auto">
-                <button className="group w-full py-6 bg-white border-2 border-white hover:bg-cyan-400 hover:border-cyan-400 text-black text-xl font-black uppercase tracking-tighter rounded-full transition-all shadow-[0_20px_40px_rgba(255,255,255,0.05)] hover:shadow-[0_20px_40px_rgba(34,211,238,0.15)] hover:-translate-y-1 flex items-center justify-center gap-3">
-                 GARANTIR MINHA VAGA
-                 <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-               </button>
-             </div>
+              <div className="max-w-md mx-auto">
+                <a 
+                  href="https://pay.hotmart.com/L105489426U?checkoutMode=10"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group w-full py-6 bg-white border-2 border-white hover:bg-cyan-400 hover:border-cyan-400 text-black text-xl font-black uppercase tracking-tighter rounded-full transition-all shadow-[0_20px_40px_rgba(255,255,255,0.05)] hover:shadow-[0_20px_40px_rgba(34,211,238,0.15)] hover:-translate-y-1 flex items-center justify-center gap-3 text-center"
+                >
+                  GARANTIR MINHA VAGA
+                  <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+                </a>
+              </div>
              
-              <p className="mt-12 text-xs font-bold text-zinc-500 uppercase tracking-[0.3em]">
-               Vagas limitadas por turma para garantir suporte total.
-             </p>
-          </div>
+           </div>
         </div>
       </section>
 
@@ -527,7 +547,7 @@ export default function App() {
                   <Logo className="h-10 md:h-12" />
                 </div>
                 <p className="text-zinc-500 text-base md:text-lg font-medium max-w-sm italic mx-auto md:mx-0">
-                  Cinema & Animação 3D com IA. O workshop que está democratizando a produção audiovisual de alta qualidade.
+                  O workshop que vai te transformar em um diretor de Cinema, em apenas um dia
                 </p>
              </div>
              <div className="flex flex-col md:flex-row gap-10 md:gap-20">
