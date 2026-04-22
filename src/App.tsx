@@ -245,13 +245,13 @@ export default function App() {
                   <div className="h-1.5 lg:h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
                     <motion.div 
                       initial={{ width: 0 }}
-                      animate={{ width: "37%" }}
+                      animate={{ width: "12%" }}
                       transition={{ duration: 1.5, delay: 0.5, ease: "circOut" }}
                       className="h-full bg-cyan-500 shadow-[0_0_15px_rgba(34,211,238,0.5)] rounded-full"
                     />
                   </div>
                   <div className="flex justify-between items-center text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.05em] text-white">
-                    <span>37% dos ingressos vendidos no Lote 01</span>
+                    <span>12% dos ingressos vendidos no Lote 01</span>
                     <span className="text-cyan-400 animate-pulse italic font-black">Está esgotando rápido</span>
                   </div>
                 </div>
