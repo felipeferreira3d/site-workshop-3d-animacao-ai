@@ -92,6 +92,43 @@ export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPaused, setIsPaused] = React.useState(false);
+  
+  // Lógica de Vendas Automática (48h por lote) - Sincronizada Globalmente
+  const [salesData, setSalesData] = React.useState({ progress: 57, lot: 1 });
+
+  React.useEffect(() => {
+    const FORTY_EIGHT_HOURS_MS = 48 * 60 * 60 * 1000;
+    // Data de referência ajustada para que em 23/04 as 13:53 o progresso seja 57%
+    const BASE_START_TIME = new Date("2026-04-22T10:31:48Z").getTime();
+    
+    const updateProgress = () => {
+      const now = Date.now();
+      const diff = now - BASE_START_TIME;
+      
+      // Quantos lotes de 48h já se passaram desde a data base
+      const lotIndex = Math.floor(diff / FORTY_EIGHT_HOURS_MS);
+      const currentLot = 1 + lotIndex;
+      
+      // Progresso dentro do lote atual
+      const timeInCurrentLot = diff % FORTY_EIGHT_HOURS_MS;
+      let progress = (timeInCurrentLot / FORTY_EIGHT_HOURS_MS) * 100;
+
+      // Se por algum motivo o cálculo der negativo (antes da data base), resetamos
+      if (diff < 0) {
+        setSalesData({ progress: 28, lot: 1 });
+        return;
+      }
+
+      setSalesData({ 
+        progress: Math.min(Math.max(progress, 0), 99.9),
+        lot: currentLot 
+      });
+    };
+
+    updateProgress();
+    const timer = setInterval(updateProgress, 10000); 
+    return () => clearInterval(timer);
+  }, []);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -175,10 +212,12 @@ export default function App() {
                       <Calendar size={18} className="text-white fill-white" />
                     </div>
                   </div>
-                  <div className="text-white text-[13px] md:text-2xl font-black tracking-wider uppercase flex items-center gap-2 md:gap-3">
+                  <div className="text-white text-[15px] md:text-[20px] font-black tracking-wider uppercase flex items-center gap-2 md:gap-3 whitespace-nowrap">
                     <span>9 DE MAIO</span>
                     <span className="text-white/30 font-light">|</span>
                     <span className="text-white/80">AO VIVO</span>
+                    <span className="text-white/30 font-light">|</span>
+                    <span className="text-white/60">9h às 18h</span>
                   </div>
                 </div>
               </div>
@@ -236,7 +275,7 @@ export default function App() {
                   href="#inscricao" 
                   className="w-full sm:w-auto px-6 lg:px-10 py-3 lg:py-5 bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase tracking-widest text-[12px] lg:text-sm rounded-full transition-all shadow-[0_10px_30px_rgba(34,211,238,0.2)] hover:-translate-y-1 flex items-center justify-center gap-2 group/btn"
                 >
-                  <span className="whitespace-nowrap">Comprar Ingresso Lote 1</span>
+                  <span className="whitespace-nowrap">Comprar Ingresso Lote {salesData.lot.toString().padStart(2, '0')}</span>
                   <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
                 </a>
                 
@@ -244,14 +283,15 @@ export default function App() {
                 <div className="w-full lg:max-w-sm space-y-2 lg:space-y-3">
                   <div className="h-1.5 lg:h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
                     <motion.div 
-                      initial={{ width: 0 }}
-                      animate={{ width: "12%" }}
-                      transition={{ duration: 1.5, delay: 0.5, ease: "circOut" }}
+                      key={salesData.lot + salesData.progress.toFixed(0)} // Forçar animação suave quando o número mudar
+                      initial={{ width: `${Math.max(0, salesData.progress - 0.5)}%` }}
+                      animate={{ width: `${salesData.progress}%` }}
+                      transition={{ duration: 1.5, ease: "circOut" }}
                       className="h-full bg-cyan-500 shadow-[0_0_15px_rgba(34,211,238,0.5)] rounded-full"
                     />
                   </div>
                   <div className="flex justify-between items-center text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.05em] text-white">
-                    <span>12% dos ingressos vendidos no Lote 01</span>
+                    <span>{salesData.progress.toFixed(0)}% dos ingressos vendidos no Lote {salesData.lot.toString().padStart(2, '0')}</span>
                     <span className="text-cyan-400 animate-pulse italic font-black">Está esgotando rápido</span>
                   </div>
                 </div>
@@ -396,13 +436,16 @@ export default function App() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             {[
               { name: "Seedance 2", desc: "Geração e edição de vídeo com IA (principal)", img: "https://i.imgur.com/kiu1Evz.jpeg" },
               { name: "Runway ML", desc: "VFX e edição avançada com IA", img: "https://i.imgur.com/zSVD4Ss.jpeg" },
               { name: "ElevenLabs", desc: "Geração de áudio, narração e voz com IA", img: "https://i.imgur.com/iwue41j.jpeg" },
               { name: "Topaz Video AI", desc: "Upscaling e melhoria de qualidade de vídeo", img: "https://i.imgur.com/IvNb6Wk.jpeg" },
-              { name: "CapCut", desc: "Edição final e montagem dos vídeos", img: "https://i.imgur.com/lPAPDfm.jpeg" }
+              { name: "CapCut", desc: "Edição final e montagem dos vídeos", img: "https://i.imgur.com/lPAPDfm.jpeg" },
+              { name: "Vosu", desc: "Automação de workflows | Conecta e automatiza processos", img: "https://i.imgur.com/mECh3xU.jpeg" },
+              { name: "Claude", desc: "IA para texto e raciocínio | Analisa e gera conteúdo", img: "https://i.imgur.com/4I9zStg.jpeg" },
+              { name: "Freepik", desc: "Criação visual | Biblioteca de assets e imagens IA", img: "https://i.imgur.com/9JDo9rl.jpeg" }
             ].map((tool, i) => (
               <div key={i} className="group relative aspect-[4/5] md:aspect-[4/6] bg-zinc-900 rounded-[16px] md:rounded-[24px] overflow-hidden border border-white/5 hover:border-cyan-500/40 transition-all">
                 <div className="absolute inset-0 z-0">
