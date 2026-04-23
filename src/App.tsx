@@ -291,7 +291,7 @@ export default function App() {
                     />
                   </div>
                   <div className="flex justify-between items-center text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.05em] text-white">
-                    <span>{salesData.progress.toFixed(0)}% dos ingressos vendidos no Lote {salesData.lot.toString().padStart(2, '0')}</span>
+                    <span>{salesData.progress.toFixed(0)}% dos ingressos vendidos</span>
                     <span className="text-cyan-400 animate-pulse italic font-black">Está esgotando rápido</span>
                   </div>
                 </div>
