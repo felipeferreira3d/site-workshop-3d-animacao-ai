@@ -4,7 +4,8 @@
  */
 
 import React, { useRef } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
+import ReactPlayer from "react-player";
 import { 
   CheckCircle2, 
   Cpu, 
@@ -20,7 +21,8 @@ import {
   ChevronRight,
   Phone,
   Instagram,
-  Youtube
+  Youtube,
+  VolumeX
 } from "lucide-react";
 
 // --- Components ---
@@ -90,16 +92,18 @@ const Navbar = () => (
 
 export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<any>(null);
   const [isPaused, setIsPaused] = React.useState(false);
+  const [hasInteracted, setHasInteracted] = React.useState(false);
   
   // Lógica de Vendas Automática (48h por lote) - Sincronizada Globalmente
-  const [salesData, setSalesData] = React.useState({ progress: 57, lot: 1 });
+  const [salesData, setSalesData] = React.useState({ progress: 57, lot: 2 });
 
   React.useEffect(() => {
     const FORTY_EIGHT_HOURS_MS = 48 * 60 * 60 * 1000;
-    // Data de referência ajustada para que em 23/04 as 13:53 o progresso seja 57%
-    const BASE_START_TIME = new Date("2026-04-22T10:31:48Z").getTime();
+    // Data de referência: o lote 01 começou 48h antes de 22/04 10:31
+    // Ajustando para que o Lote 02 seja o atual
+    const BASE_START_TIME = new Date("2026-04-20T10:31:48Z").getTime();
     
     const updateProgress = () => {
       const now = Date.now();
@@ -130,17 +134,19 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
-        setIsPaused(false);
-      } else {
-        videoRef.current.pause();
-        setIsPaused(true);
+  const handleVideoClick = () => {
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      setIsPaused(false);
+      if (playerRef.current) {
+        playerRef.current.seekTo(0);
       }
+    } else {
+      setIsPaused(prev => !prev);
     }
   };
+
+  const Player = ReactPlayer as any;
 
   const toolLogos = [
     "https://i.imgur.com/e6VnIx1.png",
@@ -238,20 +244,48 @@ export default function App() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative group w-full order-2 lg:order-last"
             >
-              <div className="aspect-[16/10] bg-zinc-900 border border-white/10 rounded-2xl lg:rounded-[40px] overflow-hidden relative shadow-2xl shadow-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-500">
-                <video 
-                  ref={videoRef}
-                  src="https://i.imgur.com/NGIKeto.mp4" 
-                  autoPlay 
-                  muted 
-                  loop 
-                  playsInline
-                  className="w-full h-full object-cover cursor-pointer"
-                  onClick={togglePlay}
-                />
+              <div className="aspect-video bg-zinc-900 border border-white/10 rounded-2xl lg:rounded-[40px] overflow-hidden relative shadow-2xl shadow-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-500 cursor-pointer" onClick={handleVideoClick}>
+                <div className={`w-full h-full transition-all duration-700 ${!hasInteracted ? 'blur-md scale-105 opacity-60' : 'blur-0 scale-100 opacity-100'}`}>
+                  <iframe
+                    key={hasInteracted ? 'interacted' : 'waiting'}
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/YFKPqOcl_cg?autoplay=1&mute=${hasInteracted ? '0' : '1'}&controls=${hasInteracted ? '1' : '0'}&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=YFKPqOcl_cg`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="absolute top-0 left-0 w-full h-full"
+                  ></iframe>
+                </div>
                 
-                {/* Hover Controls Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                {/* Floating Interaction Bubble (Reference Style) */}
+                <AnimatePresence>
+                  {!hasInteracted && (
+                    <motion.div 
+                      key="bubble"
+                      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
+                      className="absolute inset-0 flex items-center justify-center z-20 p-4"
+                    >
+                      <div className="bg-cyan-500/95 backdrop-blur-xl p-6 md:p-8 rounded-[32px] md:rounded-[48px] shadow-[0_20px_50px_rgba(34,211,238,0.5)] border border-white/30 flex flex-col items-center gap-4 md:gap-5 text-black text-center max-w-[240px] md:max-w-xs animate-pulse-slow">
+                        <p className="font-black text-lg md:text-2xl uppercase tracking-tighter leading-tight italic">
+                          Seu vídeo já começou
+                        </p>
+                        <div className="w-12 h-12 md:w-16 md:h-16 bg-black/5 rounded-full flex items-center justify-center border border-black/5">
+                          <VolumeX size={32} className="md:w-10 md:h-10 text-black/90" />
+                        </div>
+                        <p className="font-black text-[10px] md:text-xs uppercase tracking-[0.2em] opacity-90 decoration-[2px] underline-offset-6 underline">
+                          Clique para ouvir
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Hover Controls Overlay (After interaction) */}
+                <div className={`absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none ${!hasInteracted ? 'hidden' : ''}`}>
                   <div className="w-12 lg:w-20 h-12 lg:h-20 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/30 shadow-2xl">
                     {isPaused ? (
                       <Play className="text-white fill-white ml-1" size={24} />
@@ -273,7 +307,7 @@ export default function App() {
               <div className="flex flex-col items-center lg:items-start gap-4 lg:gap-8 mt-2 lg:mt-0">
                 <a 
                   href="#inscricao" 
-                  className="w-full sm:w-auto px-6 lg:px-10 py-3 lg:py-5 bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase tracking-widest text-[12px] lg:text-sm rounded-full transition-all shadow-[0_10px_30px_rgba(34,211,238,0.2)] hover:-translate-y-1 flex items-center justify-center gap-2 group/btn"
+                  className="w-full sm:w-auto px-5 lg:px-8 py-2.5 lg:py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase tracking-widest text-[10px] lg:text-xs rounded-full transition-all shadow-[0_10px_30px_rgba(34,211,238,0.2)] hover:-translate-y-1 flex items-center justify-center gap-2 group/btn"
                 >
                   <span className="whitespace-nowrap">Comprar Ingresso Lote {salesData.lot.toString().padStart(2, '0')}</span>
                   <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
@@ -553,13 +587,13 @@ export default function App() {
           <div className="p-10 md:p-16 bg-zinc-900/40 border border-white/5 rounded-[32px] backdrop-blur-3xl relative">
              <div className="mb-10 text-center">
                <span className="px-8 py-3 bg-cyan-500 text-black text-xs font-black uppercase tracking-[0.2em] rounded-full inline-block mb-10">
-                  Lote 01 • Aberto agora
+                  Lote {salesData.lot.toString().padStart(2, '0')} • Aberto agora
                </span>
                <div className="flex flex-col items-center">
                  <p className="text-zinc-500 text-xs md:text-sm font-black uppercase tracking-[0.4em] mb-6">Pagamento único de apenas</p>
                  <div className="flex justify-center items-center gap-3">
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">R$</span>
-                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">37</span>
+                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">47</span>
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">,00</span>
                   </div>
                 </div>
