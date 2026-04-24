@@ -97,13 +97,12 @@ export default function App() {
   const [hasInteracted, setHasInteracted] = React.useState(false);
   
   // Lógica de Vendas Automática (48h por lote) - Sincronizada Globalmente
-  const [salesData, setSalesData] = React.useState({ progress: 57, lot: 2 });
+  const [salesData, setSalesData] = React.useState({ progress: 7, lot: 2 });
 
   React.useEffect(() => {
     const FORTY_EIGHT_HOURS_MS = 48 * 60 * 60 * 1000;
-    // Data de referência: o lote 01 começou 48h antes de 22/04 10:31
-    // Ajustando para que o Lote 02 seja o atual
-    const BASE_START_TIME = new Date("2026-04-20T10:31:48Z").getTime();
+    // Data de referência: ajustada para que em 24/04 as 14:44 o site esteja no Lote 02 com ~7%
+    const BASE_START_TIME = new Date("2026-04-22T11:23:00Z").getTime();
     
     const updateProgress = () => {
       const now = Date.now();
