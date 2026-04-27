@@ -96,29 +96,29 @@ export default function App() {
   const [isPaused, setIsPaused] = React.useState(false);
   const [hasInteracted, setHasInteracted] = React.useState(false);
   
-  // Lógica de Vendas Automática (48h por lote) - Sincronizada Globalmente
-  const [salesData, setSalesData] = React.useState({ progress: 7, lot: 2 });
+  // Lógica de Vendas Automática (80h por lote) - Sincronizada Globalmente
+  const [salesData, setSalesData] = React.useState({ progress: 65, lot: 2 });
 
   React.useEffect(() => {
-    const FORTY_EIGHT_HOURS_MS = 48 * 60 * 60 * 1000;
-    // Data de referência: ajustada para que em 24/04 as 14:44 o site esteja no Lote 02 com ~7%
-    const BASE_START_TIME = new Date("2026-04-22T11:23:00Z").getTime();
+    const EIGHTY_HOURS_MS = 80 * 60 * 60 * 1000;
+    // Data de referência recalculada para que em 27/04 as 18:40 o lote seja 2 com 65% (132h decorridas)
+    const BASE_START_TIME = new Date("2026-04-22T06:40:16Z").getTime();
     
     const updateProgress = () => {
       const now = Date.now();
       const diff = now - BASE_START_TIME;
       
-      // Quantos lotes de 48h já se passaram desde a data base
-      const lotIndex = Math.floor(diff / FORTY_EIGHT_HOURS_MS);
+      // Quantos lotes de 80h já se passaram desde a data base
+      const lotIndex = Math.floor(diff / EIGHTY_HOURS_MS);
       const currentLot = 1 + lotIndex;
       
       // Progresso dentro do lote atual
-      const timeInCurrentLot = diff % FORTY_EIGHT_HOURS_MS;
-      let progress = (timeInCurrentLot / FORTY_EIGHT_HOURS_MS) * 100;
+      const timeInCurrentLot = diff % EIGHTY_HOURS_MS;
+      let progress = (timeInCurrentLot / EIGHTY_HOURS_MS) * 100;
 
       // Se por algum motivo o cálculo der negativo (antes da data base), resetamos
       if (diff < 0) {
-        setSalesData({ progress: 28, lot: 1 });
+        setSalesData({ progress: 0, lot: 1 });
         return;
       }
 
