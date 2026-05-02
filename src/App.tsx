@@ -97,12 +97,12 @@ export default function App() {
   const [hasInteracted, setHasInteracted] = React.useState(false);
   
   // Lógica de Vendas Automática (80h por lote) - Sincronizada Globalmente
-  const [salesData, setSalesData] = React.useState({ progress: 65, lot: 2 });
+  const [salesData, setSalesData] = React.useState({ progress: 75, lot: 3 });
 
   React.useEffect(() => {
     const EIGHTY_HOURS_MS = 80 * 60 * 60 * 1000;
-    // Data de referência recalculada para que em 27/04 as 18:40 o lote seja 2 com 65% (132h decorridas)
-    const BASE_START_TIME = new Date("2026-04-22T06:40:16Z").getTime();
+    // Data de referência recalculada para que em 02/05 as 22:16 o lote seja 3 com 75% (220h decorridas)
+    const BASE_START_TIME = new Date("2026-04-23T18:16:46Z").getTime();
     
     const updateProgress = () => {
       const now = Date.now();
@@ -592,7 +592,7 @@ export default function App() {
                  <p className="text-zinc-500 text-xs md:text-sm font-black uppercase tracking-[0.4em] mb-6">Pagamento único de apenas</p>
                  <div className="flex justify-center items-center gap-3">
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">R$</span>
-                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">47</span>
+                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">57</span>
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">,00</span>
                   </div>
                 </div>
