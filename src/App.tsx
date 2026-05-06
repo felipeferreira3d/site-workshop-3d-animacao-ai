@@ -27,6 +27,13 @@ import {
 
 // --- Components ---
 
+const AFFILIATE_LINKS: Record<string, string> = {
+  "joao": "https://pay.hotmart.com/L105489426U?sck=HOTMART_PRODUCT_PAGE&off=mlgsu0ic&hotfeature=32&_gl=1*11s8iwq*_gcl_au*MTIzMjY4MDg2NS4xNzc3NDM1NTk2*FPAU*MTIzMjY4MDg2NS4xNzc3NDM1NTk2*_ga*MTc3MDM1MDE0MS4xNzUwNjQ0MTM4*_ga_GQH2V1F11Q*czE3NzgwODU3ODQkbzU2MCRnMSR0MTc3ODA4NTk3MyRqNTkkbDAkaDcwNzUxMjIyOQ..&bid=1778087392906",
+  // Bastar adicionar novos aqui: "nome": "link_do_checkout"
+};
+
+const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/L105489426U?checkoutMode=10";
+
 const Marquee = ({ children, speed = "40s", className = "py-4 md:py-8" }: { children: React.ReactNode, speed?: string, className?: string }) => {
   return (
     <div className={`relative flex overflow-x-hidden border-y border-white/10 bg-black ${className}`}>
@@ -95,6 +102,23 @@ export default function App() {
   const playerRef = useRef<any>(null);
   const [isPaused, setIsPaused] = React.useState(false);
   const [hasInteracted, setHasInteracted] = React.useState(false);
+  const [checkoutLink, setCheckoutLink] = React.useState(DEFAULT_CHECKOUT_LINK);
+  
+  // Lógica de Afiliados
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const refParam = params.get('ref')?.toLowerCase();
+    
+    // Pega o nome do path (ex: /joao -> joao)
+    const pathName = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase();
+    
+    const affiliateKey = refParam || pathName;
+    
+    if (affiliateKey && AFFILIATE_LINKS[affiliateKey]) {
+      console.log(`Afiliado detectado: ${affiliateKey}`);
+      setCheckoutLink(AFFILIATE_LINKS[affiliateKey]);
+    }
+  }, []);
   
   // Lógica de Vendas Automática (80h por lote) - Sincronizada Globalmente
   const [salesData, setSalesData] = React.useState({ progress: 75, lot: 3 });
@@ -592,7 +616,7 @@ export default function App() {
                  <p className="text-zinc-500 text-xs md:text-sm font-black uppercase tracking-[0.4em] mb-6">Pagamento único de apenas</p>
                  <div className="flex justify-center items-center gap-3">
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">R$</span>
-                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">57</span>
+                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">67</span>
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">,00</span>
                   </div>
                 </div>
@@ -600,7 +624,7 @@ export default function App() {
              
               <div className="max-w-md mx-auto">
                 <a 
-                  href="https://pay.hotmart.com/L105489426U?checkoutMode=10"
+                  href={checkoutLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group w-full py-6 bg-white border-2 border-white hover:bg-cyan-400 hover:border-cyan-400 text-black text-xl font-black uppercase tracking-tighter rounded-full transition-all shadow-[0_20px_40px_rgba(255,255,255,0.05)] hover:shadow-[0_20px_40px_rgba(34,211,238,0.15)] hover:-translate-y-1 flex items-center justify-center gap-3 text-center"
