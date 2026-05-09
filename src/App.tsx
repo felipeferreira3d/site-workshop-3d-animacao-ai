@@ -743,12 +743,15 @@ const MentoriaRupturaPage = () => {
                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
             </div>
             <div className="p-8 md:p-10 flex-1 flex flex-col">
-              <div className="flex justify-between items-start mb-6">
+              <div className="flex justify-between items-center mb-6">
                 <div>
                   <h3 className="text-3xl font-black uppercase italic tracking-tighter mb-1">Ruptura Coletiva</h3>
-                  <span className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em] opacity-80">Grupo • 20 vagas</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-zinc-600 text-xs font-black uppercase tracking-[0.2em] line-through">20 vagas</span>
+                    <span className="text-cyan-400 text-sm font-black uppercase tracking-[0.2em] animate-pulse">17 vagas restando</span>
+                  </div>
                 </div>
-                <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-zinc-500">3 MESES</div>
+                <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-zinc-500 shrink-0">3 MESES</div>
               </div>
               
               <div className="space-y-3 mb-10 flex-1">
@@ -800,12 +803,15 @@ const MentoriaRupturaPage = () => {
                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
             </div>
             <div className="p-8 md:p-10 flex-1 flex flex-col">
-              <div className="flex justify-between items-start mb-6">
+              <div className="flex justify-between items-center mb-6">
                 <div>
                   <h3 className="text-3xl font-black uppercase italic tracking-tighter mb-1">Ruptura | Individual</h3>
-                  <span className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em] opacity-80">Exclusivo • 3 vagas</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-zinc-600 text-xs font-black uppercase tracking-[0.2em] line-through">3 vagas</span>
+                    <span className="text-cyan-400 text-sm font-black uppercase tracking-[0.2em] animate-pulse">2 vagas restando</span>
+                  </div>
                 </div>
-                <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-zinc-500">3 MESES</div>
+                <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-zinc-500 shrink-0">3 MESES</div>
               </div>
               
               <div className="space-y-3 mb-10 flex-1">
