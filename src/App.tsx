@@ -4,6 +4,7 @@
  */
 
 import React, { useRef } from "react";
+import { HashRouter as Router, Routes, Route, useParams, Navigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import ReactPlayer from "react-player";
 import { 
@@ -25,14 +26,16 @@ import {
   VolumeX
 } from "lucide-react";
 
-// --- Components ---
+// --- Configuration & Constants ---
 
 const AFFILIATE_LINKS: Record<string, string> = {
   "joao": "https://pay.hotmart.com/L105489426U?sck=HOTMART_PRODUCT_PAGE&off=mlgsu0ic&hotfeature=32&_gl=1*11s8iwq*_gcl_au*MTIzMjY4MDg2NS4xNzc3NDM1NTk2*FPAU*MTIzMjY4MDg2NS4xNzc3NDM1NTk2*_ga*MTc3MDM1MDE0MS4xNzUwNjQ0MTM4*_ga_GQH2V1F11Q*czE3NzgwODU3ODQkbzU2MCRnMSR0MTc3ODA4NTk3MyRqNTkkbDAkaDcwNzUxMjIyOQ..&bid=1778087392906",
-  // Bastar adicionar novos aqui: "nome": "link_do_checkout"
+  // Adicione novos afiliados aqui: "nome": "link_do_checkout"
 };
 
 const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/L105489426U?checkoutMode=10";
+
+// --- Components ---
 
 const Marquee = ({ children, speed = "40s", className = "py-4 md:py-8" }: { children: React.ReactNode, speed?: string, className?: string }) => {
   return (
@@ -97,28 +100,30 @@ const Navbar = () => (
 
 // --- Sections ---
 
-export default function App() {
+function WorkshopPage() {
+  const { affiliateId } = useParams();
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
   const [isPaused, setIsPaused] = React.useState(false);
   const [hasInteracted, setHasInteracted] = React.useState(false);
   const [checkoutLink, setCheckoutLink] = React.useState(DEFAULT_CHECKOUT_LINK);
   
-  // Lógica de Afiliados
+  // Lógica de Afiliados integrada com Router
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const refParam = params.get('ref')?.toLowerCase();
     
-    // Pega o nome do path (ex: /joao -> joao)
-    const pathName = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase();
-    
-    const affiliateKey = refParam || pathName;
+    // Agora usamos o affiliateId capturado pela rota dinâmica /:affiliateId
+    // ou o parâmetro ?ref= no link normal
+    const affiliateKey = refParam || affiliateId?.toLowerCase();
     
     if (affiliateKey && AFFILIATE_LINKS[affiliateKey]) {
       console.log(`Afiliado detectado: ${affiliateKey}`);
       setCheckoutLink(AFFILIATE_LINKS[affiliateKey]);
+    } else {
+      setCheckoutLink(DEFAULT_CHECKOUT_LINK);
     }
-  }, []);
+  }, [affiliateId]);
   
   // Lógica de Vendas Automática (80h por lote) - Sincronizada Globalmente
   const [salesData, setSalesData] = React.useState({ progress: 75, lot: 3 });
@@ -706,5 +711,231 @@ export default function App() {
         }
       `}</style>
     </div>
+  );
+}
+
+// --- Novas Páginas (Exemplos) ---
+const MentoriaRupturaPage = () => {
+  return (
+    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-cyan-500 selection:text-black antialiased py-12 md:py-20 px-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12 md:mb-20">
+          <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic mb-4 leading-none">
+            MEUS PROGRAMAS DE <span className="text-cyan-400">MENTORIA</span>
+          </h1>
+          <p className="text-zinc-500 text-lg md:text-xl font-medium max-w-xl mx-auto italic leading-tight">
+            Você já tem o conhecimento. Falta transformar isso em <span className="text-white">cliente</span>, <span className="text-white">projeto</span> e <span className="text-white">dinheiro na conta</span>.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-stretch mb-20">
+          {/* Ruptura Coletiva */}
+          <motion.div 
+            whileHover={{ scale: 1.01 }}
+            className="flex flex-col bg-zinc-900/20 border border-white/5 rounded-[32px] md:rounded-[40px] overflow-hidden group transition-all hover:border-cyan-500/20 hover:bg-zinc-900/40"
+          >
+            <div className="aspect-video w-full relative overflow-hidden bg-zinc-800">
+               <img 
+                 src="https://i.imgur.com/g0dZshS.png" 
+                 alt="Ruptura Coletiva" 
+                 className="w-full h-full object-cover transition-all duration-700 opacity-50 group-hover:opacity-100" 
+               />
+               <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
+            </div>
+            <div className="p-8 md:p-10 flex-1 flex flex-col">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h3 className="text-3xl font-black uppercase italic tracking-tighter mb-1">Ruptura Coletiva</h3>
+                  <span className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em] opacity-80">Grupo • 20 vagas</span>
+                </div>
+                <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-zinc-500">3 MESES</div>
+              </div>
+              
+              <div className="space-y-3 mb-10 flex-1">
+                {[
+                  "Encontros quinzenais e ao vivo",
+                  "Análise individual de carreira e projetos",
+                  "Microfone aberto para casos reais",
+                  "Networking com profissionais do mesmo nível",
+                  "Foco total em fechamento de projetos"
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-3 items-start text-sm text-zinc-500 font-medium group/item">
+                    <CheckCircle2 size={16} className="text-cyan-400 shrink-0 mt-0.5" />
+                    <span className="group-hover:text-zinc-300 transition-colors">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-auto pt-8 border-t border-white/5 text-center">
+                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-600 mb-2">Investimento</p>
+                <div className="mb-6">
+                  <span className="text-3xl font-black italic tracking-tighter">R$ 997,00</span>
+                </div>
+                <a 
+                  href="https://pay.hotmart.com/S105755446Y" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="group relative block w-full py-5 bg-white overflow-hidden rounded-full transition-all hover:-translate-y-1"
+                >
+                  <div className="absolute inset-0 bg-cyan-400 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                  <span className="relative z-10 block text-black text-center font-black uppercase tracking-widest text-xs">
+                    QUERO UMA VAGA
+                  </span>
+                </a>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Ruptura Individual */}
+          <motion.div 
+            whileHover={{ scale: 1.01 }}
+            className="flex flex-col bg-zinc-900/20 border border-white/5 rounded-[32px] md:rounded-[40px] overflow-hidden group transition-all hover:border-cyan-500/20 hover:bg-zinc-900/40"
+          >
+            <div className="aspect-video w-full relative overflow-hidden bg-zinc-800">
+               <img 
+                 src="https://i.imgur.com/dzJcw6n.png" 
+                 alt="Ruptura Individual" 
+                 className="w-full h-full object-cover transition-all duration-700 opacity-50 group-hover:opacity-100" 
+               />
+               <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
+            </div>
+            <div className="p-8 md:p-10 flex-1 flex flex-col">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h3 className="text-3xl font-black uppercase italic tracking-tighter mb-1">Ruptura | Individual</h3>
+                  <span className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em] opacity-80">Exclusivo • 3 vagas</span>
+                </div>
+                <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-zinc-500">3 MESES</div>
+              </div>
+              
+              <div className="space-y-3 mb-10 flex-1">
+                {[
+                  "Acompanhamento direto e sem filtro",
+                  "Análise e fechamento de clientes ao vivo",
+                  "Revisão de propostas e contratos",
+                  "Estratégia de precificação personalizada",
+                  "Acesso irrestrito (WhatsApp e Call)"
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-3 items-start text-sm text-zinc-500 font-medium group/item">
+                    <Zap size={16} className="text-cyan-400 shrink-0 mt-0.5" />
+                    <span className="group-hover:text-zinc-300 transition-colors">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-auto pt-8 border-t border-white/5 text-center">
+                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-600 mb-2">Investimento</p>
+                <div className="mb-6">
+                  <span className="text-3xl font-black italic tracking-tighter">R$ 3.500,00</span>
+                </div>
+                <a 
+                  href="https://pay.hotmart.com/H105755158P" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="group relative block w-full py-5 bg-white overflow-hidden rounded-full transition-all hover:-translate-y-1"
+                >
+                  <div className="absolute inset-0 bg-cyan-400 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                  <span className="relative z-10 block text-black text-center font-black uppercase tracking-widest text-xs">
+                    GARANTIR VAGA EXCLUSIVA
+                  </span>
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const NewPagePlaceholder = () => (
+  <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-10 text-center">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-2xl bg-zinc-900/50 p-12 rounded-[40px] border border-white/5 backdrop-blur-3xl"
+    >
+      <h1 className="text-5xl font-black mb-6 tracking-tighter italic">PÁGINA EXCLUSIVA</h1>
+      <p className="text-zinc-400 mb-10 text-lg leading-relaxed">
+        Este é um exemplo de como você pode criar um <span className="text-cyan-400 font-bold">subdiretório</span> totalmente novo. 
+        Tudo que você editar neste componente aparecerá apenas nesta URL.
+      </p>
+      <div className="flex gap-4 justify-center">
+        <a href="#/" className="px-8 py-4 bg-white text-black font-black rounded-full uppercase text-xs tracking-[0.2em] hover:bg-cyan-400 transition-colors">Voltar Início</a>
+        <a href="#/joao" className="px-8 py-4 bg-zinc-800 text-white font-black rounded-full uppercase text-xs tracking-[0.2em] hover:bg-zinc-700 transition-colors">Ver Link João</a>
+      </div>
+    </motion.div>
+  </div>
+);
+
+// --- Auxiliar de Navegação (Apenas para Desenvolvimento) ---
+const DevNav = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  
+  return (
+    <div className="fixed bottom-6 left-6 z-[100] font-sans">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="bg-zinc-900 border border-white/10 text-white px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-cyan-500 hover:text-black transition-all shadow-2xl"
+      >
+        {isOpen ? "FECHAR NAV" : "EXPLORAR PÁGINAS"}
+      </button>
+      
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, transform: "translateY(10px) scale(0.95)" }}
+            animate={{ opacity: 1, transform: "translateY(0px) scale(1)" }}
+            exit={{ opacity: 0, transform: "translateY(10px) scale(0.95)" }}
+            className="absolute bottom-12 left-0 w-64 bg-zinc-900/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl overflow-hidden"
+          >
+            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-3 px-2">Suas Rotas Ativas:</p>
+            <div className="flex flex-col gap-1">
+              <a href="#/" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col">
+                <span className="font-bold">Principal</span>
+                <span className="text-[10px] text-zinc-500">benchparkschool.com/</span>
+              </a>
+              <a href="#/joao" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
+                <span className="font-bold">Check-out João</span>
+                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/joao</span>
+              </a>
+              <a href="#/pagina/nova" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
+                <span className="font-bold">Exemplo Nova Página</span>
+                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/pagina/nova</span>
+              </a>
+              <a href="#/mentoria-ruptura" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
+                <span className="font-bold">Mentoria Ruptura</span>
+                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/mentoria-ruptura</span>
+              </a>
+            </div>
+            <p className="mt-4 text-[9px] text-cyan-500/50 italic px-2">Clique para trocar a visualização no editor →</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// --- Router Principal ---
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Página Principal */}
+        <Route path="/" element={<WorkshopPage />} />
+        
+        {/* Rota de Afiliado (Subdiretório) */}
+        <Route path="/:affiliateId" element={<WorkshopPage />} />
+        
+        {/* Exemplo de Página Nova em outro Subdiretório */}
+        <Route path="/pagina/nova" element={<NewPagePlaceholder />} />
+
+        {/* Nova Página de Mentoria Ruptura */}
+        <Route path="/mentoria-ruptura" element={<MentoriaRupturaPage />} />
+      </Routes>
+      
+      {/* Navegador flutuante apenas para facilitar a edição */}
+      <DevNav />
+    </Router>
   );
 }
