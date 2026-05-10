@@ -717,142 +717,411 @@ function WorkshopPage() {
 // --- Novas Páginas (Exemplos) ---
 const MentoriaRupturaPage = () => {
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-cyan-500 selection:text-black antialiased py-12 md:py-20 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12 md:mb-20">
-          <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic mb-4 leading-none">
-            MEUS PROGRAMAS DE <span className="text-cyan-400">MENTORIA</span>
-          </h1>
-          <p className="text-zinc-500 text-lg md:text-xl font-medium max-w-xl mx-auto italic leading-tight">
-            Você já tem o conhecimento. Falta transformar isso em <span className="text-white">cliente</span>, <span className="text-white">projeto</span> e <span className="text-white">dinheiro na conta</span>.
-          </p>
+    <div className="min-h-screen bg-[#0a0a0a] text-[#f5f5f0] font-dm selection:bg-[#00e5ff] selection:text-black antialiased relative overflow-hidden">
+      {/* NOISE OVERLAY */}
+      <div className="fixed inset-0 pointer-events-none z-[1000] opacity-30 mix-blend-soft-light">
+        <div 
+          className="absolute inset-0" 
+          style={{ 
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")` 
+          }}
+        />
+      </div>
+
+      <div className="max-w-[720px] mx-auto px-6 relative z-10">
+        
+        {/* HERO */}
+        <section className="pt-20 pb-8 text-center">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-[11px] font-medium tracking-[0.2em] uppercase text-[#00e5ff] mb-5"
+          >
+            Programas de Mentoria — Felipe Bench
+          </motion.p>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="font-bebas text-[clamp(52px,10vw,88px)] leading-[0.95] tracking-[0.02em] mb-6 uppercase"
+          >
+            MEUS PROGRAMAS<br />DE <span className="text-[#00e5ff]">MENTORIA</span>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-lg font-light text-[#aaa] max-w-[520px] mx-auto leading-[1.7]"
+          >
+            Você já tem o conhecimento.<br />
+            Falta transformar isso em <strong className="text-[#f5f5f0] font-medium italic">cliente, projeto</strong> e <strong className="text-[#f5f5f0] font-medium italic">dinheiro na conta.</strong>
+          </motion.p>
+        </section>
+
+        <hr className="border-t border-[#222] mt-4 mb-10 md:mb-16" />
+
+        {/* PROBLEMA */}
+        <div className="mb-12 md:mb-20">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#888] mb-5"
+          >
+            O problema que você evita olhar
+          </motion.p>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-bebas text-[clamp(32px,6vw,48px)] tracking-[0.03em] mb-4 leading-[1.05] uppercase"
+          >
+            VOCÊ JÁ SABE.<br />O MERCADO NÃO SABE DISSO.
+          </motion.h2>
+          <div className="space-y-4 text-base font-light text-[#bbb] leading-[1.8]">
+            <p>Você trabalha com IA. Entrega resultado. Seu cliente volta, indica, elogia.</p>
+            <p>Mas no fim do mês, o número na conta não reflete o que você sabe fazer.</p>
+            <p>
+              Não é falta de habilidade. É falta de <span className="text-[#00e5ff] font-normal">posicionamento, precificação e fechamento.</span> Tem gente com metade do seu conhecimento faturando três vezes mais — porque sabe aparecer, sabe cobrar e sabe fechar.
+            </p>
+            
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="border-l-[3px] border-[#00e5ff] p-5 md:p-6 my-8 bg-[#00e5ff]/[0.03]"
+            >
+              <p className="text-lg italic text-[#f5f5f0] leading-[1.6]">
+                "O problema não é o que você sabe. É o que você não está convertendo em dinheiro."
+              </p>
+            </motion.div>
+
+            <p>
+              Em 2026, o mercado de IA está cheio de gente que <strong className="text-white font-medium italic">sabe usar a ferramenta.</strong> O que separa quem fatura de quem fica estagnado é uma coisa só: <span className="text-[#00e5ff] font-normal">quem construiu uma operação real em cima disso.</span>
+            </p>
+            <p>Criei dois programas para resolver exatamente isso.</p>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-stretch mb-20">
-          {/* Ruptura Coletiva */}
-          <motion.div 
-            whileHover={{ scale: 1.01 }}
-            className="flex flex-col bg-zinc-900/20 border border-white/5 rounded-[32px] md:rounded-[40px] overflow-hidden group transition-all hover:border-cyan-500/20 hover:bg-zinc-900/40"
-          >
-            <div className="aspect-video w-full relative overflow-hidden bg-zinc-800">
-               <img 
-                 src="https://i.imgur.com/g0dZshS.png" 
-                 alt="Ruptura Coletiva" 
-                 className="w-full h-full object-cover transition-all duration-700 opacity-50 group-hover:opacity-100" 
-               />
-               <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
-            </div>
-            <div className="p-8 md:p-10 flex-1 flex flex-col">
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h3 className="text-3xl font-black uppercase italic tracking-tighter mb-1">Ruptura Coletiva</h3>
-                  <div className="flex items-center gap-2">
-                    <span className="text-zinc-600 text-xs font-black uppercase tracking-[0.2em] line-through">20 vagas</span>
-                    <span className="text-cyan-400 text-sm font-black uppercase tracking-[0.2em] animate-pulse">17 vagas restando</span>
-                  </div>
-                </div>
-                <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-zinc-500 shrink-0">3 MESES</div>
-              </div>
-              
-              <div className="space-y-3 mb-10 flex-1">
-                {[
-                  "Encontros quinzenais e ao vivo",
-                  "Análise individual de carreira e projetos",
-                  "Microfone aberto para casos reais",
-                  "Networking com profissionais do mesmo nível",
-                  "Foco total em fechamento de projetos"
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-3 items-start text-sm text-zinc-500 font-medium group/item">
-                    <CheckCircle2 size={16} className="text-cyan-400 shrink-0 mt-0.5" />
-                    <span className="group-hover:text-zinc-300 transition-colors">{item}</span>
-                  </div>
-                ))}
-              </div>
+        <hr className="border-t border-[#222] my-10 md:my-16" />
 
-              <div className="mt-auto pt-8 border-t border-white/5 text-center">
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-600 mb-2">Investimento</p>
-                <div className="mb-6">
-                  <span className="text-3xl font-black italic tracking-tighter">R$ 997,00</span>
+        {/* OS PROGRAMAS */}
+        <div className="mb-12 md:mb-20">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#888] mb-5"
+          >
+            Os programas
+          </motion.p>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-bebas text-[clamp(44px,8vw,56px)] tracking-[0.03em] mb-4 uppercase"
+          >
+            RUPTURA
+          </motion.h2>
+          <p className="text-base font-light text-[#bbb] mb-10 italic">
+            Dois modelos de acompanhamento. Uma única entrega: <span className="text-[#00e5ff] font-normal">sua carreira em IA funcionando como operação.</span>
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-x-4 gap-y-12">
+            {/* GRUPO */}
+            <div className="flex flex-col">
+              <div className="bg-[#1a1a1a] border border-[#2a2a2a] h-24 mb-3 rounded-[4px] flex items-center justify-center overflow-hidden">
+                <img 
+                  src="https://i.imgur.com/sNn9HZo.png" 
+                  alt="Ruptura Coletiva Logo" 
+                  className="w-full h-full object-cover opacity-60" 
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <motion.div 
+                whileHover={{ borderColor: "#444" }}
+                className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-[4px] p-7 relative group transition-colors flex-1"
+              >
+                <div className="absolute top-3 right-3 text-[9px] font-medium tracking-[0.15em] text-[#888] bg-white/[0.05] px-2 py-1 rounded-[2px] uppercase">GRUPO</div>
+                <p className="font-bebas text-3xl tracking-wider mb-1 leading-none uppercase">RUPTURA<br />COLETIVA</p>
+                <span className="inline-block text-[10px] tracking-widest uppercase text-[#888] border border-[#333] px-2.5 py-1 rounded-[2px] mb-4 italic">3 meses</span>
+                <div className="text-[11px] tracking-widest uppercase mb-5">
+                  <span className="text-[#888] line-through mr-3">20 vagas</span>
+                  <span className="text-[#00e5ff] font-medium animate-pulse">17 restando</span>
                 </div>
+                <ul className="space-y-2.5">
+                  {[
+                    "Encontros quinzenais ao vivo via Zoom",
+                    "Microfone aberto — você fala, traz seu caso",
+                    "Análise individual da sua carreira em cada sessão",
+                    "Grupo fechado — não entra ninguém no meio do ciclo",
+                    "Foco total em fechamento de projetos",
+                    "O que um aprende, o grupo inteiro absorve"
+                  ].map((item, i) => (
+                    <li key={i} className="text-[13px] font-light text-[#999] border-b border-[#222] pb-2 flex gap-2.5 last:border-0">
+                      <span className="text-[#00e5ff] shrink-0">—</span> {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </div>
+
+            {/* INDIVIDUAL */}
+            <div className="flex flex-col">
+              <div className="bg-[#1a1a1a] border border-[#00e5ff]/20 h-24 mb-3 rounded-[4px] flex items-center justify-center overflow-hidden">
+                <img 
+                  src="https://i.imgur.com/8koPlhI.png" 
+                  alt="Ruptura Individual Logo" 
+                  className="w-full h-full object-cover opacity-80" 
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <motion.div 
+                whileHover={{ borderColor: "#444" }}
+                className="bg-[#1a1a1a] border border-[#00e5ff] rounded-[4px] p-7 relative group transition-colors shadow-[0_0_30px_rgba(0,229,255,0.05)] flex-1"
+              >
+                <div className="absolute top-3 right-3 text-[9px] font-medium tracking-[0.15em] text-[#00e5ff] bg-[#00e5ff]/[0.1] px-2 py-1 rounded-[2px] uppercase">INDIVIDUAL</div>
+                <p className="font-bebas text-3xl tracking-wider mb-1 leading-none uppercase">RUPTURA<br />INDIVIDUAL</p>
+                <span className="inline-block text-[10px] tracking-widest uppercase text-[#888] border border-[#333] px-2.5 py-1 rounded-[2px] mb-4 italic">3 meses</span>
+                <div className="text-[11px] tracking-widest uppercase mb-5">
+                  <span className="text-[#888] line-through mr-3">3 vagas</span>
+                  <span className="text-[#00e5ff] font-medium animate-pulse">2 restando</span>
+                </div>
+                <ul className="space-y-2.5">
+                  {[
+                    "Acesso direto a mim, livre demanda",
+                    "Análise e fechamento de clientes ao vivo",
+                    "Revisão de propostas antes de você enviar",
+                    "Estratégia de precificação personalizada",
+                    "Construção de perfil e posicionamento",
+                    "WhatsApp + Zoom, sem hora marcada obrigatória"
+                  ].map((item, i) => (
+                    <li key={i} className="text-[13px] font-light text-[#999] border-b border-[#222] pb-2 flex gap-2.5 last:border-0">
+                      <span className="text-[#00e5ff] shrink-0">—</span> {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </div>
+          </div>
+
+        </div>
+
+        <hr className="border-t border-[#222] my-10 md:my-16" />
+
+        {/* O QUE É ENTREGUE */}
+        <div className="mb-12 md:mb-20">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#888] mb-5"
+          >
+            O que você constrói aqui dentro
+          </motion.p>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-bebas text-[clamp(32px,6vw,48px)] tracking-[0.03em] mb-4 uppercase leading-none"
+          >
+            ISSO NÃO É<br />MAIS UM CURSO.
+          </motion.h2>
+          <div className="space-y-4 text-base font-light text-[#bbb] leading-[1.8]">
+            <p>
+              Não tem slide, não tem módulo que você nunca termina, não tem grupo de WhatsApp com 500 pessoas mandando gif de motivação.
+            </p>
+            <p>
+              É acompanhamento real, com <strong className="text-white font-medium italic">análise do seu caso, do seu mercado, dos seus clientes.</strong>
+            </p>
+            <p>Se você entrar e executar, sai com tudo isso funcionando:</p>
+
+            <ul className="mt-8 space-y-0 text-sm font-light">
+              {[
+                { bold: "Posicionamento que vende sozinho.", text: "Você para de se explicar e começa a ser escolhido." },
+                { bold: "Precificação sem medo.", text: "Saber exatamente quanto cobrar, como justificar e como defender o preço." },
+                { bold: "Fechamento de clientes.", text: "O script, a lógica, a abordagem — trabalhados no seu caso real." },
+                { bold: "Proposta que converte.", text: "Revisão direta antes de você enviar, com feedback específico." },
+                { bold: "Marca pessoal em IA que atrai projeto.", text: "Perfil, narrativa e conteúdo alinhados com o que você quer vender." },
+                { bold: "Uma operação, não um freela.", text: "Caixa previsível, cliente recorrente, agenda no controle." }
+              ].map((item, i) => (
+                <li key={i} className="py-2.5 border-b border-[#1e1e1e] flex gap-3 items-start last:border-0 leading-relaxed">
+                  <span className="text-[#00e5ff] mt-0.5">→</span>
+                  <span><strong className="text-white font-medium">{item.bold}</strong> {item.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <hr className="border-t border-[#222] my-10 md:my-16" />
+
+        {/* PARA QUEM É / NÃO É */}
+        <div className="mb-12 md:mb-20 space-y-4">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#888] mb-5"
+          >
+            Para quem é
+          </motion.p>
+          
+          <div className="bg-[#1a1a1a] border border-[#222] rounded-[4px] p-8">
+            <h3 className="font-bebas text-[22px] tracking-wider mb-5 uppercase text-white">PARA QUEM É</h3>
+            <ul className="space-y-0">
+              {[
+                "Você trabalha com IA — produção de vídeo, conteúdo, automação — e trava na hora de cobrar o que vale.",
+                "Você fecha projeto, entrega bem, mas vive começando do zero todo mês.",
+                "Você sabe que está abaixo do seu potencial e está cansado de saber disso.",
+                "Você quer construir uma carreira real em IA, não depender de um emprego ou de um único cliente grande.",
+                "Você está pronto para executar — não precisa de mais conteúdo, precisa de direção."
+              ].map((item, i) => (
+                <li key={i} className="py-2.5 border-b border-[#1e1e1e] flex gap-3 items-start text-[14px] font-light text-[#bbb] last:border-0 leading-relaxed">
+                  <span className="text-[#00e5ff] mt-0.5">→</span> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="border border-[#222] rounded-[4px] p-6">
+            <h3 className="font-bebas text-xl tracking-wider mb-4 uppercase text-[#888]">PARA QUEM NÃO É</h3>
+            <ul className="space-y-0">
+              {[
+                "Quem ainda não tem nenhuma experiência prática com IA",
+                "Quem busca motivação, atalho ou fórmula mágica",
+                "Quem não está disposto a agir entre os encontros"
+              ].map((item, i) => (
+                <li key={i} className="py-2.5 border-b border-[#1a1a1a] flex gap-3 items-start text-[14px] font-light text-[#666] last:border-0 leading-tight">
+                  <span className="text-[#444] mt-0.5">→</span> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <hr className="border-t border-[#222] my-10 md:my-16" id="investimento" />
+
+        {/* INVESTIMENTO (bottom section with boxes/links) */}
+        <div className="mb-12 md:mb-20">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#888] mb-5"
+          >
+            Invista no seu próximo nível
+          </motion.p>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-bebas text-[clamp(44px,8vw,56px)] tracking-[0.03em] mb-10 uppercase text-center"
+          >
+            INVESTIMENTO
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* GRUPO BOTTOM */}
+            <motion.div 
+              whileHover={{ borderColor: "#444" }}
+              className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-[4px] p-8 relative flex flex-col justify-between"
+            >
+              <div>
+                <p className="font-bebas text-3xl tracking-wider mb-1 leading-none uppercase">RUPTURA<br />COLETIVA</p>
+                <div className="text-[11px] tracking-widest uppercase mb-8 flex gap-3">
+                  <span className="text-[#888] line-through">20 vagas</span>
+                  <span className="text-[#00e5ff] font-medium">17 restando</span>
+                </div>
+              </div>
+              <div className="pt-6 border-t border-[#222]">
+                <span className="text-4xl font-bebas text-white block mb-6 italic tracking-wider">R$ 997,00</span>
                 <a 
                   href="https://pay.hotmart.com/S105755446Y" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="group relative block w-full py-5 bg-white overflow-hidden rounded-full transition-all hover:-translate-y-1"
+                  className="block w-full py-4 bg-[#00e5ff] text-black text-center font-bebas text-lg tracking-[0.08em] uppercase rounded-[2px] transition-all hover:opacity-90 active:scale-[0.98] shadow-[0_10px_20px_rgba(0,229,255,0.1)]"
                 >
-                  <div className="absolute inset-0 bg-cyan-400 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                  <span className="relative z-10 block text-black text-center font-black uppercase tracking-widest text-xs">
-                    QUERO UMA VAGA
-                  </span>
+                  QUERO UMA VAGA
                 </a>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Ruptura Individual */}
-          <motion.div 
-            whileHover={{ scale: 1.01 }}
-            className="flex flex-col bg-zinc-900/20 border border-white/5 rounded-[32px] md:rounded-[40px] overflow-hidden group transition-all hover:border-cyan-500/20 hover:bg-zinc-900/40"
-          >
-            <div className="aspect-video w-full relative overflow-hidden bg-zinc-800">
-               <img 
-                 src="https://i.imgur.com/dzJcw6n.png" 
-                 alt="Ruptura Individual" 
-                 className="w-full h-full object-cover transition-all duration-700 opacity-50 group-hover:opacity-100" 
-               />
-               <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
-            </div>
-            <div className="p-8 md:p-10 flex-1 flex flex-col">
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h3 className="text-3xl font-black uppercase italic tracking-tighter mb-1">Ruptura | Individual</h3>
-                  <div className="flex items-center gap-2">
-                    <span className="text-zinc-600 text-xs font-black uppercase tracking-[0.2em] line-through">3 vagas</span>
-                    <span className="text-cyan-400 text-sm font-black uppercase tracking-[0.2em] animate-pulse">2 vagas restando</span>
-                  </div>
+            {/* INDIVIDUAL BOTTOM */}
+            <motion.div 
+              whileHover={{ borderColor: "#444" }}
+              className="bg-[#1a1a1a] border border-[#00e5ff] rounded-[4px] p-8 relative flex flex-col justify-between shadow-[0_0_40px_rgba(0,229,255,0.07)]"
+            >
+              <div>
+                <p className="font-bebas text-3xl tracking-wider mb-1 leading-none uppercase">RUPTURA<br />INDIVIDUAL</p>
+                <div className="text-[11px] tracking-widest uppercase mb-8 flex gap-3">
+                  <span className="text-[#888] line-through">3 vagas</span>
+                  <span className="text-[#00e5ff] font-medium">2 restando</span>
                 </div>
-                <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-zinc-500 shrink-0">3 MESES</div>
               </div>
-              
-              <div className="space-y-3 mb-10 flex-1">
-                {[
-                  "Acompanhamento direto e sem filtro",
-                  "Análise e fechamento de clientes ao vivo",
-                  "Revisão de propostas e contratos",
-                  "Estratégia de precificação personalizada",
-                  "Acesso irrestrito (WhatsApp e Call)"
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-3 items-start text-sm text-zinc-500 font-medium group/item">
-                    <Zap size={16} className="text-cyan-400 shrink-0 mt-0.5" />
-                    <span className="group-hover:text-zinc-300 transition-colors">{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-auto pt-8 border-t border-white/5 text-center">
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-600 mb-2">Investimento</p>
-                <div className="mb-6">
-                  <span className="text-3xl font-black italic tracking-tighter">R$ 3.500,00</span>
-                </div>
+              <div className="pt-6 border-t border-[#222]">
+                <span className="text-4xl font-bebas text-white block mb-6 italic tracking-wider">R$ 3.500,00</span>
                 <a 
                   href="https://pay.hotmart.com/H105755158P" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="group relative block w-full py-5 bg-white overflow-hidden rounded-full transition-all hover:-translate-y-1"
+                  className="block w-full py-4 bg-[#00e5ff] text-black text-center font-bebas text-lg tracking-[0.08em] uppercase rounded-[2px] transition-all hover:opacity-90 active:scale-[0.98] shadow-[0_10px_30px_rgba(0,229,255,0.2)]"
                 >
-                  <div className="absolute inset-0 bg-cyan-400 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                  <span className="relative z-10 block text-black text-center font-black uppercase tracking-widest text-xs">
-                    GARANTIR VAGA EXCLUSIVA
-                  </span>
+                  GARANTIR EXCLUSIVIDADE
                 </a>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
+
+        <hr className="border-t border-[#222] my-10 md:my-16" />
+
+        {/* COMO ENTRAR */}
+        <div className="mb-20">
+          <div className="bg-[#00e5ff]/[0.04] border border-[#00e5ff]/[0.15] rounded-[4px] p-8 mb-10">
+            <h3 className="font-bebas text-2xl tracking-wider mb-4 uppercase text-white">QUERO ENTRAR, MAS TENHO DÚVIDA</h3>
+            <div className="text-[15px] font-light text-[#aaa] leading-[1.8] space-y-3">
+              <p>Me chama no WhatsApp. Eu analiso o seu caso pessoalmente e explico qual dos dois programas faz mais sentido para onde você está agora.</p>
+              <p>
+                <strong className="text-white font-medium italic">Sem call de vendas. Sem follow-up. Sem time comercial.</strong><br />
+                Eu vou falar com você diretamente.
+              </p>
+              <p>Clique abaixo só se você tem interesse real, tem caixa disponível e está pronto para tomar a decisão.</p>
+            </div>
+          </div>
+
+          <div className="text-center pb-10">
+            <a 
+              href="https://wa.me/5522992453276" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-block bg-[#00e5ff] text-black font-bebas text-lg tracking-[0.08em] px-12 py-5 rounded-[2px] uppercase transition-all hover:opacity-90 hover:translate-y-[-1px] shadow-[0_10px_30px_rgba(0,229,255,0.2)]"
+            >
+              QUERO ENTRAR
+            </a>
+            <br />
+            <a href="#/mentoria-ruptura" className="inline-block mt-4 text-[#888] text-[13px] font-light border-b border-[#333] pb-0.5 hover:text-white hover:border-[#666] transition-colors leading-none tracking-tight">
+               ver os programas novamente
+            </a>
+          </div>
+        </div>
+
       </div>
+
+      {/* FOOTER */}
+      <footer className="border-t border-[#1a1a1a] py-8 text-center bg-[#0a0a0a] relative z-10">
+        <p className="text-[11px] text-[#444] tracking-[0.05em] uppercase font-medium">
+          © 2026 — Bench Park · Todos os direitos reservados
+        </p>
+      </footer>
     </div>
   );
 };
+
 
 const NewPagePlaceholder = () => (
   <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-10 text-center">
