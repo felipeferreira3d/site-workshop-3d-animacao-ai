@@ -1096,7 +1096,7 @@ const MentoriaRupturaPage = () => {
 
           <div className="text-center pb-10">
             <a 
-              href="https://wa.me/5522992453276" 
+              href="https://wa.me/5522992453276?text=Oi%20Felipe,%20quero%20entrar%20na%20mentoria%20mas%20estou%20com%20d%C3%BAvidas." 
               target="_blank" 
               rel="noopener noreferrer" 
               className="inline-block bg-[#00e5ff] text-black font-bebas text-lg tracking-[0.08em] px-12 py-5 rounded-[2px] uppercase transition-all hover:opacity-90 hover:translate-y-[-1px] shadow-[0_10px_30px_rgba(0,229,255,0.2)]"
