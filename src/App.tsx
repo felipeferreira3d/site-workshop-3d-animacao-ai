@@ -33,7 +33,7 @@ const AFFILIATE_LINKS: Record<string, string> = {
   // Adicione novos afiliados aqui: "nome": "link_do_checkout"
 };
 
-const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/L105489426U?checkoutMode=10";
+const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/P105490527D";
 
 // --- Components ---
 
@@ -231,27 +231,21 @@ function WorkshopPage() {
             >
               <div className="mb-6 lg:mb-12 flex flex-col items-center lg:items-start gap-4">
                 <SectionLabel>
-                  Workshop Intensivo <br className="md:hidden" />
-                  <span className="hidden md:inline">&nbsp;</span>
-                  1 Dia Inteiro
+                  Workshop Intensivo / Gravação
                 </SectionLabel>
 
                 <div className="flex items-center gap-3 md:gap-5">
                   <div className="relative w-8 h-8 md:w-10 md:h-10 shrink-0">
-                    <div className="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-red-500" />
-                    <div className="absolute -top-1 -right-1 w-2 h-2 border-t-2 border-r-2 border-red-500" />
-                    <div className="absolute -bottom-1 -left-1 w-2 h-2 border-b-2 border-l-2 border-red-500" />
-                    <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-red-500" />
-                    <div className="w-full h-full bg-[#FF1F3D] flex items-center justify-center">
-                      <Calendar size={18} className="text-white fill-white" />
+                    <div className="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-cyan-500" />
+                    <div className="absolute -top-1 -right-1 w-2 h-2 border-t-2 border-r-2 border-cyan-500" />
+                    <div className="absolute -bottom-1 -left-1 w-2 h-2 border-b-2 border-l-2 border-cyan-500" />
+                    <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-cyan-500" />
+                    <div className="w-full h-full bg-cyan-500 flex items-center justify-center">
+                      <Zap size={18} className="text-black fill-black" />
                     </div>
                   </div>
                   <div className="text-white text-[15px] md:text-[20px] font-black tracking-wider uppercase flex items-center gap-2 md:gap-3 whitespace-nowrap">
-                    <span>9 DE MAIO</span>
-                    <span className="text-white/30 font-light">|</span>
-                    <span className="text-white/80">AO VIVO</span>
-                    <span className="text-white/30 font-light">|</span>
-                    <span className="text-white/60">9h às 18h</span>
+                    <span>10 HORAS DE CONTEÚDO PRÁTICO</span>
                   </div>
                 </div>
               </div>
@@ -337,26 +331,9 @@ function WorkshopPage() {
                   href="#inscricao" 
                   className="w-full sm:w-auto px-5 lg:px-8 py-2.5 lg:py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase tracking-widest text-[10px] lg:text-xs rounded-full transition-all shadow-[0_10px_30px_rgba(34,211,238,0.2)] hover:-translate-y-1 flex items-center justify-center gap-2 group/btn"
                 >
-                  <span className="whitespace-nowrap">Comprar Ingresso Lote {salesData.lot.toString().padStart(2, '0')}</span>
+                  <span className="whitespace-nowrap">Comprar Gravação</span>
                   <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
                 </a>
-                
-                {/* Sales Meter */}
-                <div className="w-full lg:max-w-sm space-y-2 lg:space-y-3">
-                  <div className="h-1.5 lg:h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-[0.5px]">
-                    <motion.div 
-                      key={salesData.lot + salesData.progress.toFixed(0)} // Forçar animação suave quando o número mudar
-                      initial={{ width: `${Math.max(0, salesData.progress - 0.5)}%` }}
-                      animate={{ width: `${salesData.progress}%` }}
-                      transition={{ duration: 1.5, ease: "circOut" }}
-                      className="h-full bg-cyan-500 shadow-[0_0_15px_rgba(34,211,238,0.5)] rounded-full"
-                    />
-                  </div>
-                  <div className="flex justify-between items-center text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.05em] text-white">
-                    <span>{salesData.progress.toFixed(0)}% dos ingressos vendidos</span>
-                    <span className="text-cyan-400 animate-pulse italic font-black">Está esgotando rápido</span>
-                  </div>
-                </div>
               </div>
             </motion.div>
           </div>
@@ -615,13 +592,13 @@ function WorkshopPage() {
           <div className="p-10 md:p-16 bg-zinc-900/40 border border-white/5 rounded-[32px] backdrop-blur-3xl relative">
              <div className="mb-10 text-center">
                <span className="px-8 py-3 bg-cyan-500 text-black text-xs font-black uppercase tracking-[0.2em] rounded-full inline-block mb-10">
-                  Lote {salesData.lot.toString().padStart(2, '0')} • Aberto agora
+                  Acesso Vitalício à Gravação
                </span>
                <div className="flex flex-col items-center">
-                 <p className="text-zinc-500 text-xs md:text-sm font-black uppercase tracking-[0.4em] mb-6">Pagamento único de apenas</p>
+                 <p className="text-zinc-500 text-xs md:text-sm font-black uppercase tracking-[0.4em] mb-6">Investimento Único</p>
                  <div className="flex justify-center items-center gap-3">
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">R$</span>
-                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">67</span>
+                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">147</span>
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">,00</span>
                   </div>
                 </div>
@@ -634,7 +611,7 @@ function WorkshopPage() {
                   rel="noopener noreferrer"
                   className="group w-full py-6 bg-white border-2 border-white hover:bg-cyan-400 hover:border-cyan-400 text-black text-xl font-black uppercase tracking-tighter rounded-full transition-all shadow-[0_20px_40px_rgba(255,255,255,0.05)] hover:shadow-[0_20px_40px_rgba(34,211,238,0.15)] hover:-translate-y-1 flex items-center justify-center gap-3 text-center"
                 >
-                  GARANTIR MINHA VAGA
+                  COMPRAR GRAVAÇÃO
                   <ArrowRight className="group-hover:translate-x-2 transition-transform" />
                 </a>
               </div>
@@ -1182,6 +1159,10 @@ const DevNav = () => {
                 <span className="font-bold">Mentoria Ruptura</span>
                 <span className="text-[10px] text-zinc-500">benchparkschool.com/#/mentoria-ruptura</span>
               </a>
+              <a href="#/workshop-cinema-ia" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
+                <span className="font-bold text-cyan-400">Workshop Cinema IA</span>
+                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/workshop-cinema-ia</span>
+              </a>
             </div>
             <p className="mt-4 text-[9px] text-cyan-500/50 italic px-2">Clique para trocar a visualização no editor →</p>
           </motion.div>
@@ -1207,6 +1188,9 @@ export default function App() {
 
         {/* Nova Página de Mentoria Ruptura */}
         <Route path="/mentoria-ruptura" element={<MentoriaRupturaPage />} />
+
+        {/* Duplicata para /workshop-cinema-ia */}
+        <Route path="/workshop-cinema-ia" element={<WorkshopPage />} />
       </Routes>
       
       {/* Navegador flutuante apenas para facilitar a edição */}
