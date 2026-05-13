@@ -33,7 +33,7 @@ const AFFILIATE_LINKS: Record<string, string> = {
   // Adicione novos afiliados aqui: "nome": "link_do_checkout"
 };
 
-const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/P105490527D";
+const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/P105490527D?checkoutMode=10";
 
 // --- Components ---
 
@@ -598,7 +598,7 @@ function WorkshopPage() {
                  <p className="text-zinc-500 text-xs md:text-sm font-black uppercase tracking-[0.4em] mb-6">Investimento Único</p>
                  <div className="flex justify-center items-center gap-3">
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">R$</span>
-                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">147</span>
+                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">197</span>
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">,00</span>
                   </div>
                 </div>
@@ -643,7 +643,7 @@ function WorkshopPage() {
                         rel="noopener noreferrer" 
                         className="hover:text-cyan-400 transition-colors flex items-center justify-center md:justify-start gap-2"
                       >
-                        <Phone size={14} className="text-cyan-400" />
+                        <MessageSquare size={20} className="text-cyan-400" />
                         <span>WhatsApp</span>
                       </a>
                     </li>
@@ -653,15 +653,15 @@ function WorkshopPage() {
            </div>
            <div className="pt-8 border-t border-white/5 text-[10px] font-black uppercase tracking-widest text-zinc-700 flex flex-col md:flex-row justify-between items-center md:items-start gap-6 text-center md:text-left">
              <p>Bench Park School. Todos os direitos reservados.</p>
-             <div className="flex gap-6 md:gap-8">
+             <div className="flex gap-6 md:gap-8 items-center">
                <a 
-                 href="https://www.instagram.com/felipeferreira3d/" 
+                 href="https://www.instagram.com/__theferreira/" 
                  target="_blank"
                  rel="noopener noreferrer"
                  className="hover:text-zinc-300 transition-colors"
                  title="Instagram"
                >
-                 <Instagram size={18} />
+                 <Instagram size={24} />
                </a>
                <a 
                  href="https://www.youtube.com/@FelipeBenchCanal" 
@@ -670,7 +670,7 @@ function WorkshopPage() {
                  className="hover:text-zinc-300 transition-colors"
                  title="YouTube"
                >
-                 <Youtube size={18} />
+                 <Youtube size={24} />
                </a>
              </div>
            </div>
