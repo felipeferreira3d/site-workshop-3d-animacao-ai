@@ -828,7 +828,7 @@ const MentoriaRupturaPage = () => {
                 <span className="inline-block text-[10px] tracking-widest uppercase text-[#888] border border-[#333] px-2.5 py-1 rounded-[2px] mb-4 italic">3 meses</span>
                 <div className="text-[11px] tracking-widest uppercase mb-5">
                   <span className="text-[#888] line-through mr-3">20 vagas</span>
-                  <span className="text-[#00e5ff] font-medium animate-pulse">17 restando</span>
+                  <span className="text-[#00e5ff] font-medium animate-pulse">16 restando</span>
                 </div>
                 <ul className="space-y-2.5">
                   {[
@@ -866,7 +866,7 @@ const MentoriaRupturaPage = () => {
                 <span className="inline-block text-[10px] tracking-widest uppercase text-[#888] border border-[#333] px-2.5 py-1 rounded-[2px] mb-4 italic">3 meses</span>
                 <div className="text-[11px] tracking-widest uppercase mb-5">
                   <span className="text-[#888] line-through mr-3">3 vagas</span>
-                  <span className="text-[#00e5ff] font-medium animate-pulse">2 restando</span>
+                  <span className="text-[#00e5ff] font-medium animate-pulse">1 restando</span>
                 </div>
                 <ul className="space-y-2.5">
                   {[
@@ -1012,7 +1012,7 @@ const MentoriaRupturaPage = () => {
                 <p className="font-bebas text-3xl tracking-wider mb-1 leading-none uppercase">RUPTURA<br />COLETIVA</p>
                 <div className="text-[11px] tracking-widest uppercase mb-8 flex gap-3">
                   <span className="text-[#888] line-through">20 vagas</span>
-                  <span className="text-[#00e5ff] font-medium">17 restando</span>
+                  <span className="text-[#00e5ff] font-medium">16 restando</span>
                 </div>
               </div>
               <div className="pt-6 border-t border-[#222]">
@@ -1037,7 +1037,7 @@ const MentoriaRupturaPage = () => {
                 <p className="font-bebas text-3xl tracking-wider mb-1 leading-none uppercase">RUPTURA<br />INDIVIDUAL</p>
                 <div className="text-[11px] tracking-widest uppercase mb-8 flex gap-3">
                   <span className="text-[#888] line-through">3 vagas</span>
-                  <span className="text-[#00e5ff] font-medium">2 restando</span>
+                  <span className="text-[#00e5ff] font-medium">1 restando</span>
                 </div>
               </div>
               <div className="pt-6 border-t border-[#222]">
