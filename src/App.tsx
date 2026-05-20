@@ -23,7 +23,9 @@ import {
   Phone,
   Instagram,
   Youtube,
-  VolumeX
+  VolumeX,
+  Users,
+  TrendingUp
 } from "lucide-react";
 
 // --- Configuration & Constants ---
@@ -250,9 +252,8 @@ function WorkshopPage() {
                 </div>
               </div>
               <h1 className="text-[32px] md:text-5xl lg:text-[72px] font-black leading-[1] lg:leading-[0.9] tracking-[-0.04em] mb-4 lg:mb-8 uppercase italic">
-                CINEMA & <br />
-                <span className="whitespace-nowrap">ANIMAÇÃO 3D</span> <br />
-                <span className="text-cyan-400">COM IA</span>
+                CINEMA, ANIMAÇÃO <br />
+                <span className="text-cyan-400">E RENDA COM IA</span>
               </h1>
               <p className="text-[14px] md:text-xl text-zinc-400 max-w-xl mx-auto lg:mx-0 leading-relaxed mb-4 lg:mb-10 font-medium opacity-90">
                 Qualquer pessoa consegue. Você vai sair daqui criando vídeos de cinema com Inteligência Artificial e transformando isso em renda.
@@ -331,7 +332,7 @@ function WorkshopPage() {
                   href="#inscricao" 
                   className="w-full sm:w-auto px-5 lg:px-8 py-2.5 lg:py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase tracking-widest text-[10px] lg:text-xs rounded-full transition-all shadow-[0_10px_30px_rgba(34,211,238,0.2)] hover:-translate-y-1 flex items-center justify-center gap-2 group/btn"
                 >
-                  <span className="whitespace-nowrap">Comprar Gravação</span>
+                  <span className="whitespace-nowrap">Comprar Workshop</span>
                   <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
                 </a>
               </div>
@@ -429,7 +430,7 @@ function WorkshopPage() {
 
             <div className="space-y-2">
               {[
-                { id: "01", name: "Fundamentos", desc: "Panorama do mercado e ferramentas essenciais", tools: ["IA Overview", "Prompting"] },
+                { id: "01", name: "Fundamentos e Making Of de Projetos Profissionais", desc: "Panorama do mercado e ferramentas essenciais", tools: ["IA Overview", "Prompting"] },
                 { id: "02", name: "Criação", desc: "Mão na massa com prompts e fluxos de geração", tools: ["Seedance 2", "Kling 3", "Claude", "ChatGPT", "Vosy", "Freepik", "Core AI"] },
                 { id: "03", name: "VFX & 3D", desc: "Efeitos cinematográficos e animações avançadas", tools: ["Runway", "Kling"] },
                 { id: "04", name: "Mercado", desc: "Precificação, prospecção e montagem de portfólio", tools: ["Business", "Portfolio"] }
@@ -517,6 +518,99 @@ function WorkshopPage() {
           </Marquee>
         </div>
       </section>
+
+      {/* SEÇÃO - COMUNIDADE NO WHATSAPP */}
+      <section className="py-16 md:py-28 px-6 bg-zinc-950 border-t border-b border-white/5 relative overflow-hidden">
+        {/* Background ambient glows */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#25D366]/5 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-12 right-12 w-[300px] h-[300px] bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            {/* Texto Informativo */}
+            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#25D366]/10 border border-[#25D366]/20 rounded-full">
+                <MessageSquare className="text-[#25D366]" size={16} />
+                <span className="text-[10px] font-black uppercase tracking-widest text-[#25D366]">NETWORK ULTRA EXCLUSIVO</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-6xl font-black leading-[0.9] tracking-tighter uppercase italic text-white">
+                A COMUNIDADE QUE <br />
+                <span className="text-[#25D366]">GERA RESULTADOS</span>
+              </h2>
+              
+              <p className="text-zinc-400 text-sm md:text-base leading-relaxed font-medium">
+                Mais do que um treinamento, o Workshop te dá acesso direto a um grupo fechado no <strong className="text-white font-bold">WhatsApp com mais de 800 profissionais e membros ativos</strong>. 
+                Uma comunidade extremamente engajada focada em compartilhar soluções práticas, tendências em alta, networking real e ideias para viralizar e fechar novos negócios.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 text-left">
+                <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl">
+                  <div className="flex items-center gap-3 mb-2">
+                    <TrendingUp className="text-[#25D366]" size={20} />
+                    <h4 className="font-bold uppercase tracking-tight text-white text-xs">Viralização Coletiva</h4>
+                  </div>
+                  <p className="text-[11px] text-zinc-500 leading-relaxed font-medium">
+                    Temos membros ativos no grupo que ultrapassaram a impressionante marca de <strong>100 milhões de visualizações</strong> aplicando nossos conceitos e de forma orgânica.
+                  </p>
+                </div>
+
+                <div className="p-4 bg-zinc-900/40 border border-[#25D366]/20 bg-[#25D366]/5 rounded-2xl">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Users className="text-[#25D366]" size={20} />
+                    <h4 className="font-bold uppercase tracking-tight text-white text-xs">Suporte e Clientes</h4>
+                  </div>
+                  <p className="text-[11px] text-zinc-500 leading-relaxed font-medium">
+                    A galera se apoia diariamente. Membros que criaram seus primeiros vídeos de IA já estão fechando clientes, emitindo propostas e recebendo pagamentos em <strong>Dólar</strong> e em <strong>Real</strong>.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Visual de Comunidade */}
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="relative w-full max-w-sm p-8 bg-[#0a0f0d] border border-green-500/20 rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(37,211,102,0.05)]">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#25D366]/5 rounded-full blur-2xl pointer-events-none" />
+                
+                <div className="flex flex-col items-center text-center">
+                  {/* WhatsApp Big Styled Icon */}
+                  <div className="w-20 h-20 bg-[#25D366] rounded-full flex items-center justify-center mb-6 shadow-[0_10px_32px_rgba(37,211,102,0.3)]">
+                    <MessageSquare size={38} className="text-black fill-black" />
+                  </div>
+                  
+                  <span className="text-[10px] uppercase font-black tracking-widest text-[#25D366] mb-1">Membros Ativos</span>
+                  <div className="text-3xl sm:text-4xl font-black italic tracking-tight text-white mb-2 whitespace-nowrap">+800 MEMBROS</div>
+                  <p className="text-xs text-zinc-400 font-medium max-w-[240px] leading-relaxed mb-6">
+                    Fechados no mesmo ecossistema, faturando e recebendo pagamentos em <span className="text-white font-bold">Dólar ($)</span> e <span className="text-white font-bold">Real (R$)</span>.
+                  </p>
+
+                  {/* Avatar pile or visual simulation */}
+                  <div className="flex items-center -space-x-3 mb-2">
+                    {[
+                      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop",
+                      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop",
+                      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop",
+                      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100&auto=format&fit=crop",
+                      "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=100&auto=format&fit=crop"
+                    ].map((avatar, idx) => (
+                      <div key={idx} className="w-9 h-9 rounded-full border-2 border-[#0a0f0d] overflow-hidden bg-zinc-800">
+                        <img src={avatar} alt={`User ${idx}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      </div>
+                    ))}
+                    <div className="w-9 h-9 rounded-full border-2 border-[#0a0f0d] bg-[#25D366] flex items-center justify-center text-[10px] font-black text-black">
+                      +800
+                    </div>
+                  </div>
+                  
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Conexão Global 24/7</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
       <section className="py-10 md:py-48 px-6 bg-cyan-400 text-black">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:grid md:grid-cols-2 gap-10 lg:gap-24 text-center md:text-left">
@@ -582,11 +676,11 @@ function WorkshopPage() {
       </Marquee>
 
       {/* SEÇÃO 6 — Preço / CTA */}
-      <section id="inscricao" className="py-10 md:py-32 px-6 relative overflow-hidden bg-black">
+      <section id="inscricao" className="pt-6 pb-10 md:pt-12 md:pb-32 px-6 relative overflow-hidden bg-black">
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <SectionLabel>Inscrição</SectionLabel>
-          <h2 className="text-5xl md:text-[100px] font-black leading-[0.8] tracking-tighter mb-16 uppercase italic">
-            INVISTA NO <br /> <span className="text-cyan-400">FUTURO</span>
+          <h2 className="text-5xl md:text-[80px] lg:text-[100px] font-black leading-[0.85] tracking-tighter mb-16 uppercase italic">
+            CRIE FILMES E <br /> <span className="text-cyan-400">MONETIZE COM IA</span>
           </h2>
           
           <div className="p-10 md:p-16 bg-zinc-900/40 border border-white/5 rounded-[32px] backdrop-blur-3xl relative">
@@ -595,10 +689,13 @@ function WorkshopPage() {
                   Acesso Vitalício à Gravação
                </span>
                <div className="flex flex-col items-center">
-                 <p className="text-zinc-500 text-xs md:text-sm font-black uppercase tracking-[0.4em] mb-6">Investimento Único</p>
+                 <p className="text-zinc-500 text-xs md:text-sm font-black uppercase tracking-[0.4em] mb-2">Investimento Único</p>
+                 <span className="text-[18px] md:text-[24px] font-bold text-zinc-500 line-through tracking-wider italic mb-4">
+                   De R$ 297,00
+                 </span>
                  <div className="flex justify-center items-center gap-3">
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">R$</span>
-                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">197</span>
+                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">237</span>
                     <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">,00</span>
                   </div>
                 </div>
@@ -611,7 +708,7 @@ function WorkshopPage() {
                   rel="noopener noreferrer"
                   className="group w-full py-6 bg-white border-2 border-white hover:bg-cyan-400 hover:border-cyan-400 text-black text-xl font-black uppercase tracking-tighter rounded-full transition-all shadow-[0_20px_40px_rgba(255,255,255,0.05)] hover:shadow-[0_20px_40px_rgba(34,211,238,0.15)] hover:-translate-y-1 flex items-center justify-center gap-3 text-center"
                 >
-                  COMPRAR GRAVAÇÃO
+                  COMPRAR WORKSHOP
                   <ArrowRight className="group-hover:translate-x-2 transition-transform" />
                 </a>
               </div>
@@ -1123,6 +1220,17 @@ const NewPagePlaceholder = () => (
 // --- Auxiliar de Navegação (Apenas para Desenvolvimento) ---
 const DevNav = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [shouldShow, setShouldShow] = React.useState(false);
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    // Mostra se for ambiente dev OU se tiver o parâmetro ?edit=true na URL
+    if ((import.meta as any).env?.DEV || params.get('edit') === 'true') {
+      setShouldShow(true);
+    }
+  }, []);
+  
+  if (!shouldShow) return null;
   
   return (
     <div className="fixed bottom-6 left-6 z-[100] font-sans">
