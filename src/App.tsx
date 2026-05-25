@@ -32,6 +32,7 @@ import {
 
 const AFFILIATE_LINKS: Record<string, string> = {
   "joao": "https://pay.hotmart.com/L105489426U?sck=HOTMART_PRODUCT_PAGE&off=mlgsu0ic&hotfeature=32&_gl=1*11s8iwq*_gcl_au*MTIzMjY4MDg2NS4xNzc3NDM1NTk2*FPAU*MTIzMjY4MDg2NS4xNzc3NDM1NTk2*_ga*MTc3MDM1MDE0MS4xNzUwNjQ0MTM4*_ga_GQH2V1F11Q*czE3NzgwODU3ODQkbzU2MCRnMSR0MTc3ODA4NTk3MyRqNTkkbDAkaDcwNzUxMjIyOQ..&bid=1778087392906",
+  "hector": "https://pay.hotmart.com/P105490527D?sck=HOTMART_PRODUCT_PAGE&off=iu9mfsa8&hotfeature=32&_gl=1*1kcw6rk*_gcl_au*MTUxODkwNTM5MS4xNzc3MDQxNzA5*_ga*MTA3NzkxMDMwMy4xNzU3MzM1Nzcz*_ga_GQH2V1F11Q*czE3Nzk3MjE1MDIkbzcyJGcxJHQxNzc5NzIzMjc2JGo2MCRsMCRoNzA3NTQ5Nzgz",
   // Adicione novos afiliados aqui: "nome": "link_do_checkout"
 };
 
@@ -273,7 +274,7 @@ function WorkshopPage() {
                     key={hasInteracted ? 'interacted' : 'waiting'}
                     width="100%"
                     height="100%"
-                    src={`https://www.youtube.com/embed/YFKPqOcl_cg?autoplay=1&mute=${hasInteracted ? '0' : '1'}&controls=${hasInteracted ? '1' : '0'}&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=YFKPqOcl_cg`}
+                    src={`https://www.youtube.com/embed/mf8aIsWQbBQ?autoplay=1&mute=${hasInteracted ? '0' : '1'}&controls=${hasInteracted ? '1' : '0'}&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=mf8aIsWQbBQ`}
                     title="YouTube video player"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -1209,9 +1210,10 @@ const NewPagePlaceholder = () => (
         Este é um exemplo de como você pode criar um <span className="text-cyan-400 font-bold">subdiretório</span> totalmente novo. 
         Tudo que você editar neste componente aparecerá apenas nesta URL.
       </p>
-      <div className="flex gap-4 justify-center">
+      <div className="flex flex-wrap gap-4 justify-center">
         <a href="#/" className="px-8 py-4 bg-white text-black font-black rounded-full uppercase text-xs tracking-[0.2em] hover:bg-cyan-400 transition-colors">Voltar Início</a>
         <a href="#/joao" className="px-8 py-4 bg-zinc-800 text-white font-black rounded-full uppercase text-xs tracking-[0.2em] hover:bg-zinc-700 transition-colors">Ver Link João</a>
+        <a href="#/hector" className="px-8 py-4 bg-zinc-800 text-white font-black rounded-full uppercase text-xs tracking-[0.2em] hover:bg-zinc-700 transition-colors">Ver Link Hector</a>
       </div>
     </motion.div>
   </div>
@@ -1258,6 +1260,10 @@ const DevNav = () => {
               <a href="#/joao" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
                 <span className="font-bold">Check-out João</span>
                 <span className="text-[10px] text-zinc-500">benchparkschool.com/#/joao</span>
+              </a>
+              <a href="#/hector" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
+                <span className="font-bold">Check-out Hector</span>
+                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/hector</span>
               </a>
               <a href="#/pagina/nova" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
                 <span className="font-bold">Exemplo Nova Página</span>
