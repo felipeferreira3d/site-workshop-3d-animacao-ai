@@ -268,55 +268,18 @@ function WorkshopPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative group w-full order-2 lg:order-last"
             >
-              <div className="aspect-video bg-zinc-900 border border-white/10 rounded-2xl lg:rounded-[40px] overflow-hidden relative shadow-2xl shadow-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-500 cursor-pointer" onClick={handleVideoClick}>
-                <div className={`w-full h-full transition-all duration-700 ${!hasInteracted ? 'blur-md scale-105 opacity-60' : 'blur-0 scale-100 opacity-100'}`}>
+              <div className="aspect-video bg-zinc-900 border border-white/10 rounded-2xl lg:rounded-[40px] overflow-hidden relative shadow-2xl shadow-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-500">
+                <div className="w-full h-full transition-all duration-700 blur-0 scale-100 opacity-100">
                   <iframe
-                    key={hasInteracted ? 'interacted' : 'waiting'}
                     width="100%"
                     height="100%"
-                    src={`https://www.youtube.com/embed/mf8aIsWQbBQ?autoplay=1&mute=${hasInteracted ? '0' : '1'}&controls=${hasInteracted ? '1' : '0'}&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=mf8aIsWQbBQ`}
+                    src="https://www.youtube.com/embed/mf8aIsWQbBQ?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=mf8aIsWQbBQ"
                     title="YouTube video player"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                     className="absolute top-0 left-0 w-full h-full"
                   ></iframe>
-                </div>
-                
-                {/* Floating Interaction Bubble (Reference Style) */}
-                <AnimatePresence>
-                  {!hasInteracted && (
-                    <motion.div 
-                      key="bubble"
-                      initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
-                      className="absolute inset-0 flex items-center justify-center z-20 p-4"
-                    >
-                      <div className="bg-cyan-500/95 backdrop-blur-xl p-6 md:p-8 rounded-[32px] md:rounded-[48px] shadow-[0_20px_50px_rgba(34,211,238,0.5)] border border-white/30 flex flex-col items-center gap-4 md:gap-5 text-black text-center max-w-[240px] md:max-w-xs animate-pulse-slow">
-                        <p className="font-black text-lg md:text-2xl uppercase tracking-tighter leading-tight italic">
-                          Seu vídeo já começou
-                        </p>
-                        <div className="w-12 h-12 md:w-16 md:h-16 bg-black/5 rounded-full flex items-center justify-center border border-black/5">
-                          <VolumeX size={32} className="md:w-10 md:h-10 text-black/90" />
-                        </div>
-                        <p className="font-black text-[10px] md:text-xs uppercase tracking-[0.2em] opacity-90 decoration-[2px] underline-offset-6 underline">
-                          Clique para ouvir
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Hover Controls Overlay (After interaction) */}
-                <div className={`absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none ${!hasInteracted ? 'hidden' : ''}`}>
-                  <div className="w-12 lg:w-20 h-12 lg:h-20 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/30 shadow-2xl">
-                    {isPaused ? (
-                      <Play className="text-white fill-white ml-1" size={24} />
-                    ) : (
-                      <Pause className="text-white fill-white" size={24} />
-                    )}
-                  </div>
                 </div>
               </div>
             </motion.div>
