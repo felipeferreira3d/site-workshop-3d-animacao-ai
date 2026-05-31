@@ -25,7 +25,15 @@ import {
   Youtube,
   VolumeX,
   Users,
-  TrendingUp
+  TrendingUp,
+  Terminal,
+  Download,
+  Globe,
+  Briefcase,
+  Check,
+  X,
+  Shield,
+  FileText
 } from "lucide-react";
 
 // --- Configuration & Constants ---
@@ -36,7 +44,7 @@ const AFFILIATE_LINKS: Record<string, string> = {
   // Adicione novos afiliados aqui: "nome": "link_do_checkout"
 };
 
-const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/P105490527D?checkoutMode=10";
+const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/Y106072864A?checkoutMode=10";
 
 // --- Components ---
 
@@ -1161,6 +1169,462 @@ const MentoriaRupturaPage = () => {
 };
 
 
+// --- Gringo.exe Sales Page ---
+const GringoExePage = () => {
+  return (
+    <div className="min-h-screen bg-[#050505] text-[#f5f5f0] font-sans antialiased selection:bg-[#DFB956] selection:text-black relative">
+       {/* Top grid background */}
+       <div className="absolute inset-0 bg-[linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+       
+       {/* Background ambient glow */}
+       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#DFB956]/5 rounded-full blur-[120px] pointer-events-none" />
+
+       {/* HEADER/TICKER */}
+       <div className="border-b border-[#222] bg-black/60 backdrop-blur-md sticky top-0 z-[50]">
+         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+           <div className="flex items-center gap-2 font-mono text-sm tracking-tight">
+             <Terminal size={14} className="text-[#DFB956]" />
+             <span className="font-bold text-white uppercase tracking-wider">GRINGO.EXE</span>
+             <span className="text-[#666] hidden sm:inline">- v1.0.4_stable</span>
+           </div>
+           <div className="flex items-center gap-4">
+             <span className="hidden md:inline text-xs text-[#aaa] font-semibold tracking-wider font-mono uppercase bg-zinc-900 px-3 py-1 border border-zinc-800 rounded">
+               Status: [ ONLINE & PRONTO_PARA_EXECUTAR ]
+             </span>
+             <a 
+               href="#checkout-gringo" 
+                onClick={(e) => { e.preventDefault(); document.getElementById('checkout-gringo')?.scrollIntoView({ behavior: 'smooth' }); }} 
+               className="bg-[#DFB956] text-black font-black uppercase text-[10px] sm:text-xs tracking-wider px-4 py-2 hover:bg-[#eec66c] transition-colors rounded-[2px]"
+             >
+               Executar o Método
+             </a>
+           </div>
+         </div>
+       </div>
+
+       {/* SEÇÃO 01 — HERO */}
+       <section className="relative px-6 pt-12 md:pt-20 pb-8 overflow-hidden">
+         <div className="max-w-4xl mx-auto text-center relative z-10">
+           
+           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#DFB956]/10 border border-[#DFB956]/20 rounded-sm mb-8 font-mono text-xs text-[#DFB956] tracking-widest uppercase">
+             <span>SÉRIE ESPECIAL .EXE PARA ARTISTAS, CRIATIVOS & CREATORS</span>
+           </div>
+
+           {/* BIG MAIN TITLE */}
+           <h1 className="text-6xl sm:text-7xl md:text-[110px] font-black tracking-tighter leading-[0.85] text-white uppercase italic mb-8 select-none">
+             GRINGO<span className="text-[#DFB956] font-mono">.exe</span>
+           </h1>
+
+           {/* SUBHEAD HOOK (white callout) */}
+           <div className="max-w-3xl mx-auto bg-zinc-950 border border-zinc-800/80 rounded-[4px] p-6 mb-8 text-center shadow-2xl">
+             <p className="text-lg md:text-2xl font-bold tracking-tight text-white leading-normal uppercase">
+               Execute o método. Feche o trampo. Receba em dólar.
+             </p>
+           </div>
+
+           {/* SUBHEADLINE (short text explanation) */}
+           <div className="max-w-2xl mx-auto mb-12 space-y-4">
+             <p className="text-zinc-400 text-sm md:text-lg leading-relaxed font-medium">
+               Você já tem o trabalho. Falta o método para vender para quem paga em dólar.
+             </p>
+             <p className="text-[#DFB956] text-xs md:text-sm font-bold uppercase tracking-widest font-mono bg-[#DFB956]/5 border border-[#DFB956]/15 py-2 px-4 rounded inline-block">
+               Uma masterclass de 2–3 horas — ao vivo, gravada, direto ao ponto.
+             </p>
+           </div>
+
+           {/* CTA BUTTON */}
+           <div className="max-w-md mx-auto mb-4">
+             <a 
+               href="#checkout-gringo"
+                onClick={(e) => { e.preventDefault(); document.getElementById('checkout-gringo')?.scrollIntoView({ behavior: 'smooth' }); }}
+                className="block w-full py-5 bg-[#DFB956] hover:bg-[#eec66c] text-black font-black uppercase text-sm sm:text-base tracking-[0.2em] transition-all hover:scale-[1.01] rounded-[4px] shadow-[0_20px_50px_rgba(223,185,86,0.15)] text-center cursor-pointer"
+             >
+               [ QUERO EXECUTAR O GRINGO.EXE ]
+             </a>
+           </div>
+
+           {/* UNDER CARD DETAILS */}
+           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[#666] font-mono text-[10px] md:text-xs uppercase tracking-wider mb-4 animate-pulse">
+             <span>Data: 21 de Junho, às 20h30</span>
+             <span>•</span>
+             <span>Aula completa + Gravada</span>
+             <span>•</span>
+             <span>VAGAS LIMITADAS PARA AO VIVO</span>
+           </div>
+         </div>
+       </section>
+
+       {/* SEÇÃO 02 — O PROBLEMA */}
+       <section className="py-12 md:py-14 px-6 bg-black border-t border-[#111]">
+         <div className="max-w-3xl mx-auto">
+           {/* Alert Card Box */}
+           <div className="p-8 md:p-12 bg-zinc-950/40 border border-[#d14b4b]/20 hover:border-[#d14b4b]/40 rounded-xl relative overflow-hidden transition-all duration-300">
+             <div className="absolute top-0 right-0 w-32 h-32 bg-[#d14b4b]/5 rounded-full blur-3xl pointer-events-none" />
+             
+             <div className="space-y-6 md:space-y-8 text-center text-zinc-300 font-medium flex flex-col items-center">
+               <p className="text-lg md:text-xl leading-relaxed">
+                 Você tenta vender para gringo, cria perfil no Upwork, bota preço baixo pra competir — <strong className="text-white">e não fecha nada.</strong>
+               </p>
+               
+               <p className="text-lg md:text-xl leading-relaxed">
+                 Ou pior: fecha um trampo, recebe uma vez, e <strong className="text-white">não sabe como repetir.</strong>
+               </p>
+
+               <div className="pt-6 border-t border-zinc-900/60 w-full flex flex-col items-center justify-center gap-4 text-center">
+                 <p className="text-[#d14b4b] font-black text-xl italic uppercase tracking-tight">
+                   O problema não é o seu trabalho. É que você não tem um sistema.
+                 </p>
+                 <span className="font-mono text-[10px] text-zinc-600 uppercase bg-zinc-900/60 px-3 py-1 rounded">BLOCKING_ERROR</span>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+
+       {/* SEÇÃO 03 — A VIRADA */}
+       <section className="py-12 md:py-16 px-6 relative bg-zinc-950 border-t border-b border-[#111] overflow-hidden">
+         <div className="absolute inset-0 bg-[#DFB956]/[0.01] pointer-events-none" />
+         <div className="max-w-4xl mx-auto text-center relative z-10 space-y-6">
+           <div className="py-4">
+             <h2 className="text-2xl sm:text-3xl md:text-5xl font-black italic tracking-tight text-white leading-tight uppercase px-4">
+               "O mercado internacional não é mais difícil. <span className="text-[#DFB956]">É diferente</span>. 
+               <br />
+               E diferente tem método."
+             </h2>
+           </div>
+         </div>
+       </section>
+
+       {/* SEÇÃO 04 — O QUE É O GRINGO.EXE */}
+       <section className="py-12 md:py-14 px-6 bg-black">
+         <div className="max-w-4xl mx-auto">
+           <div className="p-8 md:p-14 bg-zinc-950 border border-zinc-900 rounded-[24px] relative overflow-hidden shadow-2xl">
+             <div className="absolute top-0 left-0 w-32 h-32 bg-[#DFB956]/5 rounded-full blur-3xl pointer-events-none" />
+             
+             <div className="space-y-8 text-zinc-300 font-medium">
+               <div className="flex items-center gap-3">
+                 <Terminal className="text-[#DFB956]" size={20} />
+                 <h3 className="font-mono font-bold text-white uppercase tracking-wider text-sm">GringoCore_Service_Module</h3>
+               </div>
+               
+               <p className="text-lg md:text-2xl leading-relaxed text-white font-bold">
+                 <strong className="text-[#DFB956] underline underline-offset-4 decoration-2">Gringo.exe</strong> é uma masterclass ao vivo para freelancers criativos brasileiros que querem fechar clientes internacionais — videomakers, editores, criadores de conteúdo, social media, motion designers.
+               </p>
+               
+               <p className="text-base md:text-lg leading-relaxed text-zinc-400">
+                 Você aprende onde estão os clientes, como chegar até eles, como propor em inglês sem ser fluente, como fechar, assinar e receber. <span className="text-[#DFB956]">Tudo em uma sessão. Tudo com sistema.</span>
+               </p>
+             </div>
+           </div>
+         </div>
+       </section>
+
+       {/* SEÇÃO 05 — IA.CORE */}
+       <section id="iacore" className="py-12 md:py-14 px-6 bg-zinc-950 border-t border-b border-[#111] relative">
+         <div className="max-w-5xl mx-auto">
+           <div className="text-center mb-12">
+             <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter text-white uppercase mt-4">
+               IA.core
+             </h2>
+             <p className="text-[#DFB956] text-xs font-mono font-bold uppercase tracking-widest mt-2">
+               A IA NÃO É O PRODUTO. É A VANTAGEM COMPETITIVA.
+             </p>
+           </div>
+
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch mb-16">
+             <div className="p-8 bg-zinc-900/40 border border-zinc-800/70 rounded-2xl flex flex-col justify-between">
+               <div>
+                 <span className="text-[#d14b4b] font-mono text-[10px] uppercase font-bold tracking-wider block mb-3"># Realidade Do Mercado</span>
+                 <p className="text-zinc-400 text-sm md:text-base leading-relaxed font-semibold">
+                   A maioria dos freelancers brasileiros ainda prospecta no manual — mensagem por mensagem, proposta do zero, portfólio estático.
+                 </p>
+               </div>
+               <span className="font-mono text-zinc-600 text-[10px] uppercase tracking-tight mt-6 block border-t border-zinc-900/40 pt-4">Processo MANUAL (Desatualizado)</span>
+             </div>
+
+             <div className="p-8 bg-black border border-[#DFB956]/10 rounded-2xl flex flex-col justify-between shadow-[0_10px_30px_rgba(223,185,86,0.02)]">
+               <div>
+                 <span className="text-[#DFB956] font-mono text-[10px] uppercase font-bold tracking-wider block mb-3"># Engine Gringo.exe</span>
+                 <p className="text-white text-sm md:text-base leading-relaxed font-semibold">
+                   No Gringo.exe você aprende a usar IA do jeito que profissionais de alto nível já usam: para criar, prospectar e fechar mais rápido — com mais qualidade e menos esforço.
+                 </p>
+               </div>
+               <span className="font-mono text-[#DFB956] text-[10px] uppercase tracking-tight mt-6 block border-t border-zinc-900 pt-4">Processo GRINGO.EXE (Escalável & Inteligente)</span>
+             </div>
+           </div>
+
+           {/* WHAT YOU WILL LEARN WITH IA */}
+           <div className="space-y-4 max-w-4xl mx-auto">
+             <h3 className="font-mono text-center font-bold text-white uppercase text-xs tracking-wider mb-6">
+               O QUE VOCÊ VAI APRENDER A FAZER COM IA:
+             </h3>
+
+             <div className="divide-y divide-zinc-900 border-y border-zinc-900 bg-black rounded-lg overflow-hidden">
+               {[
+                 { action: "→ Pesquisa de clientes", desc: "Mapear empresas e criadores internacionais que contratam o seu perfil" },
+                 { action: "→ DNA de marca", desc: "Analisar o trabalho do cliente antes de abrir conversa e usar isso na abordagem" },
+                 { action: "→ Proposta personalizada", desc: "Gerar propostas em inglês adaptadas ao contexto de cada cliente em minutos" },
+                 { action: "→ Revisão de comunicação", desc: "Escrever e-mails, follow-ups e mensagens profissionais sem depender de inglês fluente" },
+                 { action: "→ Criação de portfólio", desc: "Estruturar como apresentar seu trabalho para o mercado internacional" }
+               ].map((item, idx) => (
+                 <div key={idx} className="p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between hover:bg-zinc-900/40 transition-colors gap-2 text-left">
+                   <span className="font-mono text-sm font-bold text-[#DFB956]">{item.action}</span>
+                   <span className="text-zinc-400 text-xs md:text-sm">{item.desc}</span>
+                 </div>
+               ))}
+             </div>
+           </div>
+
+           {/* IA SEÇÃO FINISH */}
+           <div className="max-w-2xl mx-auto text-center mt-12 bg-zinc-900/40 p-6 rounded-lg border border-zinc-800">
+             <p className="text-sm md:text-base text-zinc-300 font-bold italic">
+               "O gringo não sabe que você usou IA. Ele só sabe que você pareceu mais profissional que os outros."
+             </p>
+           </div>
+         </div>
+       </section>
+
+       {/* SEÇÃO 06 — O QUE VOCÊ INSTALA */}
+       <section className="py-12 md:py-14 px-6 bg-black relative">
+         <div className="max-w-5xl mx-auto">
+           <div className="text-center mb-12">
+             <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter text-white uppercase mt-4">
+               O que você instala
+             </h2>
+             <p className="text-zinc-500 font-mono text-[10px] uppercase mt-2">
+               Entregáveis com nomes exclusivos do universo .exe
+             </p>
+           </div>
+
+           {/* DIRECTORY LIST - TABLE */}
+           <div className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden shadow-2xl">
+             <div className="p-4 bg-zinc-900/40 border-b border-zinc-900 flex justify-between items-center px-6">
+               <span className="font-mono text-xs text-[#aaa] font-bold">DIRECTORY: C:/Gringo_System/Install_Files</span>
+               <span className="font-mono text-[10px] text-zinc-600 bg-black px-2 py-0.5 rounded">6 FILES FOUND</span>
+             </div>
+
+             <div className="divide-y divide-zinc-900">
+               {[
+                 { file: "Gringo.exe", tag: "MASTERCLASS", desc: "A masterclass ao vivo com replay permanente" },
+                 { file: "Proposal.exe", tag: "IA AGENT", desc: "Agente de IA que gera sua proposta em inglês em menos de 3 minutos. Você preenche em português. Ele entrega pronto para enviar." },
+                 { file: "Contract.protocol", tag: "PROTOCOL", desc: "Template de contrato profissional em inglês. Editável. Pronto para assinar digitalmente no mesmo dia." },
+                 { file: "Dollar.config", tag: "CONFIG", desc: "Planilha que calcula quanto você deve cobrar em dólar com base no seu custo de vida, câmbio atual e tipo de projeto." },
+                 { file: "Outreach.bat", tag: "BATCH SCRIPT", desc: "Scripts de abordagem prontos para LinkedIn e Instagram. Cold messages que geram resposta." },
+                 { file: "Gringo.protocol", tag: "PDF MAP", desc: "PDF entregue na compra — antes da aula. O mapa completo do sistema: mindset, mercado, linguagem e ferramentas. Execute antes de instalar." }
+               ].map((item, idx) => (
+                 <div key={idx} className="p-6 md:p-8 flex flex-col md:flex-row md:items-start justify-between hover:bg-zinc-900/30 transition-colors gap-4 text-left">
+                   <div className="md:w-1/3 flex items-start gap-4">
+                     <div className="w-10 h-10 bg-[#DFB956]/10 border border-[#DFB956]/20 rounded flex items-center justify-center text-[#DFB956] shrink-0">
+                       <FileText size={18} />
+                     </div>
+                     <div>
+                       <h4 className="font-mono text-lg font-bold text-[#DFB956]">{item.file}</h4>
+                       <span className="font-mono text-[9px] text-[#aaa] bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded uppercase font-semibold">{item.tag}</span>
+                     </div>
+                   </div>
+                   <div className="md:w-2/3">
+                     <p className="text-zinc-350 text-sm leading-relaxed font-medium">{item.desc}</p>
+                   </div>
+                 </div>
+               ))}
+             </div>
+           </div>
+         </div>
+       </section>
+
+       {/* SEÇÃO 07 — PARA QUEM É */}
+       <section className="py-12 md:py-14 px-6 bg-zinc-950 border-t border-b border-[#111]">
+         <div className="max-w-5xl mx-auto">
+           <div className="text-center mb-12">
+             <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter text-white uppercase mt-4">
+               INCLUSÃO E EXCLUSÃO CLARAS
+             </h2>
+           </div>
+
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+             {/* SIM CARD */}
+             <div className="p-8 bg-black border border-[#DFB956]/20 rounded-2xl flex flex-col justify-between text-left">
+               <div>
+                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#DFB956]/10 border border-[#DFB956]/30 text-[#DFB956] rounded-full mb-6 font-mono text-xs font-bold uppercase">
+                   <Check size={14} />
+                   <span>✓ É PRA VOCÊ SE...</span>
+                 </div>
+
+                 <ul className="space-y-4 text-zinc-300 text-sm font-medium">
+                   <li className="flex items-start gap-3">
+                     <span className="text-[#DFB956] font-bold mt-0.5">•</span>
+                     <span>Você produz qualquer coisa criativa no digital (vídeo, edição, motion, conteúdo, design, copy)</span>
+                   </li>
+                   <li className="flex items-start gap-3">
+                     <span className="text-[#DFB956] font-bold mt-0.5">•</span>
+                     <span>Você quer uma fonte de renda em dólar mas não sabe por onde começar</span>
+                   </li>
+                   <li className="flex items-start gap-3">
+                     <span className="text-[#DFB956] font-bold mt-0.5">•</span>
+                     <span>Você tentou e não fechou — e quer entender o que falhou</span>
+                   </li>
+                   <li className="flex items-start gap-3">
+                     <span className="text-[#DFB956] font-bold mt-0.5">•</span>
+                     <span>Você já fechou alguns trampos gringos e quer um sistema para escalar</span>
+                   </li>
+                 </ul>
+               </div>
+               
+               <span className="font-mono text-zinc-650 text-[10px] uppercase block border-t border-zinc-900 pt-6 mt-8">VERIFICAÇÃO DE PERFIL: COMPATÍVEL</span>
+             </div>
+
+             {/* NÃO CARD */}
+             <div className="p-8 bg-black border border-[#d14b4b]/20 rounded-2xl flex flex-col justify-between text-left">
+               <div>
+                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#d14b4b]/10 border border-[#d14b4b]/30 text-[#d14b4b] rounded-full mb-6 font-mono text-xs font-bold uppercase">
+                   <X size={14} />
+                   <span>✗ NÃO É PRA VOCÊ SE...</span>
+                 </div>
+
+                 <ul className="space-y-4 text-zinc-300 text-sm font-medium">
+                   <li className="flex items-start gap-3">
+                     <span className="text-[#d14b4b] font-bold mt-0.5">•</span>
+                     <span>Você quer fórmula mágica sem agir</span>
+                   </li>
+                   <li className="flex items-start gap-3">
+                     <span className="text-[#d14b4b] font-bold mt-0.5">•</span>
+                     <span>Você não tem nenhum produto criativo para vender</span>
+                   </li>
+                   <li className="flex items-start gap-3">
+                     <span className="text-[#d14b4b] font-bold mt-0.5">•</span>
+                     <span>Você não está disposto a adaptar sua comunicação para um cliente estrangeiro</span>
+                   </li>
+                 </ul>
+               </div>
+
+               <span className="font-mono text-zinc-650 text-[10px] uppercase block border-t border-zinc-900 pt-6 mt-8">VERIFICAÇÃO DE PERFIL: INCOMPATÍVEL</span>
+             </div>
+           </div>
+         </div>
+       </section>
+
+       {/* SEÇÃO 08 — SOCIAL.PROOF */}
+       <section className="py-12 md:py-14 px-6 bg-black">
+         <div className="max-w-5xl mx-auto">
+           <div className="text-center mb-12">
+             <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter text-white uppercase mt-4">
+               Quem já opera no sistema
+             </h2>
+           </div>
+
+           {/* MESSAGES PRESET GRID */}
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+             {[
+               { id: "PRINT 1", user: "Thiago G. • Motion Designer", msg: "Consegui meu primeiro cliente gringo de motion design pelo LinkedIn! Fechei $1.500 no mês. A IA ajudou demais no e-mail de contato do DNA de Marca que você explicou." },
+               { id: "PRINT 2", user: "Mariana L. • Editora", msg: "Rodei o Outreach.bat de manhã pra 10 criadores de conteúdo do YouTube US. 4 me responderam. Já agendei call com 2 deles pro fechamento. O sistema de prospecção do gringo é incrível!" },
+               { id: "PRINT 3", user: "Lucas F. • Video Creator", msg: "O Proposal.exe salvou minha vida ontem. Em menos de 5 minutos gerei uma proposta pra um canal gringo de vlogs e o cara aceitou sem pestanejar!" },
+               { id: "PRINT 4", user: "Vitor M. • Freelancer", msg: "Contrato com o Contract.protocol passou liso, assinado. Pagamento em dólar limpo direto na Payoneer. Sensacional!" },
+               { id: "PRINT 5", user: "Renata S. • Artista 3D", msg: "Gente, fechei um contrato de artista 3D recebendo em dólar fixo mensal com o método. Sem falar inglês super fluente, só usei a IA de revisão e deu super certo!" }
+             ].map((print, idx) => (
+               <div key={idx} className="p-6 bg-zinc-950 border border-zinc-900 rounded-xl flex flex-col justify-between hover:border-zinc-800 transition-colors relative overflow-hidden text-left">
+                 <div className="absolute top-0 right-0 p-2 text-[8px] font-mono font-bold text-[#666] bg-zinc-900 rounded-bl">{print.id}</div>
+                 <div className="space-y-4">
+                   <div className="flex items-center gap-2">
+                     <div className="w-8 h-8 rounded-full bg-[#DFB956]/10 border border-[#DFB956]/20 flex items-center justify-center text-[10px] font-bold text-[#DFB956]">
+                       {print.user[0]}
+                     </div>
+                     <div>
+                       <h5 className="text-xs font-bold text-white">{print.user}</h5>
+                       <span className="text-[9px] text-[#666] font-mono uppercase">Membro Ativo</span>
+                     </div>
+                   </div>
+                   <p className="text-xs md:text-sm text-zinc-400 font-medium leading-relaxed italic">
+                     "{print.msg}"
+                   </p>
+                 </div>
+                 <div className="mt-4 pt-4 border-t border-zinc-900/40 flex items-center justify-between text-[10px] font-mono text-zinc-650">
+                   <span>Comments.approved</span>
+                 </div>
+               </div>
+             ))}
+             {/* Placeholder card explaining real conversion */}
+             <div className="p-6 bg-[#DFB956]/5 border border-dashed border-[#DFB956]/30 rounded-xl flex flex-col justify-center items-center text-center gap-2">
+               <Shield className="text-[#DFB956] mb-2" size={24} />
+               <h5 className="font-mono text-xs font-bold text-[#DFB956] uppercase tracking-wider">ECOSSISTEMA INTEGRADO</h5>
+               <p className="text-[11px] text-zinc-500 leading-relaxed font-semibold">
+                 Comunidade de membros ativos ajudando uns aos outros a fechar, revisar e receber contratos em moeda forte.
+               </p>
+             </div>
+           </div>
+         </div>
+       </section>
+
+       {/* SEÇÃO 09 — OFERTA + CTA */}
+       <section id="checkout-gringo" className="py-12 md:py-16 px-6 bg-zinc-950 border-t border-[#111] relative overflow-hidden">
+         {/* Background glow bottom */}
+         <div className="absolute bottom-[-100px] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[#DFB956]/5 rounded-full blur-[140px] pointer-events-none" />
+
+         <div className="max-w-4xl mx-auto text-center relative z-10">
+           
+           
+           <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter text-white uppercase mt-4 mb-2">
+             GRINGO<span className="text-[#DFB956] font-mono">.exe</span>
+           </h2>
+           <p className="text-[#DFB956] text-xs font-mono font-bold uppercase tracking-widest bg-[#DFB956]/5 border border-[#DFB956]/15 inline-block py-1.5 px-3 rounded mb-12">
+             MASTERCLASS AO VIVO COM REPLAY PERMANENTE + ACESSO COMPLETO
+           </p>
+
+           {/* Price Tag Box */}
+           <div className="max-w-md mx-auto p-10 bg-black border border-zinc-900 rounded-[32px] shadow-2xl relative mb-8">
+             <div className="absolute top-4 right-4 bg-red-600/10 border border-red-600/30 text-red-500 text-[10px] font-mono px-2 py-0.5 rounded font-black uppercase tracking-wider">
+               OFERTA DE LANÇAMENTO
+             </div>
+
+             <div className="space-y-4">
+               <span className="text-[#666] text-base line-through tracking-wider block font-mono">
+                 De R$ 197,50
+               </span>
+               <div className="flex justify-center items-baseline gap-2">
+                 <span className="text-lg text-zinc-400 font-mono">R$</span>
+                 <span className="text-6xl md:text-7xl font-black italic tracking-[-0.05em] text-[#DFB956]">147</span>
+               </div>
+               <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-wider block pt-2 border-t border-zinc-900">
+                 Investimento Único · Sem mensalidades
+               </span>
+             </div>
+
+             <div className="mt-8">
+               <a 
+                 href="https://pay.hotmart.com/Y106072864A?checkoutMode=10"
+                 className="block w-full py-5 bg-[#DFB956] hover:bg-[#eec66c] text-black font-black uppercase tracking-[0.2em] rounded-xl text-xs sm:text-sm shadow-[0_15px_40px_rgba(223,185,86,0.15)] transition-all hover:scale-[1.02] cursor-pointer"
+               >
+                 [ EXECUTAR AGORA — R$ 147 ]
+               </a>
+             </div>
+
+             <div className="mt-6 font-mono text-[10px] text-zinc-650 space-y-1">
+               <p>Vagas limitadas para a sessão ao vivo</p>
+               <p>VITALICIO: Replay permanente para todos os inscritos</p>
+             </div>
+           </div>
+
+           <a 
+             href="#/" 
+             className="inline-block text-[#666] hover:text-white font-mono text-xs uppercase tracking-wider transition-colors border-b border-zinc-805 pb-1 mt-6"
+           >
+             ← Voltar ao início do workshop
+           </a>
+
+         </div>
+       </section>
+
+       {/* FOOTER */}
+       <footer className="border-t border-[#111] py-12 text-center bg-black relative z-10">
+         <p className="text-[11px] text-zinc-600 tracking-[0.05em] uppercase font-mono">
+           © 2026 — Gringo.exe · Bench Park · Todos os direitos reservados
+         </p>
+       </footer>
+
+    </div>
+  );
+};
+
+
 const NewPagePlaceholder = () => (
   <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-10 text-center">
     <motion.div 
@@ -1240,6 +1704,10 @@ const DevNav = () => {
                 <span className="font-bold text-cyan-400">Workshop Cinema IA</span>
                 <span className="text-[10px] text-zinc-500">benchparkschool.com/#/workshop-cinema-ia</span>
               </a>
+              <a href="#/gringo.exe" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 bg-[#DFB956]/5 border border-[#DFB956]/10 rounded-lg text-sm text-white flex flex-col border-t">
+                <span className="font-bold text-[#DFB956]">Gringo.exe 🌟</span>
+                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/gringo.exe</span>
+              </a>
             </div>
             <p className="mt-4 text-[9px] text-cyan-500/50 italic px-2">Clique para trocar a visualização no editor →</p>
           </motion.div>
@@ -1256,6 +1724,10 @@ export default function App() {
       <Routes>
         {/* Página Principal */}
         <Route path="/" element={<WorkshopPage />} />
+        
+        {/* Novas Rotas Gringo.exe */}
+        <Route path="/gringo" element={<GringoExePage />} />
+        <Route path="/gringo.exe" element={<GringoExePage />} />
         
         {/* Rota de Afiliado (Subdiretório) */}
         <Route path="/:affiliateId" element={<WorkshopPage />} />
