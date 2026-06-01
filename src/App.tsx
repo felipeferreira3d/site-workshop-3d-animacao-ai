@@ -118,6 +118,10 @@ function WorkshopPage() {
   const [isPaused, setIsPaused] = React.useState(false);
   const [hasInteracted, setHasInteracted] = React.useState(false);
   const [checkoutLink, setCheckoutLink] = React.useState(DEFAULT_CHECKOUT_LINK);
+
+  React.useEffect(() => {
+    document.title = "Workshop Cinema & Animação 3D com IA | 1ª Edição";
+  }, []);
   
   // Lógica de Afiliados integrada com Router
   React.useEffect(() => {
@@ -762,6 +766,10 @@ function WorkshopPage() {
 
 // --- Novas Páginas (Exemplos) ---
 const MentoriaRupturaPage = () => {
+  React.useEffect(() => {
+    document.title = "Mentoria Ruptura | Felipe Bench";
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#f5f5f0] font-dm selection:bg-[#00e5ff] selection:text-black antialiased relative overflow-hidden">
       {/* NOISE OVERLAY */}
@@ -1171,6 +1179,10 @@ const MentoriaRupturaPage = () => {
 
 // --- Gringo.exe Sales Page ---
 const GringoExePage = () => {
+  React.useEffect(() => {
+    document.title = "Gringo.exe";
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#050505] text-[#f5f5f0] font-sans antialiased selection:bg-[#DFB956] selection:text-black relative">
        {/* Top grid background */}
@@ -1625,26 +1637,32 @@ const GringoExePage = () => {
 };
 
 
-const NewPagePlaceholder = () => (
-  <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-10 text-center">
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="max-w-2xl bg-zinc-900/50 p-12 rounded-[40px] border border-white/5 backdrop-blur-3xl"
-    >
-      <h1 className="text-5xl font-black mb-6 tracking-tighter italic">PÁGINA EXCLUSIVA</h1>
-      <p className="text-zinc-400 mb-10 text-lg leading-relaxed">
-        Este é um exemplo de como você pode criar um <span className="text-cyan-400 font-bold">subdiretório</span> totalmente novo. 
-        Tudo que você editar neste componente aparecerá apenas nesta URL.
-      </p>
-      <div className="flex flex-wrap gap-4 justify-center">
-        <a href="#/" className="px-8 py-4 bg-white text-black font-black rounded-full uppercase text-xs tracking-[0.2em] hover:bg-cyan-400 transition-colors">Voltar Início</a>
-        <a href="#/joao" className="px-8 py-4 bg-zinc-800 text-white font-black rounded-full uppercase text-xs tracking-[0.2em] hover:bg-zinc-700 transition-colors">Ver Link João</a>
-        <a href="#/hector" className="px-8 py-4 bg-zinc-800 text-white font-black rounded-full uppercase text-xs tracking-[0.2em] hover:bg-zinc-700 transition-colors">Ver Link Hector</a>
-      </div>
-    </motion.div>
-  </div>
-);
+const NewPagePlaceholder = () => {
+  React.useEffect(() => {
+    document.title = "Página Exclusiva";
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-10 text-center">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-2xl bg-zinc-900/50 p-12 rounded-[40px] border border-white/5 backdrop-blur-3xl"
+      >
+        <h1 className="text-5xl font-black mb-6 tracking-tighter italic">PÁGINA EXCLUSIVA</h1>
+        <p className="text-zinc-400 mb-10 text-lg leading-relaxed">
+          Este é um exemplo de como você pode criar um <span className="text-cyan-400 font-bold">subdiretório</span> totalmente novo. 
+          Tudo que você editar neste componente aparecerá apenas nesta URL.
+        </p>
+        <div className="flex flex-wrap gap-4 justify-center">
+          <a href="#/" className="px-8 py-4 bg-white text-black font-black rounded-full uppercase text-xs tracking-[0.2em] hover:bg-cyan-400 transition-colors">Voltar Início</a>
+          <a href="#/joao" className="px-8 py-4 bg-zinc-800 text-white font-black rounded-full uppercase text-xs tracking-[0.2em] hover:bg-zinc-700 transition-colors">Ver Link João</a>
+          <a href="#/hector" className="px-8 py-4 bg-zinc-800 text-white font-black rounded-full uppercase text-xs tracking-[0.2em] hover:bg-zinc-700 transition-colors">Ver Link Hector</a>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 // --- Auxiliar de Navegação (Apenas para Desenvolvimento) ---
 const DevNav = () => {
