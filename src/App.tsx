@@ -1257,7 +1257,7 @@ const GringoExePage = () => {
 
            {/* UNDER CARD DETAILS */}
            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[#666] font-mono text-[10px] md:text-xs uppercase tracking-wider mb-4 animate-pulse">
-             <span>Data: 21 de Junho, às 20h30</span>
+             <span>Data: 20 de Junho, às 14h</span>
              <span>•</span>
              <span>Aula completa + Gravada</span>
              <span>•</span>
