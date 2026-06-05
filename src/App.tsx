@@ -1593,7 +1593,7 @@ const GringoExePage = () => {
                </span>
                <div className="flex justify-center items-baseline gap-2">
                  <span className="text-lg text-zinc-400 font-mono">R$</span>
-                 <span className="text-6xl md:text-7xl font-black italic tracking-[-0.05em] text-[#DFB956]">137</span>
+                 <span className="text-6xl md:text-7xl font-black italic tracking-[-0.05em] text-[#DFB956]">154</span>
                </div>
                <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-wider block pt-2 border-t border-zinc-900">
                  Investimento Único · Sem mensalidades
@@ -1605,7 +1605,7 @@ const GringoExePage = () => {
                  href="https://pay.hotmart.com/Y106072864A?checkoutMode=10"
                  className="block w-full py-5 bg-[#DFB956] hover:bg-[#eec66c] text-black font-black uppercase tracking-[0.2em] rounded-xl text-xs sm:text-sm shadow-[0_15px_40px_rgba(223,185,86,0.15)] transition-all hover:scale-[1.02] cursor-pointer"
                >
-                 [ EXECUTAR AGORA — R$ 137 ]
+                 [ EXECUTAR AGORA — R$ 154 ]
                </a>
              </div>
 
