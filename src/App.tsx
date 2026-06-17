@@ -44,7 +44,7 @@ const AFFILIATE_LINKS: Record<string, string> = {
   // Adicione novos afiliados aqui: "nome": "link_do_checkout"
 };
 
-const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/Y106072864A?checkoutMode=10";
+const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/P105490527D?checkoutMode=10";
 
 // --- Components ---
 
