@@ -1240,7 +1240,7 @@ const GringoExePage = () => {
                Você já tem o trabalho. Falta o método para vender para quem paga em dólar.
              </p>
              <p className="text-[#DFB956] text-xs md:text-sm font-bold uppercase tracking-widest font-mono bg-[#DFB956]/5 border border-[#DFB956]/15 py-2 px-4 rounded inline-block">
-               Uma masterclass de 2–3 horas — ao vivo, gravada, direto ao ponto.
+               Uma masterclass de 3 horas — gravada, vitalícia, direto ao ponto.
              </p>
            </div>
 
@@ -1255,14 +1255,12 @@ const GringoExePage = () => {
              </a>
            </div>
 
-           {/* UNDER CARD DETAILS */}
-           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[#666] font-mono text-[10px] md:text-xs uppercase tracking-wider mb-4 animate-pulse">
-             <span>Data: 20 de Junho, às 14h</span>
-             <span>•</span>
-             <span>Aula completa + Gravada</span>
-             <span>•</span>
-             <span>VAGAS LIMITADAS PARA AO VIVO</span>
-           </div>
+                       {/* UNDER CARD DETAILS */}
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[#666] font-mono text-[10px] md:text-xs uppercase tracking-wider mb-4 animate-pulse">
+              <span>Aula completa de 3H</span>
+              <span>•</span>
+              <span>Acesso Vitalício + Gravação Completa</span>
+            </div>
          </div>
        </section>
 
@@ -1320,7 +1318,7 @@ const GringoExePage = () => {
                </div>
                
                <p className="text-lg md:text-2xl leading-relaxed text-white font-bold">
-                 <strong className="text-[#DFB956] underline underline-offset-4 decoration-2">Gringo.exe</strong> é uma masterclass ao vivo para freelancers criativos brasileiros que querem fechar clientes internacionais — videomakers, editores, criadores de conteúdo, social media, motion designers.
+                 <strong className="text-[#DFB956] underline underline-offset-4 decoration-2">gringo.exe</strong> é uma masterclass completa de 3H para freelancers criativos brasileiros que querem fechar clientes internacionais — videomakers, editores, criadores de conteúdo, social media, motion designers.
                </p>
                
                <p className="text-base md:text-lg leading-relaxed text-zinc-400">
@@ -1417,7 +1415,7 @@ const GringoExePage = () => {
 
              <div className="divide-y divide-zinc-900">
                {[
-                 { file: "Gringo.exe", tag: "MASTERCLASS", desc: "A masterclass ao vivo com replay permanente" },
+                 { file: "Gringo.exe", tag: "MASTERCLASS", desc: "A masterclass de 3H com acesso vitalício" },
                  { file: "Proposal.exe", tag: "IA AGENT", desc: "Agente de IA que gera sua proposta em inglês em menos de 3 minutos. Você preenche em português. Ele entrega pronto para enviar." },
                  { file: "Contract.protocol", tag: "PROTOCOL", desc: "Template de contrato profissional em inglês. Editável. Pronto para assinar digitalmente no mesmo dia." },
                  { file: "Dollar.config", tag: "CONFIG", desc: "Planilha que calcula quanto você deve cobrar em dólar com base no seu custo de vida, câmbio atual e tipo de projeto." },
@@ -1578,7 +1576,7 @@ const GringoExePage = () => {
              GRINGO<span className="text-[#DFB956] font-mono">.exe</span>
            </h2>
            <p className="text-[#DFB956] text-xs font-mono font-bold uppercase tracking-widest bg-[#DFB956]/5 border border-[#DFB956]/15 inline-block py-1.5 px-3 rounded mb-12">
-             MASTERCLASS AO VIVO COM REPLAY PERMANENTE + ACESSO COMPLETO
+             MASTERCLASS COMPLETA DE 3H + ACESSO VITALÍCIO & ENTREGÁVEIS
            </p>
 
            {/* Price Tag Box */}
@@ -1593,7 +1591,7 @@ const GringoExePage = () => {
                </span>
                <div className="flex justify-center items-baseline gap-2">
                  <span className="text-lg text-zinc-400 font-mono">R$</span>
-                 <span className="text-6xl md:text-7xl font-black italic tracking-[-0.05em] text-[#DFB956]">197</span>
+                 <span className="text-6xl md:text-7xl font-black italic tracking-[-0.05em] text-[#DFB956]">237</span>
                </div>
                <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-wider block pt-2 border-t border-zinc-900">
                  Investimento Único · Sem mensalidades
@@ -1605,13 +1603,13 @@ const GringoExePage = () => {
                  href="https://pay.hotmart.com/Y106072864A?checkoutMode=10"
                  className="block w-full py-5 bg-[#DFB956] hover:bg-[#eec66c] text-black font-black uppercase tracking-[0.2em] rounded-xl text-xs sm:text-sm shadow-[0_15px_40px_rgba(223,185,86,0.15)] transition-all hover:scale-[1.02] cursor-pointer"
                >
-                 [ EXECUTAR AGORA — R$ 197 ]
+                 [ EXECUTAR AGORA — R$ 237 ]
                </a>
              </div>
 
              <div className="mt-6 font-mono text-[10px] text-zinc-650 space-y-1">
-               <p>Vagas limitadas para a sessão ao vivo</p>
-               <p>VITALICIO: Replay permanente para todos os inscritos</p>
+               <p>Acesso instantâneo e vitalício à gravação e arquivos</p>
+               <p>VITALÍCIO: Assista e use os arquivos quando e onde quiser</p>
              </div>
            </div>
 
