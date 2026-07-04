@@ -265,11 +265,11 @@ function WorkshopPage() {
                 </div>
               </div>
               <h1 className="text-[32px] md:text-5xl lg:text-[72px] font-black leading-[1] lg:leading-[0.9] tracking-[-0.04em] mb-4 lg:mb-8 uppercase italic">
-                CINEMA, ANIMAÇÃO <br />
+                CINEMA <br />
                 <span className="text-cyan-400">E RENDA COM IA</span>
               </h1>
               <p className="text-[14px] md:text-xl text-zinc-400 max-w-xl mx-auto lg:mx-0 leading-relaxed mb-4 lg:mb-10 font-medium opacity-90">
-                Qualquer pessoa consegue. Você vai sair daqui criando vídeos de cinema com Inteligência Artificial e transformando isso em renda.
+                Você pode nunca ter segurado uma câmera na vida. Não importa. Nesta aula, você aprende a dirigir cinema com IA — pensar cena, luz, narrativa — e sai como um diretor de verdade. Isso, bem feito, vira é fonte de renda (até em dólar)
               </p>
             </motion.div>
 
@@ -351,25 +351,47 @@ function WorkshopPage() {
                 { title: "VFX Sem PC", desc: "Aplique efeitos visuais incríveis direto pelo navegador, sem instalar nada.", img: "https://i.imgur.com/p3aMCeB.jpeg" },
                 { title: "Portfólio Elite", desc: "Monte uma vitrine de projetos que atrai clientes e gera contratos.", img: "https://i.imgur.com/hPfQWoE.jpeg" }
               ].map((item, i) => (
-                <div key={i} className="relative aspect-square sm:aspect-auto p-8 rounded-3xl overflow-hidden bg-zinc-900/40 border border-white/5 hover:border-cyan-500/30 transition-all flex flex-col justify-between group">
+                <motion.div 
+                  key={i} 
+                  initial="offscreen"
+                  whileInView="onscreen"
+                  viewport={{ once: true, amount: 0.2 }}
+                  variants={{
+                    offscreen: { borderColor: "rgba(255, 255, 255, 0.05)" },
+                    onscreen: { borderColor: "rgba(6, 182, 212, 0.3)" }
+                  }}
+                  className="relative aspect-square sm:aspect-auto p-8 rounded-3xl overflow-hidden bg-zinc-900/40 border hover:border-cyan-500/30 transition-all flex flex-col justify-between group"
+                >
                   <div className="absolute inset-0 z-0">
-                    <img 
+                    <motion.img 
                       src={item.img} 
                       alt={item.title} 
-                      className="w-full h-full object-cover opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 grayscale group-hover:grayscale-0"
+                      variants={{
+                        offscreen: { opacity: 0.15, filter: "grayscale(100%)", scale: 1.0 },
+                        onscreen: { opacity: 0.4, filter: "grayscale(0%)", scale: 1.05 }
+                      }}
+                      transition={{ duration: 0.8 }}
+                      className="w-full h-full object-cover group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 group-hover:grayscale-0"
                       referrerPolicy="no-referrer"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                   </div>
                   
-                  <div className="relative z-10 w-10 h-10 rounded-full bg-cyan-400/10 flex items-center justify-center mb-6 group-hover:bg-cyan-400 group-hover:text-black transition-all">
+                  <motion.div 
+                    variants={{
+                      offscreen: { backgroundColor: "rgba(34, 211, 238, 0.1)", color: "rgba(34, 211, 238, 1)" },
+                      onscreen: { backgroundColor: "rgba(34, 211, 238, 1)", color: "rgba(0, 0, 0, 1)", scale: 1.05 }
+                    }}
+                    transition={{ duration: 0.5, delay: 0.15 }}
+                    className="relative z-10 w-10 h-10 rounded-full flex items-center justify-center mb-6 group-hover:bg-cyan-400 group-hover:text-black transition-all"
+                  >
                     <CheckCircle2 size={20} />
-                  </div>
+                  </motion.div>
                   <div className="relative z-10">
                     <h3 className="text-xl font-bold uppercase tracking-tight mb-2 italic text-white">{item.title}</h3>
                     <p className="text-zinc-400 text-sm leading-relaxed font-medium">{item.desc}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
             <div className="bg-zinc-900/20 border border-white/5 rounded-[40px] overflow-hidden p-8 flex items-center justify-center relative group min-h-[500px]">
