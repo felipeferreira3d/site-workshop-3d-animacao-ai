@@ -281,18 +281,16 @@ function WorkshopPage() {
               className="relative group w-full order-2 lg:order-last"
             >
               <div className="aspect-video bg-zinc-900 border border-white/10 rounded-2xl lg:rounded-[40px] overflow-hidden relative shadow-2xl shadow-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-500">
-                <div className="w-full h-full transition-all duration-700 blur-0 scale-100 opacity-100">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src="https://www.youtube.com/embed/mf8aIsWQbBQ?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=mf8aIsWQbBQ"
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="absolute top-0 left-0 w-full h-full"
-                  ></iframe>
-                </div>
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/mf8aIsWQbBQ?autoplay=1&mute=1&loop=1&playlist=mf8aIsWQbBQ&controls=0&modestbranding=1&rel=0&playsinline=1"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="absolute top-0 left-0 w-full h-full"
+                ></iframe>
               </div>
             </motion.div>
 
