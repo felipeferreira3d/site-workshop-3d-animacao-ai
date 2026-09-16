@@ -781,11 +781,11 @@ export const METRICS_DATA: MetricItem[] = [
   },
   {
     id: "marcas",
-    targetNumber: 10,
+    targetNumber: 100,
     prefix: "+",
     suffix: "",
     label: "Grandes Marcas",
-    description: "Mais de 10 grandes marcas atendidas"
+    description: "Mais de 100 grandes marcas atendidas"
   },
   {
     id: "estudios",

@@ -432,7 +432,11 @@ export const SocialProofSection: React.FC = () => {
             <div className="inline-flex flex-col items-center gap-4">
               <a 
                 href="#inscricao" 
-                className="px-10 py-5 bg-cyan-400 hover:bg-cyan-300 text-black font-bebas text-2xl tracking-[0.08em] rounded-full uppercase transition-all shadow-[0_10px_40px_rgba(34,211,238,0.35)] hover:-translate-y-1 flex items-center gap-3 group"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("inscricao")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="px-10 py-5 bg-cyan-400 hover:bg-cyan-300 text-black font-bebas text-2xl tracking-[0.08em] rounded-full uppercase transition-all shadow-[0_10px_40px_rgba(34,211,238,0.35)] hover:-translate-y-1 flex items-center gap-3 group cursor-pointer"
               >
                 <span>Quero ser o próximo case</span>
                 <ArrowRight size={22} className="group-hover:translate-x-1.5 transition-transform" />

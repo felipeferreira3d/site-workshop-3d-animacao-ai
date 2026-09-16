@@ -121,14 +121,32 @@ export const AFFILIATES_LIST: Affiliate[] = [
     aliases: ["yan", "yangama"]
   },
   {
-    id: "joao",
-    name: "João",
-    checkoutUrl: "https://pay.hotmart.com/L105489426U?sck=HOTMART_PRODUCT_PAGE&off=mlgsu0ic&hotfeature=32",
-    aliases: ["joaohotmart"]
+    id: "afonso-caldas",
+    name: "Afonso Caldas",
+    checkoutUrl: "https://go.hotmart.com/I107633969W",
+    aliases: ["afonso", "afonsocaldas"]
+  },
+  {
+    id: "vinicius-dias",
+    name: "Vinicius Dias",
+    checkoutUrl: "https://go.hotmart.com/U107634183G",
+    aliases: ["viniciusdias", "dias"]
+  },
+  {
+    id: "jonas-goncalves",
+    name: "Jonas Gonçalves",
+    checkoutUrl: "https://go.hotmart.com/Y107632572P",
+    aliases: ["jonas", "jonasgoncalves", "jonas-goncalves"]
+  },
+  {
+    id: "nicholas-kohler",
+    name: "Nicholas Kohler",
+    checkoutUrl: "https://go.hotmart.com/V107634984W",
+    aliases: ["nicholas", "nicholaskohler", "kohler"]
   }
 ];
 
-export const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/P105490527D?checkoutMode=10";
+export const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/P105490527D";
 
 export const RESERVED_PAGE_SLUGS = new Set([
   "",
@@ -147,6 +165,9 @@ export const RESERVED_PAGE_SLUGS = new Set([
   "links",
   "links-afiliados",
   "workshop-cinema-ia",
+  "checkout",
+  "comprar",
+  "matricula",
   "pagina",
   "nova"
 ]);
@@ -271,15 +292,19 @@ export function resolveActiveAffiliate(candidateParam?: string): Affiliate | und
     }
   } catch {}
 
-  // 5. Se não encontrou na URL atual, mas o candidato for um slug reservado (como "inscricao"),
-  // recupera da sessão para manter a comissão do afiliado
-  try {
-    const savedId = sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY);
-    if (savedId) {
-      const matched = findAffiliate(savedId);
-      if (matched) return matched;
-    }
-  } catch {}
+  // 5. Se o usuário estiver na página inicial pura (ex: domínio.com/ ou /#/ sem rota ou query de afiliado),
+  // a página deve usar obrigatoriamente o checkout padrão do produtor (https://pay.hotmart.com/P105490527D).
+  // Apenas se o candidato for explicitamente um slug reservado de checkout/matrícula vindo de uma navegação interna
+  // é que podemos checar a sessão.
+  if (candidateParam && RESERVED_PAGE_SLUGS.has(candidateParam.toLowerCase())) {
+    try {
+      const savedId = sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY);
+      if (savedId) {
+        const matched = findAffiliate(savedId);
+        if (matched) return matched;
+      }
+    } catch {}
+  }
 
   return undefined;
 }

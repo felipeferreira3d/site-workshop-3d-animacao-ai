@@ -33,7 +33,8 @@ import {
   Terminal,
   FileText,
   Check,
-  Shield
+  Shield,
+  ExternalLink
 } from "lucide-react";
 
 import { 
@@ -105,7 +106,25 @@ const scrollToSection = (id: string, e?: React.MouseEvent) => {
   }
 };
 
-const Navbar = () => {
+/**
+ * Redirecionamento seguro para Checkout imune a AdBlockers.
+ * Filtros de privacidade (EasyList, uBlock, Brave Shields) possuem regras como `##a[href*="go.hotmart.com"]`
+ * que ocultam qualquer tag <a> que contenha o domínio de afiliado no href.
+ * Disparando via função controlada e botões sem href bloqueável, o checkout abre 100% das vezes.
+ */
+export const openCheckoutSafely = (url: string) => {
+  if (!url) return;
+  try {
+    const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+      window.location.assign(url);
+    }
+  } catch {
+    window.location.assign(url);
+  }
+};
+
+const Navbar = ({ onCheckout }: { onCheckout?: () => void }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -126,26 +145,32 @@ const Navbar = () => {
           <a href="#faq" onClick={(e) => scrollToSection("faq", e)} className="hover:text-cyan-400 transition-colors">FAQ</a>
         </div>
 
-        {/* Right CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          <a 
-            href="#inscricao" 
-            onClick={(e) => scrollToSection("inscricao", e)}
-            className="px-5 py-2 bg-cyan-400 hover:bg-cyan-300 text-black font-bebas text-sm tracking-[0.1em] rounded uppercase transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:-translate-y-0.5 flex items-center gap-1.5 cursor-pointer"
+        {/* Right CTA & Mobile Burger */}
+        <div className="flex items-center gap-3">
+          <button 
+            type="button"
+            onClick={(e) => {
+              if (onCheckout) {
+                onCheckout();
+              } else {
+                scrollToSection("inscricao", e);
+              }
+            }}
+            className="px-4 sm:px-5 py-2 bg-cyan-400 hover:bg-cyan-300 active:bg-cyan-200 text-black font-bebas text-sm sm:text-base tracking-[0.1em] rounded uppercase transition-all shadow-[0_0_20px_rgba(34,211,238,0.35)] hover:-translate-y-0.5 flex items-center gap-1.5 cursor-pointer"
           >
-            <span>Matrícula</span>
+            <span>Comprar agora</span>
             <ArrowUpRight size={15} />
-          </a>
-        </div>
+          </button>
 
-        {/* Mobile Burger */}
-        <button 
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden p-2 text-white/80 hover:text-white"
-          aria-label="Menu"
-        >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          {/* Mobile Burger */}
+          <button 
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="lg:hidden p-2 text-white/80 hover:text-white"
+            aria-label="Menu"
+          >
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer */}
@@ -165,13 +190,20 @@ const Navbar = () => {
               <a href="#modulos" onClick={(e) => { setMobileOpen(false); scrollToSection("modulos", e); }} className="hover:text-cyan-400 py-1">Módulos do Curso</a>
               <a href="#faq" onClick={(e) => { setMobileOpen(false); scrollToSection("faq", e); }} className="hover:text-cyan-400 py-1">Dúvidas Frequentes</a>
             </div>
-            <a 
-              href="#inscricao" 
-              onClick={(e) => { setMobileOpen(false); scrollToSection("inscricao", e); }}
+            <button 
+              type="button"
+              onClick={(e) => { 
+                setMobileOpen(false); 
+                if (onCheckout) {
+                  onCheckout();
+                } else {
+                  scrollToSection("inscricao", e); 
+                }
+              }}
               className="block w-full text-center py-3 bg-cyan-400 text-black font-bebas text-lg tracking-wider rounded-full uppercase shadow-[0_0_20px_rgba(34,211,238,0.3)] cursor-pointer"
             >
               Garantir Minha Vaga
-            </a>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -193,9 +225,19 @@ function CinemaComAIPage() {
   const [selectedProject, setSelectedProject] = useState<StudentProject | null>(null);
   const [expandedModule, setExpandedModule] = useState<string | null>("01");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
+  const [showFloatingBar, setShowFloatingBar] = useState(false);
 
   React.useEffect(() => {
     document.title = "CINEMA COM IA";
+  }, []);
+
+  // Monitora scroll para exibir barra flutuante de conversão
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setShowFloatingBar(window.scrollY > 480);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Sincronização inteligente e persistente do Afiliado Ativo
@@ -223,7 +265,7 @@ function CinemaComAIPage() {
 
   return (
     <div id="inicio" className="bg-[#050505] text-white font-sans selection:bg-cyan-500 selection:text-black antialiased relative">
-      <Navbar />
+      <Navbar onCheckout={() => openCheckoutSafely(checkoutLink)} />
 
       {/* =========================================================================
           SEÇÃO 1 — HERO FULL-BLEED (100VH) ESTILO CINEMATOGRÁFICO
@@ -279,14 +321,14 @@ function CinemaComAIPage() {
                 </a>
 
                 {/* Botão 2: GARANTIR VAGA ↓ */}
-                <a 
-                  href="#inscricao"
+                <button 
+                  type="button"
                   onClick={(e) => scrollToSection("inscricao", e)}
                   className="px-5 sm:px-6 py-3.5 bg-black/70 hover:bg-black/90 border border-white/30 hover:border-cyan-400 text-white font-mono font-bold text-xs sm:text-sm tracking-wider uppercase rounded-md transition-all backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:-translate-y-0.5 flex items-center gap-2 group/b2 cursor-pointer"
                 >
-                  <span>GARANTIR VAGA</span>
+                  <span>GARANTIR VAGA (R$ 197)</span>
                   <ArrowDown size={15} className="group-hover/b2:translate-y-0.5 transition-transform" />
-                </a>
+                </button>
 
                 {/* Botão 3: INSTAGRAM ↗ */}
                 <a 
@@ -766,7 +808,7 @@ function CinemaComAIPage() {
 
         <div className="max-w-4xl mx-auto text-center relative z-10 space-y-8">
           
-          <SectionLabel>MATRÍCULA ABERTA // LOTE ESPECIAL</SectionLabel>
+          <SectionLabel>INSCRIÇÃO ABERTA // LOTE ESPECIAL</SectionLabel>
 
           <h2 className="font-bebas text-5xl sm:text-7xl md:text-[90px] font-black leading-[0.88] tracking-tight uppercase italic text-white">
             O PRÓXIMO FRAME QUE <br />
@@ -780,19 +822,9 @@ function CinemaComAIPage() {
           {/* Pricing Box */}
           <div className="p-8 md:p-14 bg-zinc-950/80 border border-cyan-500/30 rounded-[32px] backdrop-blur-2xl relative shadow-[0_0_60px_rgba(34,211,238,0.15)] max-w-2xl mx-auto">
             
-            {/* Tag de Afiliado Verificado (quando ativo) */}
-            {activeAffiliate ? (
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-950/90 border border-cyan-400/50 rounded-full mb-8 shadow-[0_0_25px_rgba(34,211,238,0.3)] animate-pulse">
-                <ShieldCheck size={16} className="text-cyan-400" />
-                <span className="font-mono text-xs uppercase tracking-wider text-cyan-200">
-                  Indicação Ativa: <strong className="text-white underline decoration-cyan-400">{activeAffiliate.name}</strong>
-                </span>
-              </div>
-            ) : (
-              <div className="inline-block px-5 py-2 bg-cyan-400 text-black font-bebas text-sm tracking-[0.15em] uppercase rounded-full mb-8 shadow-[0_0_20px_rgba(34,211,238,0.4)]">
-                Acesso Vitalício + Gravações + Grupo VIP WhatsApp
-              </div>
-            )}
+            <div className="inline-block px-5 py-2 bg-cyan-400 text-black font-bebas text-sm tracking-[0.15em] uppercase rounded-full mb-8 shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+              Acesso Vitalício + Gravações + Grupo VIP WhatsApp
+            </div>
 
             <div className="flex flex-col items-center mb-8">
               <span className="text-xs font-mono uppercase tracking-widest text-zinc-400 mb-1">
@@ -811,25 +843,19 @@ function CinemaComAIPage() {
               </span>
             </div>
 
-            {/* Button */}
+            {/* CTA Checkout Principal — Imune a AdBlockers */}
             <div className="space-y-4">
-              <a 
-                href={checkoutLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-5 bg-cyan-400 hover:bg-cyan-300 text-black font-bebas text-2xl tracking-[0.1em] rounded-full uppercase transition-all shadow-[0_10px_40px_rgba(34,211,238,0.4)] hover:-translate-y-1 flex items-center justify-center gap-3 text-center cursor-pointer group/btn"
+              <button 
+                type="button"
+                id="btn-garantir-vaga-checkout"
+                onClick={() => openCheckoutSafely(checkoutLink)}
+                className="w-full py-5 px-6 bg-cyan-400 hover:bg-cyan-300 active:bg-cyan-200 text-black font-bebas text-2xl sm:text-3xl tracking-[0.1em] rounded-full uppercase transition-all shadow-[0_10px_40px_rgba(34,211,238,0.45)] hover:shadow-[0_15px_50px_rgba(34,211,238,0.65)] hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-3 text-center cursor-pointer group/btn !flex"
               >
-                <span>Garantir Vaga Agora</span>
-                <ArrowRight size={22} className="group-hover/btn:translate-x-1 transition-transform" />
-              </a>
+                <span>Comprar agora</span>
+                <ArrowRight size={24} className="group-hover/btn:translate-x-1.5 transition-transform shrink-0" />
+              </button>
 
-              {activeAffiliate && (
-                <p className="text-[11px] font-mono text-cyan-400/90 text-center pt-1">
-                  ✓ Matrícula vinculada à indicação de <span className="text-white font-bold">{activeAffiliate.name}</span>
-                </p>
-              )}
-
-              <div className="flex items-center justify-center gap-4 text-[11px] font-mono uppercase tracking-wider text-zinc-400 pt-2">
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-[11px] font-mono uppercase tracking-wider text-zinc-400 pt-2">
                 <span className="flex items-center gap-1">
                   <ShieldCheck size={14} className="text-cyan-400" />
                   Pagamento Seguro
@@ -839,19 +865,6 @@ function CinemaComAIPage() {
                 <span>•</span>
                 <span>7 Dias de Garantia</span>
               </div>
-            </div>
-
-            {/* WhatsApp Link Direto */}
-            <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-center gap-2 text-xs text-zinc-400">
-              <span>Dúvidas na matrícula? Fale direto no WhatsApp:</span>
-              <a 
-                href="https://wa.me/5522992824984?text=Oi,%20tenho%20dúvidas%20sobre%20o%20CINEMA%20COM%20AI." 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-cyan-400 hover:underline font-bold"
-              >
-                (22) 99282-4984 →
-              </a>
             </div>
 
           </div>
@@ -979,6 +992,42 @@ function CinemaComAIPage() {
           </div>
         </div>
       </footer>
+
+      {/* Barra Flutuante de Conversão (fixa na base quando o usuário rola a página) */}
+      <AnimatePresence>
+        {showFloatingBar && (
+          <motion.div
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 80, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed bottom-4 left-4 right-4 md:left-auto md:right-8 z-40 max-w-md bg-zinc-950/95 border border-cyan-500/40 rounded-2xl p-3 sm:p-4 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.9),0_0_30px_rgba(34,211,238,0.25)] flex items-center justify-between gap-3"
+          >
+            <div className="flex flex-col min-w-0">
+              <div className="flex items-center gap-1.5 truncate">
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" />
+                <span className="text-[11px] font-mono uppercase tracking-wider text-cyan-300 font-bold truncate">
+                  CINEMA COM IA
+                </span>
+              </div>
+              <div className="flex items-baseline gap-1.5 font-bebas">
+                <span className="text-zinc-500 text-xs line-through">R$ 297</span>
+                <span className="text-cyan-400 text-2xl font-black">R$ 197</span>
+                <span className="text-zinc-400 text-[10px] font-mono">12x no cartão</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => openCheckoutSafely(checkoutLink)}
+              className="px-5 py-2.5 sm:py-3 bg-cyan-400 hover:bg-cyan-300 active:bg-cyan-200 text-black font-bebas text-lg sm:text-xl tracking-wider rounded-xl uppercase transition-all shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer shrink-0"
+            >
+              <span>Comprar agora</span>
+              <ArrowRight size={16} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Modal de Vídeo Interativo dos Alunos */}
       <VideoModal project={selectedProject} onClose={() => setSelectedProject(null)} />
@@ -1996,6 +2045,37 @@ const DevNav = () => {
   );
 };
 
+// --- Página de Redirecionamento Direto de Checkout ---
+function CheckoutRedirectPage() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const refFromQuery = searchParams.get("ref") || searchParams.get("afiliado") || searchParams.get("src");
+  
+  const activeAff = resolveActiveAffiliate(refFromQuery);
+  const targetUrl = activeAff ? activeAff.checkoutUrl : DEFAULT_CHECKOUT_LINK;
+
+  React.useEffect(() => {
+    openCheckoutSafely(targetUrl);
+  }, [targetUrl]);
+
+  return (
+    <div className="min-h-screen bg-[#050505] text-white flex flex-col items-center justify-center p-6 text-center">
+      <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mb-6" />
+      <h1 className="font-bebas text-3xl sm:text-4xl tracking-wider mb-2">REDIRECIONANDO PARA O CHECKOUT HOTMART...</h1>
+      <p className="text-sm font-mono text-zinc-400 max-w-md mb-6">
+        Conectando ao ambiente de pagamento seguro e criptografado da Hotmart (R$ 197).
+      </p>
+      <button
+        type="button"
+        onClick={() => openCheckoutSafely(targetUrl)}
+        className="px-8 py-4 bg-cyan-400 hover:bg-cyan-300 text-black font-bebas text-xl rounded-full tracking-wider shadow-[0_0_30px_rgba(34,211,238,0.4)] cursor-pointer"
+      >
+        Comprar agora
+      </button>
+    </div>
+  );
+}
+
 // --- Router Principal ---
 export default function App() {
   return (
@@ -2003,6 +2083,11 @@ export default function App() {
       <Routes>
         {/* Página Principal */}
         <Route path="/" element={<WorkshopPage />} />
+
+        {/* Rotas Rápidas de Checkout */}
+        <Route path="/checkout" element={<CheckoutRedirectPage />} />
+        <Route path="/comprar" element={<CheckoutRedirectPage />} />
+        <Route path="/matricula" element={<CheckoutRedirectPage />} />
 
         {/* Central e Catálogo Geral de Afiliados */}
         <Route path="/afiliados" element={<AffiliatesDirectoryPage />} />

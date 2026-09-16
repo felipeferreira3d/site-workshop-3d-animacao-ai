@@ -62,9 +62,9 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
 
   return (
     <span ref={containerRef} className={`inline-flex items-baseline font-black italic tracking-tighter ${className}`}>
-      {prefix && <span>{prefix}</span>}
+      {prefix && <span className="mr-1">{prefix}</span>}
       <span>{formatted}</span>
-      {suffix && <span>{suffix}</span>}
+      {suffix && <span className="ml-1.5">{suffix.trim()}</span>}
     </span>
   );
 };
