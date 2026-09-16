@@ -56,6 +56,7 @@ import { SocialProofSection } from "./components/SocialProofSection";
 import { 
   findAffiliate, 
   resolveActiveAffiliate,
+  getPersonalizedCheckoutUrl,
   DEFAULT_CHECKOUT_LINK, 
   AFFILIATES_LIST, 
   Affiliate 
@@ -216,11 +217,11 @@ const Navbar = ({ onCheckout }: { onCheckout?: () => void }) => {
 function CinemaComAIPage() {
   const { affiliateId } = useParams();
   
-  // Inicialização síncrona imediata para evitar flicker ou fallback incorreto
+  // Inicialização síncrona imediata com o checkout personalizado da Hotmart
   const [activeAffiliate, setActiveAffiliate] = useState<Affiliate | undefined>(() => resolveActiveAffiliate(affiliateId));
   const [checkoutLink, setCheckoutLink] = useState<string>(() => {
     const aff = resolveActiveAffiliate(affiliateId);
-    return aff ? aff.checkoutUrl : DEFAULT_CHECKOUT_LINK;
+    return getPersonalizedCheckoutUrl(aff);
   });
   const [selectedProject, setSelectedProject] = useState<StudentProject | null>(null);
   const [expandedModule, setExpandedModule] = useState<string | null>("01");
@@ -240,17 +241,12 @@ function CinemaComAIPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Sincronização inteligente e persistente do Afiliado Ativo
+  // Sincronização inteligente do checkout personalizado (mantém tema e design customizado + ref do afiliado)
   React.useEffect(() => {
     const syncAffiliate = () => {
       const matchedAffiliate = resolveActiveAffiliate(affiliateId);
-      if (matchedAffiliate) {
-        setActiveAffiliate(matchedAffiliate);
-        setCheckoutLink(matchedAffiliate.checkoutUrl);
-      } else {
-        setActiveAffiliate(undefined);
-        setCheckoutLink(DEFAULT_CHECKOUT_LINK);
-      }
+      setActiveAffiliate(matchedAffiliate);
+      setCheckoutLink(getPersonalizedCheckoutUrl(matchedAffiliate));
     };
 
     syncAffiliate();
@@ -2052,7 +2048,7 @@ function CheckoutRedirectPage() {
   const refFromQuery = searchParams.get("ref") || searchParams.get("afiliado") || searchParams.get("src");
   
   const activeAff = resolveActiveAffiliate(refFromQuery);
-  const targetUrl = activeAff ? activeAff.checkoutUrl : DEFAULT_CHECKOUT_LINK;
+  const targetUrl = getPersonalizedCheckoutUrl(activeAff);
 
   React.useEffect(() => {
     openCheckoutSafely(targetUrl);
