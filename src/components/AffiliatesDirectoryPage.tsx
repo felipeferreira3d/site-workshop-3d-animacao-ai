@@ -14,22 +14,34 @@ import { AFFILIATES_LIST, Affiliate } from "../data/affiliatesData";
 
 export const AffiliatesDirectoryPage = () => {
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [copiedHotmartId, setCopiedHotmartId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const baseUrl = typeof window !== "undefined" 
-    ? `${window.location.origin}${window.location.pathname}` 
-    : "https://seusite.com/";
-
-  const getAffiliateUrl = (aff: Affiliate) => {
-    return `${baseUrl}#/${aff.id}`;
+  const getProductionUrl = (aff: Affiliate) => {
+    return `https://www.benchparkschool.com/#/${aff.id}`;
   };
 
-  const handleCopy = (aff: Affiliate) => {
-    const url = getAffiliateUrl(aff);
+  const getLocalUrl = (aff: Affiliate) => {
+    if (typeof window !== "undefined") {
+      return `${window.location.origin}${window.location.pathname}#/${aff.id}`;
+    }
+    return `https://www.benchparkschool.com/#/${aff.id}`;
+  };
+
+  const handleCopyProduction = (aff: Affiliate) => {
+    const url = getProductionUrl(aff);
     navigator.clipboard.writeText(url);
     setCopiedId(aff.id);
     setTimeout(() => {
       setCopiedId(null);
+    }, 2000);
+  };
+
+  const handleCopyHotmart = (aff: Affiliate) => {
+    navigator.clipboard.writeText(aff.checkoutUrl);
+    setCopiedHotmartId(aff.id);
+    setTimeout(() => {
+      setCopiedHotmartId(null);
     }, 2000);
   };
 
@@ -110,8 +122,10 @@ export const AffiliatesDirectoryPage = () => {
         {/* Grid de Cards de Afiliados */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
           {filteredAffiliates.map((aff) => {
-            const pageUrl = getAffiliateUrl(aff);
+            const prodUrl = getProductionUrl(aff);
+            const localUrl = getLocalUrl(aff);
             const isCopied = copiedId === aff.id;
+            const isHotmartCopied = copiedHotmartId === aff.id;
 
             return (
               <div 
@@ -133,43 +147,53 @@ export const AffiliatesDirectoryPage = () => {
                       </h3>
                     </div>
 
-                    <span className="px-2.5 py-1 bg-zinc-900 border border-white/10 rounded-lg text-[11px] font-mono text-zinc-400">
-                      /{aff.id}
+                    <span className="px-2.5 py-1 bg-zinc-900 border border-white/10 rounded-lg text-[11px] font-mono text-cyan-400">
+                      #{aff.id}
                     </span>
                   </div>
 
-                  {/* Campo com o link gerado */}
+                  {/* Campo com o link oficial gerado */}
                   <div className="space-y-1.5 mt-4">
-                    <label className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block">
-                      Link da Página de Vendas:
-                    </label>
-                    <div className="flex items-center gap-2 p-2.5 bg-black/60 border border-white/10 rounded-lg text-xs font-mono text-zinc-300 overflow-hidden">
+                    <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-zinc-400">
+                      <span>Link Oficial da Página:</span>
+                      <span className="text-zinc-500">benchparkschool.com</span>
+                    </div>
+                    <div className="flex items-center gap-2 p-2.5 bg-black/80 border border-cyan-500/30 rounded-lg text-xs font-mono text-zinc-300 overflow-hidden">
                       <Link2 size={14} className="text-cyan-400 shrink-0" />
-                      <span className="truncate select-all text-cyan-300/90 font-medium">
-                        {pageUrl}
+                      <span className="truncate select-all text-cyan-300 font-medium">
+                        {prodUrl}
                       </span>
                     </div>
                   </div>
 
                   {/* Hotmart Destination */}
-                  <div className="mt-2 text-[11px] font-mono text-zinc-400 truncate">
-                    <span className="text-zinc-400">Checkout Hotmart: </span>
-                    <a 
-                      href={aff.checkoutUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-zinc-300 hover:text-cyan-400 underline"
+                  <div className="mt-3 p-2 bg-zinc-900/60 border border-white/5 rounded-lg text-[11px] font-mono text-zinc-400 flex items-center justify-between gap-2">
+                    <div className="truncate">
+                      <span className="text-zinc-500">Hotmart: </span>
+                      <a 
+                        href={aff.checkoutUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-zinc-300 hover:text-cyan-400 underline"
+                      >
+                        {aff.checkoutUrl}
+                      </a>
+                    </div>
+                    <button
+                      onClick={() => handleCopyHotmart(aff)}
+                      title="Copiar Checkout Hotmart"
+                      className="px-2 py-1 text-[10px] bg-white/5 hover:bg-white/10 rounded text-zinc-300 shrink-0"
                     >
-                      {aff.checkoutUrl}
-                    </a>
+                      {isHotmartCopied ? "Copiado!" : "Copiar"}
+                    </button>
                   </div>
                 </div>
 
                 {/* Ações */}
                 <div className="pt-5 mt-5 border-t border-white/5 flex flex-wrap items-center gap-2">
                   <button
-                    onClick={() => handleCopy(aff)}
-                    className={`flex-1 min-w-[140px] px-4 py-2.5 rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+                    onClick={() => handleCopyProduction(aff)}
+                    className={`flex-1 min-w-[140px] px-4 py-2.5 rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
                       isCopied 
                         ? "bg-emerald-500 text-black shadow-[0_0_15px_rgba(16,185,129,0.4)]" 
                         : "bg-cyan-400 hover:bg-cyan-300 text-black shadow-[0_0_15px_rgba(34,211,238,0.2)]"
@@ -183,18 +207,18 @@ export const AffiliatesDirectoryPage = () => {
                     ) : (
                       <>
                         <Copy size={16} />
-                        <span>Copiar Link</span>
+                        <span>Copiar Link Completo</span>
                       </>
                     )}
                   </button>
 
                   <a
-                    href={pageUrl}
+                    href={localUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 border border-white/10 hover:border-cyan-400/30"
+                    className="px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 border border-white/10 hover:border-cyan-400/30 cursor-pointer"
                   >
-                    <span>Abrir Página</span>
+                    <span>Testar</span>
                     <ExternalLink size={14} />
                   </a>
                 </div>

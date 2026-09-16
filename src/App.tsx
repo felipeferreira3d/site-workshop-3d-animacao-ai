@@ -4,7 +4,7 @@
  */
 
 import React, { useRef, useState } from "react";
-import { HashRouter as Router, Routes, Route, useParams } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, useParams, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   CheckCircle2, 
@@ -54,6 +54,7 @@ import { VideoModal } from "./components/VideoModal";
 import { SocialProofSection } from "./components/SocialProofSection";
 import { 
   findAffiliate, 
+  resolveActiveAffiliate,
   DEFAULT_CHECKOUT_LINK, 
   AFFILIATES_LIST, 
   Affiliate 
@@ -95,6 +96,15 @@ const SectionLabel = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
+const scrollToSection = (id: string, e?: React.MouseEvent) => {
+  if (e) e.preventDefault();
+  const targetId = id.replace(/^#/, "");
+  const el = document.getElementById(targetId);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -105,22 +115,23 @@ const Navbar = () => {
 
         {/* Desktop Links */}
         <div className="hidden lg:flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-white/70">
-          <a href="#inicio" className="hover:text-cyan-400 transition-colors">Início</a>
-          <a href="#alunos-em-cena" className="hover:text-cyan-400 text-cyan-300 transition-colors flex items-center gap-1.5">
+          <a href="#inicio" onClick={(e) => scrollToSection("inicio", e)} className="hover:text-cyan-400 transition-colors">Início</a>
+          <a href="#alunos-em-cena" onClick={(e) => scrollToSection("alunos-em-cena", e)} className="hover:text-cyan-400 text-cyan-300 transition-colors flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
             Alunos em Cena
           </a>
-          <a href="#sobre" className="hover:text-cyan-400 transition-colors">Sobre</a>
-          <a href="#diferenciais" className="hover:text-cyan-400 transition-colors">Diferenciais</a>
-          <a href="#modulos" className="hover:text-cyan-400 transition-colors">Módulos</a>
-          <a href="#faq" className="hover:text-cyan-400 transition-colors">FAQ</a>
+          <a href="#sobre" onClick={(e) => scrollToSection("sobre", e)} className="hover:text-cyan-400 transition-colors">Sobre</a>
+          <a href="#diferenciais" onClick={(e) => scrollToSection("diferenciais", e)} className="hover:text-cyan-400 transition-colors">Diferenciais</a>
+          <a href="#modulos" onClick={(e) => scrollToSection("modulos", e)} className="hover:text-cyan-400 transition-colors">Módulos</a>
+          <a href="#faq" onClick={(e) => scrollToSection("faq", e)} className="hover:text-cyan-400 transition-colors">FAQ</a>
         </div>
 
         {/* Right CTA */}
         <div className="hidden md:flex items-center gap-3">
           <a 
             href="#inscricao" 
-            className="px-5 py-2 bg-cyan-400 hover:bg-cyan-300 text-black font-bebas text-sm tracking-[0.1em] rounded uppercase transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:-translate-y-0.5 flex items-center gap-1.5"
+            onClick={(e) => scrollToSection("inscricao", e)}
+            className="px-5 py-2 bg-cyan-400 hover:bg-cyan-300 text-black font-bebas text-sm tracking-[0.1em] rounded uppercase transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:-translate-y-0.5 flex items-center gap-1.5 cursor-pointer"
           >
             <span>Matrícula</span>
             <ArrowUpRight size={15} />
@@ -147,17 +158,17 @@ const Navbar = () => {
             className="lg:hidden bg-black/95 border-b border-white/10 px-6 py-6 space-y-4"
           >
             <div className="flex flex-col gap-4 text-xs font-black uppercase tracking-widest text-white/70">
-              <a href="#inicio" onClick={() => setMobileOpen(false)} className="hover:text-cyan-400 py-1">Início</a>
-              <a href="#alunos-em-cena" onClick={() => setMobileOpen(false)} className="text-cyan-400 py-1">★ Alunos em Cena</a>
-              <a href="#sobre" onClick={() => setMobileOpen(false)} className="hover:text-cyan-400 py-1">Sobre a Metodologia</a>
-              <a href="#diferenciais" onClick={() => setMobileOpen(false)} className="hover:text-cyan-400 py-1">Diferenciais</a>
-              <a href="#modulos" onClick={() => setMobileOpen(false)} className="hover:text-cyan-400 py-1">Módulos do Curso</a>
-              <a href="#faq" onClick={() => setMobileOpen(false)} className="hover:text-cyan-400 py-1">Dúvidas Frequentes</a>
+              <a href="#inicio" onClick={(e) => { setMobileOpen(false); scrollToSection("inicio", e); }} className="hover:text-cyan-400 py-1">Início</a>
+              <a href="#alunos-em-cena" onClick={(e) => { setMobileOpen(false); scrollToSection("alunos-em-cena", e); }} className="text-cyan-400 py-1">★ Alunos em Cena</a>
+              <a href="#sobre" onClick={(e) => { setMobileOpen(false); scrollToSection("sobre", e); }} className="hover:text-cyan-400 py-1">Sobre a Metodologia</a>
+              <a href="#diferenciais" onClick={(e) => { setMobileOpen(false); scrollToSection("diferenciais", e); }} className="hover:text-cyan-400 py-1">Diferenciais</a>
+              <a href="#modulos" onClick={(e) => { setMobileOpen(false); scrollToSection("modulos", e); }} className="hover:text-cyan-400 py-1">Módulos do Curso</a>
+              <a href="#faq" onClick={(e) => { setMobileOpen(false); scrollToSection("faq", e); }} className="hover:text-cyan-400 py-1">Dúvidas Frequentes</a>
             </div>
             <a 
               href="#inscricao" 
-              onClick={() => setMobileOpen(false)}
-              className="block w-full text-center py-3 bg-cyan-400 text-black font-bebas text-lg tracking-wider rounded-full uppercase shadow-[0_0_20px_rgba(34,211,238,0.3)]"
+              onClick={(e) => { setMobileOpen(false); scrollToSection("inscricao", e); }}
+              className="block w-full text-center py-3 bg-cyan-400 text-black font-bebas text-lg tracking-wider rounded-full uppercase shadow-[0_0_20px_rgba(34,211,238,0.3)] cursor-pointer"
             >
               Garantir Minha Vaga
             </a>
@@ -172,7 +183,13 @@ const Navbar = () => {
 
 function CinemaComAIPage() {
   const { affiliateId } = useParams();
-  const [checkoutLink, setCheckoutLink] = useState(DEFAULT_CHECKOUT_LINK);
+  
+  // Inicialização síncrona imediata para evitar flicker ou fallback incorreto
+  const [activeAffiliate, setActiveAffiliate] = useState<Affiliate | undefined>(() => resolveActiveAffiliate(affiliateId));
+  const [checkoutLink, setCheckoutLink] = useState<string>(() => {
+    const aff = resolveActiveAffiliate(affiliateId);
+    return aff ? aff.checkoutUrl : DEFAULT_CHECKOUT_LINK;
+  });
   const [selectedProject, setSelectedProject] = useState<StudentProject | null>(null);
   const [expandedModule, setExpandedModule] = useState<string | null>("01");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
@@ -181,25 +198,27 @@ function CinemaComAIPage() {
     document.title = "CINEMA COM IA";
   }, []);
 
-  // Lógica de Afiliados integrada com Router e Query Params
+  // Sincronização inteligente e persistente do Afiliado Ativo
   React.useEffect(() => {
-    let candidate = affiliateId;
-    if (!candidate) {
-      const searchParams = new URLSearchParams(window.location.search);
-      candidate = searchParams.get('ref') || undefined;
-    }
-    if (!candidate && window.location.hash.includes('?')) {
-      const hashQuery = window.location.hash.split('?')[1];
-      const hashParams = new URLSearchParams(hashQuery);
-      candidate = hashParams.get('ref') || undefined;
-    }
+    const syncAffiliate = () => {
+      const matchedAffiliate = resolveActiveAffiliate(affiliateId);
+      if (matchedAffiliate) {
+        setActiveAffiliate(matchedAffiliate);
+        setCheckoutLink(matchedAffiliate.checkoutUrl);
+      } else {
+        setActiveAffiliate(undefined);
+        setCheckoutLink(DEFAULT_CHECKOUT_LINK);
+      }
+    };
 
-    const matchedAffiliate = findAffiliate(candidate);
-    if (matchedAffiliate) {
-      setCheckoutLink(matchedAffiliate.checkoutUrl);
-    } else {
-      setCheckoutLink(DEFAULT_CHECKOUT_LINK);
-    }
+    syncAffiliate();
+
+    window.addEventListener("hashchange", syncAffiliate);
+    window.addEventListener("popstate", syncAffiliate);
+    return () => {
+      window.removeEventListener("hashchange", syncAffiliate);
+      window.removeEventListener("popstate", syncAffiliate);
+    };
   }, [affiliateId]);
 
   return (
@@ -252,7 +271,8 @@ function CinemaComAIPage() {
                 {/* Botão 1: VER ALUNOS EM CENA ↓ */}
                 <a 
                   href="#alunos-em-cena"
-                  className="px-5 sm:px-6 py-3.5 bg-cyan-400 hover:bg-cyan-300 text-black font-mono font-bold text-xs sm:text-sm tracking-wider uppercase rounded-md transition-all shadow-[0_0_30px_rgba(34,211,238,0.45)] hover:-translate-y-0.5 flex items-center gap-2 group/b1"
+                  onClick={(e) => scrollToSection("alunos-em-cena", e)}
+                  className="px-5 sm:px-6 py-3.5 bg-cyan-400 hover:bg-cyan-300 text-black font-mono font-bold text-xs sm:text-sm tracking-wider uppercase rounded-md transition-all shadow-[0_0_30px_rgba(34,211,238,0.45)] hover:-translate-y-0.5 flex items-center gap-2 group/b1 cursor-pointer"
                 >
                   <span>VER ALUNOS EM CENA</span>
                   <ArrowDown size={15} className="group-hover/b1:translate-y-0.5 transition-transform" />
@@ -261,7 +281,8 @@ function CinemaComAIPage() {
                 {/* Botão 2: GARANTIR VAGA ↓ */}
                 <a 
                   href="#inscricao"
-                  className="px-5 sm:px-6 py-3.5 bg-black/70 hover:bg-black/90 border border-white/30 hover:border-cyan-400 text-white font-mono font-bold text-xs sm:text-sm tracking-wider uppercase rounded-md transition-all backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:-translate-y-0.5 flex items-center gap-2 group/b2"
+                  onClick={(e) => scrollToSection("inscricao", e)}
+                  className="px-5 sm:px-6 py-3.5 bg-black/70 hover:bg-black/90 border border-white/30 hover:border-cyan-400 text-white font-mono font-bold text-xs sm:text-sm tracking-wider uppercase rounded-md transition-all backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:-translate-y-0.5 flex items-center gap-2 group/b2 cursor-pointer"
                 >
                   <span>GARANTIR VAGA</span>
                   <ArrowDown size={15} className="group-hover/b2:translate-y-0.5 transition-transform" />
@@ -759,9 +780,19 @@ function CinemaComAIPage() {
           {/* Pricing Box */}
           <div className="p-8 md:p-14 bg-zinc-950/80 border border-cyan-500/30 rounded-[32px] backdrop-blur-2xl relative shadow-[0_0_60px_rgba(34,211,238,0.15)] max-w-2xl mx-auto">
             
-            <div className="inline-block px-5 py-2 bg-cyan-400 text-black font-bebas text-sm tracking-[0.15em] uppercase rounded-full mb-8 shadow-[0_0_20px_rgba(34,211,238,0.4)]">
-              Acesso Vitalício + Gravações + Grupo VIP WhatsApp
-            </div>
+            {/* Tag de Afiliado Verificado (quando ativo) */}
+            {activeAffiliate ? (
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-950/90 border border-cyan-400/50 rounded-full mb-8 shadow-[0_0_25px_rgba(34,211,238,0.3)] animate-pulse">
+                <ShieldCheck size={16} className="text-cyan-400" />
+                <span className="font-mono text-xs uppercase tracking-wider text-cyan-200">
+                  Indicação Ativa: <strong className="text-white underline decoration-cyan-400">{activeAffiliate.name}</strong>
+                </span>
+              </div>
+            ) : (
+              <div className="inline-block px-5 py-2 bg-cyan-400 text-black font-bebas text-sm tracking-[0.15em] uppercase rounded-full mb-8 shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+                Acesso Vitalício + Gravações + Grupo VIP WhatsApp
+              </div>
+            )}
 
             <div className="flex flex-col items-center mb-8">
               <span className="text-xs font-mono uppercase tracking-widest text-zinc-400 mb-1">
@@ -786,11 +817,17 @@ function CinemaComAIPage() {
                 href={checkoutLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-5 bg-cyan-400 hover:bg-cyan-300 text-black font-bebas text-2xl tracking-[0.1em] rounded-full uppercase transition-all shadow-[0_10px_40px_rgba(34,211,238,0.4)] hover:-translate-y-1 flex items-center justify-center gap-3 text-center"
+                className="w-full py-5 bg-cyan-400 hover:bg-cyan-300 text-black font-bebas text-2xl tracking-[0.1em] rounded-full uppercase transition-all shadow-[0_10px_40px_rgba(34,211,238,0.4)] hover:-translate-y-1 flex items-center justify-center gap-3 text-center cursor-pointer group/btn"
               >
                 <span>Garantir Vaga Agora</span>
-                <ArrowRight size={22} />
+                <ArrowRight size={22} className="group-hover/btn:translate-x-1 transition-transform" />
               </a>
+
+              {activeAffiliate && (
+                <p className="text-[11px] font-mono text-cyan-400/90 text-center pt-1">
+                  ✓ Matrícula vinculada à indicação de <span className="text-white font-bold">{activeAffiliate.name}</span>
+                </p>
+              )}
 
               <div className="flex items-center justify-center gap-4 text-[11px] font-mono uppercase tracking-wider text-zinc-400 pt-2">
                 <span className="flex items-center gap-1">
