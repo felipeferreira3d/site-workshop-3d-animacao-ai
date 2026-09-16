@@ -3,55 +3,72 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useRef } from "react";
-import { HashRouter as Router, Routes, Route, useParams, Navigate } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { HashRouter as Router, Routes, Route, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import ReactPlayer from "react-player";
 import { 
   CheckCircle2, 
-  Cpu, 
-  Headphones, 
   Monitor, 
   Play, 
-  Pause,
+  Pause, 
   Zap,
-  Calendar,
-  Mail,
   MessageSquare,
   ArrowRight,
+  ArrowUpRight,
+  ArrowDown,
   ChevronRight,
-  Phone,
+  ChevronDown,
   Instagram,
   Youtube,
-  VolumeX,
   Users,
   TrendingUp,
-  Terminal,
-  Download,
-  Globe,
-  Briefcase,
-  Check,
+  Eye,
+  Sparkles,
+  Award,
+  Film,
+  Layers,
+  ShieldCheck,
+  Menu,
   X,
-  Shield,
-  FileText
+  Terminal,
+  FileText,
+  Check,
+  Shield
 } from "lucide-react";
 
+import { 
+  HERO_VIDEO_URL,
+  STUDENT_PROJECTS, 
+  TOTAL_STUDENT_VIEWS_LABEL, 
+  METRICS_DATA, 
+  DIFFERENTIALS_DATA, 
+  COURSE_MODULES, 
+  FAQ_ITEMS, 
+  MARQUEE_KEYWORDS,
+  StudentProject 
+} from "./data/cinemaData";
+import { AnimatedCounter } from "./components/AnimatedCounter";
+import { StudentVideoCard } from "./components/StudentVideoCard";
+import { StudentShowcaseLayout } from "./components/StudentShowcaseLayout";
+import { VideoModal } from "./components/VideoModal";
+import { SocialProofSection } from "./components/SocialProofSection";
+import { 
+  findAffiliate, 
+  DEFAULT_CHECKOUT_LINK, 
+  AFFILIATES_LIST, 
+  Affiliate 
+} from "./data/affiliatesData";
+import { AffiliatesDirectoryPage } from "./components/AffiliatesDirectoryPage";
+
 // --- Configuration & Constants ---
+// A lista completa e centralizada de afiliados fica em: src/data/affiliatesData.ts
 
-const AFFILIATE_LINKS: Record<string, string> = {
-  "joao": "https://pay.hotmart.com/L105489426U?sck=HOTMART_PRODUCT_PAGE&off=mlgsu0ic&hotfeature=32&_gl=1*11s8iwq*_gcl_au*MTIzMjY4MDg2NS4xNzc3NDM1NTk2*FPAU*MTIzMjY4MDg2NS4xNzc3NDM1NTk2*_ga*MTc3MDM1MDE0MS4xNzUwNjQ0MTM4*_ga_GQH2V1F11Q*czE3NzgwODU3ODQkbzU2MCRnMSR0MTc3ODA4NTk3MyRqNTkkbDAkaDcwNzUxMjIyOQ..&bid=1778087392906",
-  "hector": "https://pay.hotmart.com/P105490527D?sck=HOTMART_PRODUCT_PAGE&off=iu9mfsa8&hotfeature=32&_gl=1*1kcw6rk*_gcl_au*MTUxODkwNTM5MS4xNzc3MDQxNzA5*_ga*MTA3NzkxMDMwMy4xNzU3MzM1Nzcz*_ga_GQH2V1F11Q*czE3Nzk3MjE1MDIkbzcyJGcxJHQxNzc5NzIzMjc2JGo2MCRsMCRoNzA3NTQ5Nzgz",
-  // Adicione novos afiliados aqui: "nome": "link_do_checkout"
-};
+// --- Sub-components ---
 
-const DEFAULT_CHECKOUT_LINK = "https://pay.hotmart.com/P105490527D?checkoutMode=10";
-
-// --- Components ---
-
-const Marquee = ({ children, speed = "40s", className = "py-4 md:py-8" }: { children: React.ReactNode, speed?: string, className?: string }) => {
+const Marquee = ({ children, speed = "35s", className = "py-4 md:py-6" }: { children: React.ReactNode, speed?: string, className?: string }) => {
   return (
     <div className={`relative flex overflow-x-hidden border-y border-white/10 bg-black ${className}`}>
-      <div className="whitespace-nowrap flex animate-marquee" style={{ animationDuration: speed }}>
+      <div className="whitespace-nowrap flex animate-marquee shrink-0 items-center" style={{ animationDuration: speed }}>
         {children}
         {children}
         {children}
@@ -60,715 +77,874 @@ const Marquee = ({ children, speed = "40s", className = "py-4 md:py-8" }: { chil
   );
 };
 
-const Logo = ({ className = "h-8 md:h-10" }: { className?: string }) => {
-  const [error, setError] = React.useState(false);
-  
-  if (error) {
-    return (
-      <div className="flex flex-col items-start leading-none font-black uppercase italic tracking-tighter shrink-0 select-none">
-        <span className="text-[6px] md:text-[8px] text-zinc-500 mb-0.5 tracking-[0.2em]">Workshop</span>
-        <div className="flex items-center gap-1 text-[10px] md:text-lg">
-           <span className="text-white">CINEMA &</span>
-           <span className="text-cyan-400">ANIMAÇÃO 3D</span>
-        </div>
-      </div>
-    );
-  }
-
+const Logo = ({ className = "h-8 md:h-9" }: { className?: string }) => {
   return (
-    <img 
-      src="https://i.imgur.com/akhQQzp.png" 
-      alt="Workshop Logo" 
-      className={`${className} w-auto object-contain cursor-pointer`}
-      onError={() => setError(true)}
-      referrerPolicy="no-referrer"
-    />
+    <a href="#inicio" className="flex items-center gap-1.5 leading-none select-none group">
+      <span className="font-bebas text-2xl md:text-3xl text-white tracking-wider group-hover:text-cyan-300 transition-colors">CINEMA COM</span>
+      <span className="font-bebas text-2xl md:text-3xl text-cyan-400 tracking-wider">IA</span>
+    </a>
   );
 };
 
 const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-  <div className="inline-flex items-center mb-6">
-    <span className="text-[12px] font-black tracking-[0.3em] uppercase text-cyan-400/80">
+  <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 bg-cyan-950/60 border border-cyan-400/30 rounded-full">
+    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+    <span className="text-[10px] md:text-[11px] font-black tracking-[0.25em] uppercase text-cyan-300">
       {children}
     </span>
   </div>
 );
 
-const Navbar = () => (
-  <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/5 backdrop-blur-md bg-black/80">
-    <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-center md:justify-between">
-      <div className="flex items-center gap-1">
+const Navbar = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  return (
+    <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/5 backdrop-blur-md bg-gradient-to-b from-black/80 via-black/40 to-transparent">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 md:h-20 flex items-center justify-between">
         <Logo />
-      </div>
-      <div className="hidden md:flex items-center gap-10 text-[10px] font-black uppercase tracking-[0.2em] text-white/50">
-        <a href="#proposta" className="hover:text-white transition-colors">A Revolução</a>
-        <a href="#plano" className="hover:text-white transition-colors">Conteúdo</a>
-        <a href="#ferramentas" className="hover:text-white transition-colors">Ferramentas</a>
-      </div>
-    </div>
-  </nav>
-);
 
-// --- Sections ---
+        {/* Desktop Links */}
+        <div className="hidden lg:flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-white/70">
+          <a href="#inicio" className="hover:text-cyan-400 transition-colors">Início</a>
+          <a href="#alunos-em-cena" className="hover:text-cyan-400 text-cyan-300 transition-colors flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+            Alunos em Cena
+          </a>
+          <a href="#sobre" className="hover:text-cyan-400 transition-colors">Sobre</a>
+          <a href="#diferenciais" className="hover:text-cyan-400 transition-colors">Diferenciais</a>
+          <a href="#modulos" className="hover:text-cyan-400 transition-colors">Módulos</a>
+          <a href="#faq" className="hover:text-cyan-400 transition-colors">FAQ</a>
+        </div>
 
-function WorkshopPage() {
+        {/* Right CTA */}
+        <div className="hidden md:flex items-center gap-3">
+          <a 
+            href="#inscricao" 
+            className="px-5 py-2 bg-cyan-400 hover:bg-cyan-300 text-black font-bebas text-sm tracking-[0.1em] rounded uppercase transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:-translate-y-0.5 flex items-center gap-1.5"
+          >
+            <span>Matrícula</span>
+            <ArrowUpRight size={15} />
+          </a>
+        </div>
+
+        {/* Mobile Burger */}
+        <button 
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="lg:hidden p-2 text-white/80 hover:text-white"
+          aria-label="Menu"
+        >
+          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden bg-black/95 border-b border-white/10 px-6 py-6 space-y-4"
+          >
+            <div className="flex flex-col gap-4 text-xs font-black uppercase tracking-widest text-white/70">
+              <a href="#inicio" onClick={() => setMobileOpen(false)} className="hover:text-cyan-400 py-1">Início</a>
+              <a href="#alunos-em-cena" onClick={() => setMobileOpen(false)} className="text-cyan-400 py-1">★ Alunos em Cena</a>
+              <a href="#sobre" onClick={() => setMobileOpen(false)} className="hover:text-cyan-400 py-1">Sobre a Metodologia</a>
+              <a href="#diferenciais" onClick={() => setMobileOpen(false)} className="hover:text-cyan-400 py-1">Diferenciais</a>
+              <a href="#modulos" onClick={() => setMobileOpen(false)} className="hover:text-cyan-400 py-1">Módulos do Curso</a>
+              <a href="#faq" onClick={() => setMobileOpen(false)} className="hover:text-cyan-400 py-1">Dúvidas Frequentes</a>
+            </div>
+            <a 
+              href="#inscricao" 
+              onClick={() => setMobileOpen(false)}
+              className="block w-full text-center py-3 bg-cyan-400 text-black font-bebas text-lg tracking-wider rounded-full uppercase shadow-[0_0_20px_rgba(34,211,238,0.3)]"
+            >
+              Garantir Minha Vaga
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+};
+
+// --- Main Page Component ---
+
+function CinemaComAIPage() {
   const { affiliateId } = useParams();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<any>(null);
-  const [isPaused, setIsPaused] = React.useState(false);
-  const [hasInteracted, setHasInteracted] = React.useState(false);
-  const [checkoutLink, setCheckoutLink] = React.useState(DEFAULT_CHECKOUT_LINK);
+  const [checkoutLink, setCheckoutLink] = useState(DEFAULT_CHECKOUT_LINK);
+  const [selectedProject, setSelectedProject] = useState<StudentProject | null>(null);
+  const [expandedModule, setExpandedModule] = useState<string | null>("01");
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
 
   React.useEffect(() => {
-    document.title = "Workshop Cinema & Animação 3D com IA | 1ª Edição";
+    document.title = "CINEMA COM IA";
   }, []);
-  
-  // Lógica de Afiliados integrada com Router
+
+  // Lógica de Afiliados integrada com Router e Query Params
   React.useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const refParam = params.get('ref')?.toLowerCase();
-    
-    // Agora usamos o affiliateId capturado pela rota dinâmica /:affiliateId
-    // ou o parâmetro ?ref= no link normal
-    const affiliateKey = refParam || affiliateId?.toLowerCase();
-    
-    if (affiliateKey && AFFILIATE_LINKS[affiliateKey]) {
-      console.log(`Afiliado detectado: ${affiliateKey}`);
-      setCheckoutLink(AFFILIATE_LINKS[affiliateKey]);
+    let candidate = affiliateId;
+    if (!candidate) {
+      const searchParams = new URLSearchParams(window.location.search);
+      candidate = searchParams.get('ref') || undefined;
+    }
+    if (!candidate && window.location.hash.includes('?')) {
+      const hashQuery = window.location.hash.split('?')[1];
+      const hashParams = new URLSearchParams(hashQuery);
+      candidate = hashParams.get('ref') || undefined;
+    }
+
+    const matchedAffiliate = findAffiliate(candidate);
+    if (matchedAffiliate) {
+      setCheckoutLink(matchedAffiliate.checkoutUrl);
     } else {
       setCheckoutLink(DEFAULT_CHECKOUT_LINK);
     }
   }, [affiliateId]);
-  
-  // Lógica de Vendas Automática (80h por lote) - Sincronizada Globalmente
-  const [salesData, setSalesData] = React.useState({ progress: 75, lot: 3 });
-
-  React.useEffect(() => {
-    const EIGHTY_HOURS_MS = 80 * 60 * 60 * 1000;
-    // Data de referência recalculada para que em 02/05 as 22:16 o lote seja 3 com 75% (220h decorridas)
-    const BASE_START_TIME = new Date("2026-04-23T18:16:46Z").getTime();
-    
-    const updateProgress = () => {
-      const now = Date.now();
-      const diff = now - BASE_START_TIME;
-      
-      // Quantos lotes de 80h já se passaram desde a data base
-      const lotIndex = Math.floor(diff / EIGHTY_HOURS_MS);
-      const currentLot = 1 + lotIndex;
-      
-      // Progresso dentro do lote atual
-      const timeInCurrentLot = diff % EIGHTY_HOURS_MS;
-      let progress = (timeInCurrentLot / EIGHTY_HOURS_MS) * 100;
-
-      // Se por algum motivo o cálculo der negativo (antes da data base), resetamos
-      if (diff < 0) {
-        setSalesData({ progress: 0, lot: 1 });
-        return;
-      }
-
-      setSalesData({ 
-        progress: Math.min(Math.max(progress, 0), 99.9),
-        lot: currentLot 
-      });
-    };
-
-    updateProgress();
-    const timer = setInterval(updateProgress, 10000); 
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleVideoClick = () => {
-    if (!hasInteracted) {
-      setHasInteracted(true);
-      setIsPaused(false);
-      if (playerRef.current) {
-        playerRef.current.seekTo(0);
-      }
-    } else {
-      setIsPaused(prev => !prev);
-    }
-  };
-
-  const Player = ReactPlayer as any;
-
-  const toolLogos = [
-    "https://i.imgur.com/e6VnIx1.png",
-    "https://i.imgur.com/d6kDq3N.png",
-    "https://i.imgur.com/ZeFeklB.png",
-    "https://i.imgur.com/CopEyzX.png",
-    "https://i.imgur.com/5T8YDpA.png",
-    "https://i.imgur.com/AcH7T5x.png",
-    "https://i.imgur.com/pFAfIjC.png",
-    "https://i.imgur.com/FFH2of5.png",
-    "https://i.imgur.com/lKV4OIv.png",
-    "https://i.imgur.com/LHRtNPE.png",
-    "https://i.imgur.com/TkMkyhF.png",
-    "https://i.imgur.com/LvxUeZ8.png",
-  ];
-
-  const videos = [
-    "https://i.imgur.com/nifwdjL.mp4",
-    "https://i.imgur.com/CWvVZTZ.mp4",
-    "https://i.imgur.com/0bhoa3c.mp4",
-    "https://i.imgur.com/zOUAHo9.mp4",
-    "https://i.imgur.com/ClkvkKC.mp4",
-    "https://i.imgur.com/Y4WK1zY.mp4",
-    "https://i.imgur.com/0boDPNw.mp4",
-    "https://i.imgur.com/kAGA888.mp4",
-    "https://i.imgur.com/TpzJ9nG.mp4",
-    "https://i.imgur.com/CqlAlQ7.mp4",
-  ];
 
   return (
-    <div ref={containerRef} className="bg-[#050505] text-white font-sans selection:bg-cyan-500 selection:text-black antialiased">
+    <div id="inicio" className="bg-[#050505] text-white font-sans selection:bg-cyan-500 selection:text-black antialiased relative">
       <Navbar />
 
-      {/* SEÇÃO 1 — Hero */}
-      <section className="relative min-h-[90vh] flex items-center pt-20 lg:pt-32 pb-12 lg:pb-24 px-4 md:px-6 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0 scale-110">
-          <img 
-            src="https://i.imgur.com/2LHG5N2.jpg" 
-            alt="Cinema background" 
-            className="w-full h-full object-cover opacity-20 blur-md"
-            referrerPolicy="no-referrer"
+      {/* =========================================================================
+          SEÇÃO 1 — HERO FULL-BLEED (100VH) ESTILO CINEMATOGRÁFICO
+          ========================================================================= */}
+      <section className="relative w-full h-screen min-h-[640px] flex flex-col justify-end overflow-hidden">
+        {/* VÍDEO DE FUNDO EM TELA CHEIA (FULL-BLEED 100% VIEWPORT COM CORES E CONTRASTE ORIGINAIS NÍTIDOS) */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <video
+            src={HERO_VIDEO_URL}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 object-cover pointer-events-none scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/95 to-transparent" />
+          
+          {/* Transição limpa e sutil na base do vídeo para o fundo, sem degradê atrás do texto */}
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none z-10" />
         </div>
-        
-        <div className="max-w-7xl mx-auto w-full relative z-10">
-          <div className="flex flex-col lg:grid lg:grid-cols-[1fr_1.3fr] gap-4 lg:gap-24 items-center">
-            <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center lg:text-left w-full lg:order-1"
-            >
-              <div className="mb-6 lg:mb-12 flex flex-col items-center lg:items-start gap-4">
-                <SectionLabel>
-                  Workshop Intensivo / Gravação
-                </SectionLabel>
 
-                <div className="flex items-center gap-3 md:gap-5">
-                  <div className="relative w-8 h-8 md:w-10 md:h-10 shrink-0">
-                    <div className="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-cyan-500" />
-                    <div className="absolute -top-1 -right-1 w-2 h-2 border-t-2 border-r-2 border-cyan-500" />
-                    <div className="absolute -bottom-1 -left-1 w-2 h-2 border-b-2 border-l-2 border-cyan-500" />
-                    <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-cyan-500" />
-                    <div className="w-full h-full bg-cyan-500 flex items-center justify-center">
-                      <Zap size={18} className="text-black fill-black" />
-                    </div>
-                  </div>
-                  <div className="text-white text-[15px] md:text-[20px] font-black tracking-wider uppercase flex items-center gap-2 md:gap-3 whitespace-nowrap">
-                    <span>10 HORAS DE CONTEÚDO PRÁTICO</span>
-                  </div>
-                </div>
-              </div>
-              <h1 className="text-[32px] md:text-5xl lg:text-[72px] font-black leading-[1] lg:leading-[0.9] tracking-[-0.04em] mb-4 lg:mb-8 uppercase italic">
-                CINEMA <br />
-                <span className="text-cyan-400">E RENDA COM IA</span>
+        {/* BASE: TÍTULO GIGANTE, SUBHEADLINE E BOTÕES DE AÇÃO */}
+        <div className="relative z-20 pb-12 md:pb-16 pt-24 px-6 md:px-12 w-full max-w-7xl mx-auto flex flex-col justify-end">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+            
+            {/* Bloco de Título e Subheadline */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="max-w-4xl space-y-4"
+            >
+              {/* Título Principal Gigante Sem Degradê */}
+              <h1 className="font-bebas font-black uppercase text-white tracking-tight leading-[0.88] text-5xl sm:text-7xl md:text-8xl lg:text-[6.5vw] select-none [text-shadow:_0_3px_20px_rgba(0,0,0,0.9)]">
+                VÍDEOS CINEMATOGRÁFICOS, <br />
+                <span className="text-cyan-400">VIRAIS E QUE GERAM RENDA</span>
               </h1>
-              <p className="text-[14px] md:text-xl text-zinc-400 max-w-xl mx-auto lg:mx-0 leading-relaxed mb-4 lg:mb-10 font-medium opacity-90">
-                Você pode nunca ter segurado uma câmera na vida. Não importa. Nesta aula, você aprende a dirigir cinema com IA — pensar cena, luz, narrativa — e sai como um diretor de verdade. Isso, bem feito, vira é fonte de renda (até em dólar)
+
+              {/* Subheadline com sombra sutil para legibilidade em qualquer frame de fundo */}
+              <p className="text-white sm:text-zinc-100 text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed font-normal pt-1 [text-shadow:_0_2px_14px_rgba(0,0,0,0.95),_0_1px_4px_rgba(0,0,0,1)]">
+                Direção de cena, consistência e pós-produção audiovisual com inteligência artificial e 3D. O método prático para produzir filmes, animações e comerciais de alto impacto sem câmera cara ou estúdio milionário.
               </p>
-            </motion.div>
 
-            {/* Video Content - Order 2 on Mobile */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative group w-full order-2 lg:order-last"
-            >
-              <div className="aspect-video bg-zinc-900 border border-white/10 rounded-2xl lg:rounded-[40px] overflow-hidden relative shadow-2xl shadow-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-500">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/mf8aIsWQbBQ?autoplay=1&mute=1&loop=1&playlist=mf8aIsWQbBQ&controls=0&modestbranding=1&rel=0&playsinline=1"
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="absolute top-0 left-0 w-full h-full"
-                ></iframe>
-              </div>
-            </motion.div>
-
-            {/* CTA Content - Order 3 on Mobile */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="w-full order-3 lg:col-start-1 lg:row-start-2 lg:mt-[-80px]"
-            >
-              <div className="flex flex-col items-center lg:items-start gap-4 lg:gap-8 mt-2 lg:mt-0">
+              {/* Três botões de ação lado a lado */}
+              <div className="pt-3 flex flex-wrap items-center gap-3 md:gap-4">
+                {/* Botão 1: VER ALUNOS EM CENA ↓ */}
                 <a 
-                  href="#inscricao" 
-                  className="w-full sm:w-auto px-5 lg:px-8 py-2.5 lg:py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase tracking-widest text-[10px] lg:text-xs rounded-full transition-all shadow-[0_10px_30px_rgba(34,211,238,0.2)] hover:-translate-y-1 flex items-center justify-center gap-2 group/btn"
+                  href="#alunos-em-cena"
+                  className="px-5 sm:px-6 py-3.5 bg-cyan-400 hover:bg-cyan-300 text-black font-mono font-bold text-xs sm:text-sm tracking-wider uppercase rounded-md transition-all shadow-[0_0_30px_rgba(34,211,238,0.45)] hover:-translate-y-0.5 flex items-center gap-2 group/b1"
                 >
-                  <span className="whitespace-nowrap">Comprar Workshop</span>
-                  <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
+                  <span>VER ALUNOS EM CENA</span>
+                  <ArrowDown size={15} className="group-hover/b1:translate-y-0.5 transition-transform" />
+                </a>
+
+                {/* Botão 2: GARANTIR VAGA ↓ */}
+                <a 
+                  href="#inscricao"
+                  className="px-5 sm:px-6 py-3.5 bg-black/70 hover:bg-black/90 border border-white/30 hover:border-cyan-400 text-white font-mono font-bold text-xs sm:text-sm tracking-wider uppercase rounded-md transition-all backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:-translate-y-0.5 flex items-center gap-2 group/b2"
+                >
+                  <span>GARANTIR VAGA</span>
+                  <ArrowDown size={15} className="group-hover/b2:translate-y-0.5 transition-transform" />
+                </a>
+
+                {/* Botão 3: INSTAGRAM ↗ */}
+                <a 
+                  href="https://www.instagram.com/__theferreira/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="px-5 sm:px-6 py-3.5 bg-black/70 hover:bg-black/90 border border-white/30 hover:border-cyan-400 text-white font-mono font-bold text-xs sm:text-sm tracking-wider uppercase rounded-md transition-all backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:-translate-y-0.5 flex items-center gap-2 group/b3"
+                >
+                  <span>INSTAGRAM</span>
+                  <ArrowUpRight size={15} className="group-hover/b3:translate-x-0.5 group-hover/b3:-translate-y-0.5 transition-transform" />
                 </a>
               </div>
             </motion.div>
+
+            {/* Indicador de Scroll "ROLE" no canto inferior direito */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="hidden lg:flex flex-col items-center gap-2 text-zinc-400 pb-2 select-none"
+            >
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] [writing-mode:vertical-rl] rotate-180 text-zinc-400">
+                ROLE
+              </span>
+              <motion.div
+                animate={{ y: [0, 6, 0] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <ArrowDown size={14} className="text-cyan-400" />
+              </motion.div>
+            </motion.div>
+
           </div>
         </div>
       </section>
 
-      {/* Marquee 1 */}
-      <Marquee>
-        {videos.map((src, idx) => (
-          <div key={idx} className="mx-3 w-[250px] md:w-[320px] aspect-video rounded-2xl overflow-hidden border border-white/10 shrink-0 bg-neutral-900 transition-shadow hover:shadow-2xl hover:shadow-cyan-500/10">
-            <video 
-              src={src} 
-              autoPlay 
-              muted 
-              loop 
-              playsInline 
-              className="w-full h-full object-cover opacity-80 transition-opacity hover:opacity-100" 
-            />
-          </div>
-        ))}
-      </Marquee>
-
-      {/* SEÇÃO 2 — Proposta de Valor */}
-      <section id="proposta" className="pt-6 md:pt-24 pb-10 md:pb-32 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 lg:mb-24">
-            <SectionLabel>A Revolução</SectionLabel>
-            <h2 className="text-4xl md:text-7xl font-black leading-[0.9] tracking-tighter uppercase italic">
-              PODER DE HOLLYWOOD <br /> AO SEU ALCANCE
-            </h2>
-          </div>
-          
-          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
-            <div className="grid sm:grid-cols-2 gap-4">
-               {[
-                { title: "Produção Pro", desc: "Crie vídeos profissionais do zero, sem precisar de equipamentos caros.", img: "https://i.imgur.com/POgHQw2.jpeg" },
-                { title: "Seedance 2", desc: "Domine a ferramenta de IA que está mudando a forma de fazer vídeos no mundo.", img: "https://i.imgur.com/g4V7iCs.jpeg" },
-                { title: "VFX Sem PC", desc: "Aplique efeitos visuais incríveis direto pelo navegador, sem instalar nada.", img: "https://i.imgur.com/p3aMCeB.jpeg" },
-                { title: "Portfólio Elite", desc: "Monte uma vitrine de projetos que atrai clientes e gera contratos.", img: "https://i.imgur.com/hPfQWoE.jpeg" }
-              ].map((item, i) => (
-                <motion.div 
-                  key={i} 
-                  initial="offscreen"
-                  whileInView="onscreen"
-                  viewport={{ once: true, amount: 0.2 }}
-                  variants={{
-                    offscreen: { borderColor: "rgba(255, 255, 255, 0.05)" },
-                    onscreen: { borderColor: "rgba(6, 182, 212, 0.3)" }
-                  }}
-                  className="relative aspect-square sm:aspect-auto p-8 rounded-3xl overflow-hidden bg-zinc-900/40 border hover:border-cyan-500/30 transition-all flex flex-col justify-between group"
-                >
-                  <div className="absolute inset-0 z-0">
-                    <motion.img 
-                      src={item.img} 
-                      alt={item.title} 
-                      variants={{
-                        offscreen: { opacity: 0.15, filter: "grayscale(100%)", scale: 1.0 },
-                        onscreen: { opacity: 0.4, filter: "grayscale(0%)", scale: 1.05 }
-                      }}
-                      transition={{ duration: 0.8 }}
-                      className="w-full h-full object-cover group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 group-hover:grayscale-0"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                  </div>
-                  
-                  <motion.div 
-                    variants={{
-                      offscreen: { backgroundColor: "rgba(34, 211, 238, 0.1)", color: "rgba(34, 211, 238, 1)" },
-                      onscreen: { backgroundColor: "rgba(34, 211, 238, 1)", color: "rgba(0, 0, 0, 1)", scale: 1.05 }
-                    }}
-                    transition={{ duration: 0.5, delay: 0.15 }}
-                    className="relative z-10 w-10 h-10 rounded-full flex items-center justify-center mb-6 group-hover:bg-cyan-400 group-hover:text-black transition-all"
-                  >
-                    <CheckCircle2 size={20} />
-                  </motion.div>
-                  <div className="relative z-10">
-                    <h3 className="text-xl font-bold uppercase tracking-tight mb-2 italic text-white">{item.title}</h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed font-medium">{item.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            <div className="bg-zinc-900/20 border border-white/5 rounded-[40px] overflow-hidden p-8 flex items-center justify-center relative group min-h-[500px]">
-              <div className="absolute inset-0 bg-cyan-500/5 group-hover:bg-cyan-500/10 transition-colors" />
-              <video 
-                src="https://i.imgur.com/wC7XKIR.mp4" 
-                autoPlay 
-                muted 
-                loop 
-                playsInline 
-                className="w-full h-full object-cover rounded-2xl transition-all duration-700" 
-              />
-              <div className="absolute bottom-12 left-12 right-12 p-6 bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl transition-all group-hover:translate-y-[-10px]">
-                <p className="text-sm font-bold italic text-zinc-300">"A IA não vai substituir o diretor, ela vai permitir que o diretor tenha o poder de um estúdio inteiro."</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO 3 — Plano de Aula */}
-      <section id="plano" className="py-10 md:py-32 px-6 bg-neutral-900/20 border-y border-white/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-10 lg:gap-20 items-start">
-            <div>
-              <SectionLabel>Conteúdo</SectionLabel>
-              <h2 className="text-6xl md:text-8xl font-black leading-[0.8] tracking-tighter uppercase italic mb-5 lg:mb-10">
-                PLANO <br /> DE <br /> <span className="text-cyan-400">AULA</span>
-              </h2>
-              <p className="text-zinc-500 text-xl font-medium max-w-sm leading-tight">
-                Do zero ao nível profissional em apenas um dia intensivo explorando as fronteiras da Inteligência Artificial.
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              {[
-                { id: "01", name: "Fundamentos e Making Of de Projetos Profissionais", desc: "Panorama do mercado e ferramentas essenciais", tools: ["IA Overview", "Prompting"] },
-                { id: "02", name: "Criação", desc: "Mão na massa com prompts e fluxos de geração", tools: ["Seedance 2", "Kling 3", "Claude", "ChatGPT", "Vosy", "Freepik", "Core AI"] },
-                { id: "03", name: "VFX & 3D", desc: "Efeitos cinematográficos e animações avançadas", tools: ["Runway", "Kling"] },
-                { id: "04", name: "Mercado", desc: "Precificação, prospecção e montagem de portfólio", tools: ["Business", "Portfolio"] }
-              ].map((modulo) => (
-                <div key={modulo.id} className="group flex items-start gap-6 py-4 lg:py-8 border-b border-white/5 hover:border-cyan-500/20 transition-all">
-                  <span className="text-2xl font-black text-zinc-800 group-hover:text-cyan-400/20 transition-colors italic shrink-0">{modulo.id}</span>
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-black uppercase tracking-tighter mb-1 italic group-hover:text-cyan-400 transition-colors">{modulo.name}</h3>
-                    <p className="text-zinc-500 text-sm font-medium mb-4">{modulo.desc}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {modulo.tools.map(t => (
-                        <span key={t} className="px-2 py-0.5 bg-white/5 border border-white/10 rounded-full text-[9px] font-black uppercase tracking-widest text-zinc-500">{t}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <ChevronRight className="text-zinc-800 group-hover:text-cyan-400 transition-colors mt-1" size={20} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO 4 — Ferramentas */}
-      <section id="ferramentas" className="py-10 md:py-32 px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-10 lg:gap-20 items-end mb-12 lg:mb-24">
-            <div className="lg:w-1/2">
-              <SectionLabel>Elite Stack</SectionLabel>
-              <h2 className="text-5xl md:text-[80px] font-black leading-[0.8] tracking-tighter uppercase italic">
-                FERRAMENTAS <br />
-                <span className="text-cyan-400">DE NOVA GERAÇÃO</span>
-              </h2>
-            </div>
-            <div className="lg:w-1/2">
-              <p className="text-zinc-500 text-lg font-medium max-w-md leading-relaxed mb-8">
-                Domine as ferramentas que vão te ajudar a criar vídeos de nível profissional e que estão mudando a indústria do cinema, redes sociais e publicidade.
-              </p>
-              <div className="inline-flex items-center gap-3 px-4 py-2 bg-cyan-400/5 border border-cyan-400/20 rounded-full">
-                <Zap className="text-cyan-400" size={16} />
-                <span className="text-[10px] font-black uppercase tracking-widest text-cyan-400">Toolkit Exclusivo Incluído</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-            {[
-              { name: "Seedance 2", desc: "Geração e edição de vídeo com IA (principal)", img: "https://i.imgur.com/kiu1Evz.jpeg" },
-              { name: "Runway ML", desc: "VFX e edição avançada com IA", img: "https://i.imgur.com/zSVD4Ss.jpeg" },
-              { name: "ElevenLabs", desc: "Geração de áudio, narração e voz com IA", img: "https://i.imgur.com/iwue41j.jpeg" },
-              { name: "Topaz Video AI", desc: "Upscaling e melhoria de qualidade de vídeo", img: "https://i.imgur.com/IvNb6Wk.jpeg" },
-              { name: "CapCut", desc: "Edição final e montagem dos vídeos", img: "https://i.imgur.com/lPAPDfm.jpeg" },
-              { name: "Vosu", desc: "Automação de workflows | Conecta e automatiza processos", img: "https://i.imgur.com/mECh3xU.jpeg" },
-              { name: "Claude", desc: "IA para texto e raciocínio | Analisa e gera conteúdo", img: "https://i.imgur.com/4I9zStg.jpeg" },
-              { name: "Freepik", desc: "Criação visual | Biblioteca de assets e imagens IA", img: "https://i.imgur.com/9JDo9rl.jpeg" }
-            ].map((tool, i) => (
-              <div key={i} className="group relative aspect-[4/5] md:aspect-[4/6] bg-zinc-900 rounded-[16px] md:rounded-[24px] overflow-hidden border border-white/5 hover:border-cyan-500/40 transition-all">
-                <div className="absolute inset-0 z-0">
-                  <img 
-                    src={tool.img} 
-                    alt={tool.name}
-                    className="w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-all duration-700"
-                    referrerPolicy="no-referrer"
+      {/* =========================================================================
+          SEÇÃO 2 — BARRA DE NÚMEROS EM DESTAQUE (CONTADOR ANIMADO)
+          ========================================================================= */}
+      <section className="py-12 md:py-16 bg-neutral-950 border-y border-white/10 relative">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
+            {METRICS_DATA.map((item) => (
+              <div key={item.id} className="text-center lg:text-left space-y-1 p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-cyan-400/20 transition-all">
+                <div className="font-bebas text-4xl sm:text-5xl md:text-6xl text-cyan-400 leading-none">
+                  <AnimatedCounter 
+                    value={item.targetNumber} 
+                    decimals={item.decimals} 
+                    prefix={item.prefix} 
+                    suffix={item.suffix} 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
-                
-                <div className="absolute bottom-3 md:bottom-6 left-3 md:left-6 right-3 md:right-6 z-10">
-                  <h3 className="text-sm md:text-lg font-black uppercase italic tracking-tighter text-white mb-1 md:mb-2 leading-none">{tool.name}</h3>
-                  <p className="text-[7px] md:text-[9px] font-bold text-zinc-400 uppercase leading-tight">{tool.desc}</p>
-                </div>
+                <h3 className="text-xs md:text-sm font-bold text-white uppercase tracking-tight">
+                  {item.label}
+                </h3>
+                <p className="text-[10px] md:text-xs text-zinc-400 leading-tight">
+                  {item.description}
+                </p>
               </div>
             ))}
           </div>
         </div>
+      </section>
 
-        <div className="mt-12 md:mt-24">
-          <p className="text-center text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.4em] text-zinc-600 mb-6 md:mb-12 px-6">Integrado com as melhores IAs do mundo</p>
-          <Marquee speed="20s" className="py-1 md:py-4">
-            {toolLogos.map((logo, idx) => (
-              <div key={idx} className="mx-0 md:mx-0.5 h-6 md:h-[60px] flex items-center justify-center shrink-0 grayscale hover:grayscale-0 transition-all opacity-40 hover:opacity-100">
-                <img src={logo} alt="Tool logo" className="h-full w-auto object-contain scale-90 md:scale-110" referrerPolicy="no-referrer" />
+      {/* =========================================================================
+          ★ SEÇÃO 3 — PROVA SOCIAL & AUTORIDADE ("ALUNOS EM CENA")
+          (4 Blocos Estruturados: Autoridade, Depoimentos, Vídeos, Repescagem)
+          ========================================================================= */}
+      <SocialProofSection />
+
+
+      {/* =========================================================================
+          SEÇÃO 4 — SOBRE / METODOLOGIA ("POR TRÁS DOS FRAMES") + LOGOS DE CLIENTES
+          ========================================================================= */}
+      <section id="sobre" className="py-20 md:py-32 px-6 md:px-8 border-t border-white/10 bg-[#030303]">
+        <div className="max-w-7xl mx-auto">
+          
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            
+            {/* Visual de Produção / Foto de Destaque */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-zinc-900 group">
+                <img 
+                  src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=1000&auto=format&fit=crop" 
+                  alt="Direção e Produção Audiovisual"
+                  className="w-full aspect-[4/5] object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                
+                <div className="absolute bottom-6 left-6 right-6 p-5 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Sparkles size={16} className="text-cyan-400" />
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-cyan-400">Método Exclusivo</span>
+                  </div>
+                  <p className="text-xs md:text-sm font-bold italic text-white">
+                    "Aqui você produz do zero à entrega final. Da concepção do roteiro à renderização em 4K."
+                  </p>
+                </div>
               </div>
-            ))}
-          </Marquee>
+            </div>
+
+            {/* Texto Institucional / Metodologia */}
+            <div className="lg:col-span-7 space-y-6">
+              <SectionLabel>POR TRÁS DOS FRAMES</SectionLabel>
+
+              <h2 className="font-bebas text-4xl sm:text-6xl md:text-7xl leading-[0.9] tracking-tight uppercase italic text-white">
+                NÃO É TEORIA GENÉRICA. <br />
+                <span className="text-cyan-400">É EXECUÇÃO DE ESTÚDIO.</span>
+              </h2>
+
+              <p className="text-sm md:text-base text-zinc-300 leading-relaxed font-normal">
+                O maior erro de quem tenta criar com inteligência artificial é tratar prompts como uma roleta-russa de resultados aleatórios. No <strong>CINEMA COM AI</strong>, você aprende o mesmo pipeline de direção e pós-produção executado nos projetos da <strong>Bench Park Studio</strong>:
+              </p>
+
+              <div className="space-y-4 pt-2">
+                <div className="p-4 bg-zinc-900/50 border border-white/5 rounded-2xl flex items-start gap-4">
+                  <div className="w-9 h-9 rounded-xl bg-cyan-400/10 text-cyan-400 flex items-center justify-center shrink-0 mt-0.5">
+                    <Layers size={18} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white uppercase tracking-tight">Pipeline Híbrido Sem Gargalos</h4>
+                    <p className="text-xs text-zinc-400 leading-relaxed">
+                      Integração direta entre modelagem e câmeras virtuais em 3D (Blender), motores generativos de vídeo (Seedance 2, Kling 3, Runway Gen-3) e sonoplastia neural com ElevenLabs.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-zinc-900/50 border border-white/5 rounded-2xl flex items-start gap-4">
+                  <div className="w-9 h-9 rounded-xl bg-cyan-400/10 text-cyan-400 flex items-center justify-center shrink-0 mt-0.5">
+                    <Film size={18} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white uppercase tracking-tight">Direção & Linguagem de Cinema</h4>
+                    <p className="text-xs text-zinc-400 leading-relaxed">
+                      Enquadramentos precisos, iluminação dramática de três pontos, lentes anamórficas e continuidade visual entre tomadas — você no controle de cada frame, sem depender do acaso.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
       </section>
 
-      {/* SEÇÃO - COMUNIDADE NO WHATSAPP */}
-      <section className="py-16 md:py-28 px-6 bg-zinc-950 border-t border-b border-white/5 relative overflow-hidden">
-        {/* Background ambient glows */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#25D366]/5 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute top-12 right-12 w-[300px] h-[300px] bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none" />
+      {/* =========================================================================
+          SEÇÃO 5 — DIFERENCIAIS ("POR QUE ESTUDAR AQUI" / GRID NUMERADO 001-004)
+          ========================================================================= */}
+      <section id="diferenciais" className="py-20 md:py-32 px-6 md:px-8 bg-neutral-950 border-t border-white/10">
+        <div className="max-w-7xl mx-auto">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+            <div>
+              <SectionLabel>DIFERENCIAIS EXCLUSIVOS</SectionLabel>
+              <h2 className="font-bebas text-5xl sm:text-7xl font-black leading-[0.9] tracking-tight uppercase italic text-white">
+                CADA IMAGEM TEM <br />
+                <span className="text-cyan-400">UM PROPÓSITO</span>
+              </h2>
+            </div>
+            <p className="text-sm md:text-base text-zinc-400 max-w-md font-normal leading-relaxed">
+              Quatro pilares práticos que transformam prompts aleatórios em produções cinematográficas com valor real de mercado.
+            </p>
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {DIFFERENTIALS_DATA.map((diff) => (
+              <div 
+                key={diff.number}
+                className="p-8 rounded-3xl bg-[#080808] border border-white/10 hover:border-cyan-400/40 transition-all duration-300 flex flex-col justify-between group shadow-lg"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-8">
+                    <span className="font-bebas text-4xl text-zinc-700 group-hover:text-cyan-400 transition-colors italic">
+                      {diff.number}
+                    </span>
+                    <span className="px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] font-mono font-bold tracking-widest text-zinc-400 uppercase">
+                      {diff.tag}
+                    </span>
+                  </div>
+
+                  <h3 className="font-bebas text-2xl md:text-3xl uppercase tracking-tight text-white mb-2 italic">
+                    {diff.title}
+                  </h3>
+
+                  <p className="text-xs font-bold text-cyan-400/90 uppercase tracking-wide mb-3">
+                    {diff.headline}
+                  </p>
+
+                  <p className="text-xs md:text-sm text-zinc-400 leading-relaxed">
+                    {diff.description}
+                  </p>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-white/5 flex items-center gap-2 text-zinc-600 group-hover:text-cyan-400 transition-colors">
+                  <CheckCircle2 size={16} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider">Metodologia Validada</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SEÇÃO 6 — MÓDULOS / "O QUE VOCÊ VAI APRENDER" (ACORDEÃO NUMERADO 01-06)
+          ========================================================================= */}
+      <section id="modulos" className="py-20 md:py-32 px-6 md:px-8 bg-[#050505] border-t border-white/10">
+        <div className="max-w-7xl mx-auto">
+          
+          <div className="grid lg:grid-cols-12 gap-12 items-start">
+            
+            {/* Left Header */}
+            <div className="lg:col-span-5 sticky top-28">
+              <SectionLabel>TRILHA COMPLETA</SectionLabel>
+              <h2 className="font-bebas text-5xl sm:text-7xl md:text-8xl leading-[0.88] tracking-tight uppercase italic text-white mb-6">
+                O QUE VOCÊ <br />
+                <span className="text-cyan-400">VAI APRENDER</span>
+              </h2>
+              <p className="text-sm md:text-base text-zinc-400 leading-relaxed mb-8">
+                6 módulos com foco 100% prático. Você constrói seu projeto cinematográfico etapa por etapa: da concepção e storyboard até a renderização 4K e venda comercial.
+              </p>
+              
+              <div className="p-6 bg-zinc-950 border border-white/10 rounded-2xl space-y-3">
+                <div className="flex items-center gap-3 text-cyan-400 font-bebas text-xl">
+                  <Award size={24} />
+                  <span>Certificado & Toolkit Incluídos</span>
+                </div>
+                <p className="text-xs text-zinc-400">
+                  Acesso aos prompts estruturados, templates de propostas comerciais, guias de lentes cinematográficas e certificado oficial de conclusão.
+                </p>
+              </div>
+            </div>
+
+            {/* Right Accordion */}
+            <div className="lg:col-span-7 space-y-4">
+              {COURSE_MODULES.map((modulo) => {
+                const isExpanded = expandedModule === modulo.id;
+
+                return (
+                  <div 
+                    key={modulo.id}
+                    className={`border rounded-2xl md:rounded-3xl transition-all duration-300 overflow-hidden ${
+                      isExpanded 
+                        ? "bg-zinc-950 border-cyan-400/40 shadow-[0_0_30px_rgba(34,211,238,0.1)]" 
+                        : "bg-zinc-900/30 border-white/10 hover:border-white/20"
+                    }`}
+                  >
+                    <button
+                      onClick={() => setExpandedModule(isExpanded ? null : modulo.id)}
+                      className="w-full p-6 md:p-8 flex items-center justify-between text-left gap-4"
+                    >
+                      <div className="flex items-center gap-4 md:gap-6">
+                        <span className={`font-bebas text-3xl md:text-4xl italic transition-colors ${isExpanded ? "text-cyan-400" : "text-zinc-600"}`}>
+                          {modulo.id}
+                        </span>
+                        <div>
+                          <h3 className="font-bebas text-xl md:text-2xl uppercase tracking-tight text-white italic">
+                            {modulo.title}
+                          </h3>
+                          <p className="text-xs text-zinc-400 font-medium">
+                            {modulo.subtitle}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                        isExpanded ? "bg-cyan-400 text-black rotate-180" : "bg-white/5 text-white/70"
+                      }`}>
+                        <ChevronDown size={18} />
+                      </div>
+                    </button>
+
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="px-6 md:px-8 pb-6 md:pb-8 pt-0 border-t border-white/5 space-y-4"
+                        >
+                          <p className="text-xs md:text-sm text-zinc-300 pt-4 leading-relaxed">
+                            {modulo.description}
+                          </p>
+
+                          {/* Topics List */}
+                          <div className="space-y-2 pt-2">
+                            <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 font-bold">Conteúdo Prático:</span>
+                            <div className="grid sm:grid-cols-2 gap-2">
+                              {modulo.topics.map((topic, i) => (
+                                <div key={i} className="flex items-center gap-2 text-xs text-zinc-400">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
+                                  <span>{topic}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Tools */}
+                          <div className="flex flex-wrap items-center gap-2 pt-3">
+                            <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 font-bold mr-2">Ferramentas:</span>
+                            {modulo.tools.map((t, idx) => (
+                              <span key={idx} className="px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase text-zinc-300">
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SEÇÃO 7 — COMUNIDADE NO WHATSAPP (+800 MEMBROS ATIVOS)
+          ========================================================================= */}
+      <section className="py-16 md:py-28 px-6 bg-zinc-950 border-y border-white/10 relative overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            {/* Texto Informativo */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#25D366]/10 border border-[#25D366]/20 rounded-full">
                 <MessageSquare className="text-[#25D366]" size={16} />
                 <span className="text-[10px] font-black uppercase tracking-widest text-[#25D366]">NETWORK ULTRA EXCLUSIVO</span>
               </div>
               
-              <h2 className="text-4xl md:text-6xl font-black leading-[0.9] tracking-tighter uppercase italic text-white">
+              <h2 className="font-bebas text-5xl md:text-7xl font-black leading-[0.9] tracking-tight uppercase italic text-white">
                 A COMUNIDADE QUE <br />
                 <span className="text-[#25D366]">GERA RESULTADOS</span>
               </h2>
               
-              <p className="text-zinc-400 text-sm md:text-base leading-relaxed font-medium">
-                Mais do que um treinamento, o Workshop te dá acesso direto a um grupo fechado no <strong className="text-white font-bold">WhatsApp com mais de 800 profissionais e membros ativos</strong>. 
-                Uma comunidade extremamente engajada focada em compartilhar soluções práticas, tendências em alta, networking real e ideias para viralizar e fechar novos negócios.
+              <p className="text-zinc-300 text-sm md:text-base leading-relaxed font-normal">
+                Mais do que um treinamento gravado, o <strong>CINEMA COM AI</strong> te conecta diretamente a um grupo fechado no <strong className="text-white">WhatsApp com mais de 1.000 membros ativos</strong>. Trocas diárias de novas IAs, parcerias em jobs reais e estratégias para viralizar e fechar clientes no Brasil e no exterior.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 text-left">
-                <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl">
-                  <div className="flex items-center gap-3 mb-2">
-                    <TrendingUp className="text-[#25D366]" size={20} />
-                    <h4 className="font-bold uppercase tracking-tight text-white text-xs">Viralização Coletiva</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 text-left">
+                <div className="p-4 bg-zinc-900/60 border border-white/5 rounded-2xl">
+                  <div className="flex items-center gap-2 mb-1">
+                    <TrendingUp className="text-[#25D366]" size={18} />
+                    <h4 className="font-bold uppercase text-xs text-white">Viralização Coletiva</h4>
                   </div>
-                  <p className="text-[11px] text-zinc-500 leading-relaxed font-medium">
-                    Temos membros ativos no grupo que ultrapassaram a impressionante marca de <strong>100 milhões de visualizações</strong> aplicando nossos conceitos e de forma orgânica.
+                  <p className="text-[11px] text-zinc-400 leading-relaxed">
+                    Membros ativos que ultrapassaram <strong>milhões de visualizações</strong> aplicando nossos conceitos de narrativa e edição.
                   </p>
                 </div>
 
-                <div className="p-4 bg-zinc-900/40 border border-[#25D366]/20 bg-[#25D366]/5 rounded-2xl">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Users className="text-[#25D366]" size={20} />
-                    <h4 className="font-bold uppercase tracking-tight text-white text-xs">Suporte e Clientes</h4>
+                <div className="p-4 bg-zinc-900/60 border border-[#25D366]/20 rounded-2xl">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Users className="text-[#25D366]" size={18} />
+                    <h4 className="font-bold uppercase text-xs text-white">Jobs em Dólar e Real</h4>
                   </div>
-                  <p className="text-[11px] text-zinc-500 leading-relaxed font-medium">
-                    A galera se apoia diariamente. Membros que criaram seus primeiros vídeos de IA já estão fechando clientes, emitindo propostas e recebendo pagamentos em <strong>Dólar</strong> e em <strong>Real</strong>.
+                  <p className="text-[11px] text-zinc-400 leading-relaxed">
+                    Alunos fechando contratos internacionais de produção de vídeos, recebendo em <strong>Dólar ($)</strong> e em <strong>Real (R$)</strong>.
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Visual de Comunidade */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-sm p-8 bg-[#0a0f0d] border border-green-500/20 rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(37,211,102,0.05)]">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#25D366]/5 rounded-full blur-2xl pointer-events-none" />
-                
-                <div className="flex flex-col items-center text-center">
-                  {/* WhatsApp Big Styled Icon */}
-                  <div className="w-20 h-20 bg-[#25D366] rounded-full flex items-center justify-center mb-6 shadow-[0_10px_32px_rgba(37,211,102,0.3)]">
-                    <MessageSquare size={38} className="text-black fill-black" />
-                  </div>
-                  
-                  <span className="text-[10px] uppercase font-black tracking-widest text-[#25D366] mb-1">Membros Ativos</span>
-                  <div className="text-3xl sm:text-4xl font-black italic tracking-tight text-white mb-2 whitespace-nowrap">+800 MEMBROS</div>
-                  <p className="text-xs text-zinc-400 font-medium max-w-[240px] leading-relaxed mb-6">
-                    Fechados no mesmo ecossistema, faturando e recebendo pagamentos em <span className="text-white font-bold">Dólar ($)</span> e <span className="text-white font-bold">Real (R$)</span>.
-                  </p>
-
-                  {/* Avatar pile or visual simulation */}
-                  <div className="flex items-center -space-x-3 mb-2">
-                    {[
-                      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop",
-                      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop",
-                      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop",
-                      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100&auto=format&fit=crop",
-                      "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=100&auto=format&fit=crop"
-                    ].map((avatar, idx) => (
-                      <div key={idx} className="w-9 h-9 rounded-full border-2 border-[#0a0f0d] overflow-hidden bg-zinc-800">
-                        <img src={avatar} alt={`User ${idx}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                      </div>
-                    ))}
-                    <div className="w-9 h-9 rounded-full border-2 border-[#0a0f0d] bg-[#25D366] flex items-center justify-center text-[10px] font-black text-black">
-                      +800
-                    </div>
-                  </div>
-                  
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Conexão Global 24/7</span>
+              <div className="relative w-full max-w-sm p-8 bg-[#0a0f0d] border border-green-500/20 rounded-[32px] overflow-hidden text-center shadow-[0_20px_50px_rgba(37,211,102,0.08)]">
+                <div className="w-20 h-20 bg-[#25D366] rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_10px_32px_rgba(37,211,102,0.35)]">
+                  <MessageSquare size={38} className="text-black fill-black" />
                 </div>
-              </div>
-            </div>
+                
+                <span className="text-[10px] uppercase font-mono font-bold tracking-widest text-[#25D366] block mb-1">Membros Ativos</span>
+                <div className="font-bebas text-4xl sm:text-5xl italic tracking-tight text-white mb-2">+1.000 MEMBROS</div>
+                <p className="text-xs text-zinc-400 max-w-[240px] mx-auto leading-relaxed mb-6">
+                  Ecossistema fechado de apoio, feedbacks de cena e parcerias comerciais.
+                </p>
 
-          </div>
-        </div>
-      </section>
-      <section className="py-10 md:py-48 px-6 bg-cyan-400 text-black">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:grid md:grid-cols-2 gap-10 lg:gap-24 text-center md:text-left">
-            <div className="space-y-6 lg:space-y-12">
-              <h2 className="text-[28px] md:text-6xl font-black tracking-tighter uppercase italic leading-[0.9]">
-                O QUE VOCÊ <br className="hidden md:block" /> PRECISA
-              </h2>
-              <div className="space-y-4 lg:space-y-6 flex flex-col items-center md:items-start">
-                 <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4 group">
-                   <Monitor size={32} className="md:w-8 md:h-8 mb-2 md:mb-0" />
-                   <span className="font-black text-xl md:text-3xl uppercase tracking-tighter leading-tight">
-                     APENAS COMPUTADOR <br /> COM ACESSO À INTERNET
-                   </span>
-                 </div>
-                 <p className="text-[10px] md:text-sm font-bold uppercase tracking-widest opacity-60">
-                   Não precisa de mais nada. <br className="block md:hidden" /> O resto é com a gente.
-                 </p>
-              </div>
-            </div>
-            <div className="space-y-6 lg:space-y-12 mt-4 md:mt-0">
-              <h2 className="text-3xl md:text-6xl font-black tracking-tighter uppercase italic leading-[0.8] text-black/30">ZERO <br className="hidden md:block" /> BARREIRAS</h2>
-              <div className="space-y-3 lg:space-y-4 flex flex-col items-center md:items-start">
-                 <div className="inline-flex items-center gap-3 px-4 md:px-6 py-2 md:py-2.5 bg-black/5 rounded-full mb-2 lg:mb-8">
-                   <CheckCircle2 size={18} className="md:w-6 md:h-6 text-black/80" />
-                   <span className="font-black uppercase text-[10px] md:text-xl tracking-widest text-black/60">Livre de Complicações:</span>
-                 </div>
-                 <div className="w-full max-w-[280px] md:max-w-none space-y-2 lg:space-y-0">
-                   {[
-                    "Experiência prévia com edição",
-                    "Conhecimento técnico de IA",
-                    "Equipamentos caros",
-                    "Softwares complexos"
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center justify-center md:justify-start gap-3 lg:gap-4 py-2 md:py-4 border-b border-black/10 last:border-0 md:last:border-b">
-                      <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-black rounded-full shrink-0 hidden md:block" />
-                      <div className="relative">
-                        <span className="font-bold text-[10px] md:text-xl uppercase tracking-tight opacity-40 whitespace-nowrap">{item}</span>
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 w-[110%] h-[1px] bg-red-600 origin-center md:origin-left" />
-                      </div>
+                <div className="flex items-center justify-center -space-x-3">
+                  {[
+                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100&auto=format&fit=crop"
+                  ].map((avatar, idx) => (
+                    <div key={idx} className="w-9 h-9 rounded-full border-2 border-[#0a0f0d] overflow-hidden bg-zinc-800">
+                      <img src={avatar} alt="User" className="w-full h-full object-cover" />
                     </div>
                   ))}
-                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Marquee 2 */}
-      <Marquee>
-        {videos.slice().reverse().map((src, idx) => (
-          <div key={idx} className="mx-3 w-[250px] md:w-[320px] aspect-video rounded-xl overflow-hidden grayscale border border-white/5 shrink-0">
-            <video 
-              src={src} 
-              autoPlay 
-              muted 
-              loop 
-              playsInline 
-              className="w-full h-full object-cover opacity-30 hover:opacity-100 transition-all hover:grayscale-0" 
-            />
-          </div>
-        ))}
-      </Marquee>
-
-      {/* SEÇÃO 6 — Preço / CTA */}
-      <section id="inscricao" className="pt-6 pb-10 md:pt-12 md:pb-32 px-6 relative overflow-hidden bg-black">
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <SectionLabel>Inscrição</SectionLabel>
-          <h2 className="text-5xl md:text-[80px] lg:text-[100px] font-black leading-[0.85] tracking-tighter mb-16 uppercase italic">
-            CRIE FILMES E <br /> <span className="text-cyan-400">MONETIZE COM IA</span>
-          </h2>
-          
-          <div className="p-10 md:p-16 bg-zinc-900/40 border border-white/5 rounded-[32px] backdrop-blur-3xl relative">
-             <div className="mb-10 text-center">
-               <span className="px-8 py-3 bg-cyan-500 text-black text-xs font-black uppercase tracking-[0.2em] rounded-full inline-block mb-10">
-                  Acesso Vitalício à Gravação
-               </span>
-               <div className="flex flex-col items-center">
-                 <p className="text-zinc-500 text-xs md:text-sm font-black uppercase tracking-[0.4em] mb-2">Investimento Único</p>
-                 <span className="text-[18px] md:text-[24px] font-bold text-zinc-500 line-through tracking-wider italic mb-4">
-                   De R$ 297,00
-                 </span>
-                 <div className="flex justify-center items-center gap-3">
-                    <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">R$</span>
-                    <span className="text-[100px] md:text-[180px] font-black leading-none tracking-[-0.05em] text-cyan-400 italic">197</span>
-                    <span className="text-[60px] md:text-[110px] font-black leading-none tracking-[-0.05em] text-white italic">,00</span>
+                  <div className="w-9 h-9 rounded-full border-2 border-[#0a0f0d] bg-[#25D366] flex items-center justify-center text-[10px] font-black text-black">
+                    +1.000
                   </div>
                 </div>
-             </div>
-             
-              <div className="max-w-md mx-auto">
-                <a 
-                  href={checkoutLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group w-full py-6 bg-white border-2 border-white hover:bg-cyan-400 hover:border-cyan-400 text-black text-xl font-black uppercase tracking-tighter rounded-full transition-all shadow-[0_20px_40px_rgba(255,255,255,0.05)] hover:shadow-[0_20px_40px_rgba(34,211,238,0.15)] hover:-translate-y-1 flex items-center justify-center gap-3 text-center"
-                >
-                  COMPRAR WORKSHOP
-                  <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-                </a>
               </div>
-             
-           </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
-      {/* SEÇÃO 7 — Rodapé */}
-      <footer className="py-8 md:py-16 px-6 border-t border-white/5 bg-[#030303]">
-        <div className="max-w-7xl mx-auto">
-           <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-10 md:gap-20 mb-10 md:mb-16 text-center md:text-left">
-             <div className="space-y-6 md:space-y-8">
-                <div className="flex items-center justify-center md:justify-start">
-                  <Logo className="h-10 md:h-12" />
-                </div>
-                <p className="text-zinc-500 text-base md:text-lg font-medium max-w-sm italic mx-auto md:mx-0">
-                  O workshop que vai te transformar em um diretor de Cinema, em apenas um dia
-                </p>
-             </div>
-             <div className="flex flex-col md:flex-row gap-10 md:gap-20">
-                <div className="space-y-4 md:space-y-6 flex flex-col items-center md:items-start">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Contato</p>
-                  <ul className="space-y-4 text-sm font-bold uppercase tracking-tight text-white/60">
-                    <li>
-                      <a 
-                        href="https://wa.me/5522992453276" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="hover:text-cyan-400 transition-colors flex items-center justify-center md:justify-start gap-2"
+      {/* =========================================================================
+          SEÇÃO 8 — FAQ (PERGUNTAS FREQUENTES EM ACORDEÃO)
+          ========================================================================= */}
+      <section id="faq" className="py-20 md:py-32 px-6 md:px-8 bg-[#030303] border-t border-white/10">
+        <div className="max-w-4xl mx-auto">
+          
+          <div className="text-center mb-16 space-y-3">
+            <SectionLabel>TIRA-DÚVIDAS</SectionLabel>
+            <h2 className="font-bebas text-5xl sm:text-7xl font-black tracking-tight uppercase italic text-white">
+              COMO <span className="text-cyan-400">FUNCIONA</span>
+            </h2>
+            <p className="text-sm md:text-base text-zinc-400 max-w-xl mx-auto">
+              Respostas diretas para as dúvidas mais comuns antes de garantir sua vaga.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {FAQ_ITEMS.map((faq, index) => {
+              const isExpanded = expandedFaq === index;
+
+              return (
+                <div 
+                  key={index}
+                  className={`border rounded-2xl transition-all duration-300 overflow-hidden ${
+                    isExpanded 
+                      ? "bg-zinc-950 border-cyan-400/40" 
+                      : "bg-zinc-900/30 border-white/10 hover:border-white/20"
+                  }`}
+                >
+                  <button
+                    onClick={() => setExpandedFaq(isExpanded ? null : index)}
+                    className="w-full p-6 text-left flex items-center justify-between gap-4"
+                  >
+                    <span className="text-sm md:text-base font-bold text-white uppercase tracking-tight">
+                      {faq.question}
+                    </span>
+                    <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all ${
+                      isExpanded ? "bg-cyan-400 text-black rotate-180" : "bg-white/5 text-white/70"
+                    }`}>
+                      <ChevronDown size={16} />
+                    </div>
+                  </button>
+
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="px-6 pb-6 pt-0 border-t border-white/5"
                       >
-                        <MessageSquare size={20} className="text-cyan-400" />
-                        <span>WhatsApp</span>
-                      </a>
-                    </li>
-                  </ul>
+                        <p className="text-xs md:text-sm text-zinc-300 leading-relaxed pt-3">
+                          {faq.answer}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-             </div>
-           </div>
-           <div className="pt-8 border-t border-white/5 text-[10px] font-black uppercase tracking-widest text-zinc-700 flex flex-col md:flex-row justify-between items-center md:items-start gap-6 text-center md:text-left">
-             <p>Bench Park School. Todos os direitos reservados.</p>
-             <div className="flex gap-6 md:gap-8 items-center">
-               <a 
-                 href="https://www.instagram.com/__theferreira/" 
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="hover:text-zinc-300 transition-colors"
-                 title="Instagram"
-               >
-                 <Instagram size={24} />
-               </a>
-               <a 
-                 href="https://www.youtube.com/@FelipeBenchCanal" 
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="hover:text-zinc-300 transition-colors"
-                 title="YouTube"
-               >
-                 <Youtube size={24} />
-               </a>
-             </div>
-           </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SEÇÃO 9 — CTA FINAL DE CONVERSÃO / INSCRIÇÃO
+          (ESTILO "O PRÓXIMO FRAME QUE NINGUÉM ESQUECE")
+          ========================================================================= */}
+      <section id="inscricao" className="py-20 md:py-32 px-6 md:px-8 bg-black relative overflow-hidden border-t border-white/10">
+        
+        {/* Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-500/15 rounded-full blur-[160px] pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto text-center relative z-10 space-y-8">
+          
+          <SectionLabel>MATRÍCULA ABERTA // LOTE ESPECIAL</SectionLabel>
+
+          <h2 className="font-bebas text-5xl sm:text-7xl md:text-[90px] font-black leading-[0.88] tracking-tight uppercase italic text-white">
+            O PRÓXIMO FRAME QUE <br />
+            <span className="text-cyan-400">NINGUÉM ESQUECE</span>
+          </h2>
+
+          <p className="text-sm md:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed">
+            Pare de assistir de fora enquanto o mercado audiovisual se transforma. Domine as ferramentas certas, crie seu portfólio cinematográfico e comece a monetizar agora.
+          </p>
+
+          {/* Pricing Box */}
+          <div className="p-8 md:p-14 bg-zinc-950/80 border border-cyan-500/30 rounded-[32px] backdrop-blur-2xl relative shadow-[0_0_60px_rgba(34,211,238,0.15)] max-w-2xl mx-auto">
+            
+            <div className="inline-block px-5 py-2 bg-cyan-400 text-black font-bebas text-sm tracking-[0.15em] uppercase rounded-full mb-8 shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+              Acesso Vitalício + Gravações + Grupo VIP WhatsApp
+            </div>
+
+            <div className="flex flex-col items-center mb-8">
+              <span className="text-xs font-mono uppercase tracking-widest text-zinc-400 mb-1">
+                Investimento Promocional
+              </span>
+              <span className="text-base font-bold text-zinc-400 line-through italic mb-2">
+                De R$ 297,00
+              </span>
+              <div className="flex items-baseline justify-center gap-1 font-bebas">
+                <span className="text-4xl md:text-5xl text-white italic">R$</span>
+                <span className="text-7xl md:text-9xl text-cyan-400 italic leading-none">197</span>
+                <span className="text-3xl md:text-4xl text-white italic">,00</span>
+              </div>
+              <span className="text-xs text-zinc-400 mt-2 font-medium">
+                ou em até 12x no cartão de crédito
+              </span>
+            </div>
+
+            {/* Button */}
+            <div className="space-y-4">
+              <a 
+                href={checkoutLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-5 bg-cyan-400 hover:bg-cyan-300 text-black font-bebas text-2xl tracking-[0.1em] rounded-full uppercase transition-all shadow-[0_10px_40px_rgba(34,211,238,0.4)] hover:-translate-y-1 flex items-center justify-center gap-3 text-center"
+              >
+                <span>Garantir Vaga Agora</span>
+                <ArrowRight size={22} />
+              </a>
+
+              <div className="flex items-center justify-center gap-4 text-[11px] font-mono uppercase tracking-wider text-zinc-400 pt-2">
+                <span className="flex items-center gap-1">
+                  <ShieldCheck size={14} className="text-cyan-400" />
+                  Pagamento Seguro
+                </span>
+                <span>•</span>
+                <span>Acesso Imediato</span>
+                <span>•</span>
+                <span>7 Dias de Garantia</span>
+              </div>
+            </div>
+
+            {/* WhatsApp Link Direto */}
+            <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-center gap-2 text-xs text-zinc-400">
+              <span>Dúvidas na matrícula? Fale direto no WhatsApp:</span>
+              <a 
+                href="https://wa.me/5522992824984?text=Oi,%20tenho%20dúvidas%20sobre%20o%20CINEMA%20COM%20AI." 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-cyan-400 hover:underline font-bold"
+              >
+                (22) 99282-4984 →
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SEÇÃO 9.5 — CTA WHATSAPP // CONVERSA SOBRE SUA CARREIRA
+          (Posicionada após o preço e antes da barra de texto animada)
+          ========================================================================= */}
+      <section className="py-20 md:py-28 px-6 md:px-8 bg-[#040605] border-t border-white/10 relative overflow-hidden">
+        {/* Glow sutil verde de fundo */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[#25D366]/10 rounded-full blur-[160px] pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto text-center relative z-10 space-y-8">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#25D366]/10 border border-[#25D366]/20 rounded-full">
+            <MessageSquare className="text-[#25D366]" size={15} />
+            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#25D366]">ATENDIMENTO DIRETO & CARREIRA</span>
+          </div>
+
+          <h2 className="font-bebas text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-white leading-[0.9]">
+            PRECISA DE ALGO MAIS AVANÇADO <br />
+            <span className="text-[#25D366]">OU TEM ALGUMA PERGUNTA?</span>
+          </h2>
+
+          <p className="text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed font-normal">
+            Você precisa de uma pergunta? Você precisa de algo mais avançado? Me chame no WhatsApp. No WhatsApp vamos conversar um pouco sobre a sua carreira.
+          </p>
+
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a 
+              href="https://wa.me/5522992824984?text=Ol%C3%A1!%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20e%20conversar%20um%20pouco%20sobre%20minha%20carreira." 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="px-8 py-4 bg-[#25D366] hover:bg-[#20bd5a] text-black font-bebas text-2xl tracking-wider uppercase rounded-full transition-all shadow-[0_0_35px_rgba(37,211,102,0.35)] hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(37,211,102,0.5)] flex items-center gap-3 group"
+            >
+              <MessageSquare size={22} className="fill-black text-black group-hover:scale-110 transition-transform" />
+              <span>Me Chame no WhatsApp</span>
+              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            </a>
+          </div>
+
+          <div className="flex items-center justify-center gap-2 text-xs font-mono text-zinc-400 pt-1">
+            <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
+            <span>(22) 99282-4984 • Atendimento direto no WhatsApp</span>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SEÇÃO 10 — FOOTER & MARQUEE KEYWORDS
+          ========================================================================= */}
+      <footer className="bg-[#020202] border-t border-white/10">
+        
+        {/* Marquee de Palavras-Chave */}
+        <Marquee speed="30s" className="py-4 bg-black border-b border-white/10">
+          {MARQUEE_KEYWORDS.map((word, i) => (
+            <div key={i} className="mx-6 flex items-center gap-4">
+              <span className="font-bebas text-lg md:text-xl text-zinc-400 uppercase tracking-widest hover:text-cyan-400 transition-colors">
+                {word}
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/50" />
+            </div>
+          ))}
+        </Marquee>
+
+        <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-8 mb-12 text-center md:text-left">
+            
+            <div className="space-y-3">
+              <Logo />
+              <p className="text-xs text-zinc-400 max-w-sm leading-relaxed">
+                Plataforma e treinamento intensivo de cinema, direção de cena e pipeline híbrido de IA generativa com 3D.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-8 items-center md:items-start">
+              <div className="space-y-2">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">Atendimento</span>
+                <p>
+                  <a 
+                    href="https://wa.me/5522992824984" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-xs text-zinc-300 hover:text-cyan-400 flex items-center gap-1.5 transition-colors"
+                  >
+                    <MessageSquare size={14} className="text-cyan-400" />
+                    <span>WhatsApp: (22) 99282-4984</span>
+                  </a>
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">Redes Oficiais</span>
+                <div className="flex gap-4 items-center">
+                  <a 
+                    href="https://www.instagram.com/__theferreira/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-white flex items-center justify-center hover:text-cyan-400 transition-colors"
+                    title="Instagram"
+                  >
+                    <Instagram size={16} />
+                  </a>
+                  <a 
+                    href="https://www.youtube.com/@FelipeBenchCanal" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-white flex items-center justify-center hover:text-cyan-400 transition-colors"
+                    title="YouTube"
+                  >
+                    <Youtube size={16} />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Copyright Oficial */}
+          <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left text-[11px] text-zinc-400 font-mono">
+            <p>© 2026 CINEMA COM IA</p>
+            <p className="text-zinc-400">Todos os direitos reservados.</p>
+          </div>
         </div>
       </footer>
+
+      {/* Modal de Vídeo Interativo dos Alunos */}
+      <VideoModal project={selectedProject} onClose={() => setSelectedProject(null)} />
 
       {/* Styles */}
       <style>{`
@@ -783,6 +959,9 @@ function WorkshopPage() {
     </div>
   );
 }
+
+// Alias for backwards-compatibility with existing routes
+const WorkshopPage = CinemaComAIPage;
 
 // --- Novas Páginas (Exemplos) ---
 const MentoriaRupturaPage = () => {
@@ -1170,7 +1349,7 @@ const MentoriaRupturaPage = () => {
 
           <div className="text-center pb-10">
             <a 
-              href="https://wa.me/5522992453276?text=Oi%20Felipe,%20quero%20entrar%20na%20mentoria%20mas%20estou%20com%20d%C3%BAvidas." 
+              href="https://wa.me/5522992824984?text=Oi%20Felipe,%20quero%20entrar%20na%20mentoria%20mas%20estou%20com%20d%C3%BAvidas." 
               target="_blank" 
               rel="noopener noreferrer" 
               className="inline-block bg-[#00e5ff] text-black font-bebas text-lg tracking-[0.08em] px-12 py-5 rounded-[2px] uppercase transition-all hover:opacity-90 hover:translate-y-[-1px] shadow-[0_10px_30px_rgba(0,229,255,0.2)]"
@@ -1712,40 +1891,67 @@ const DevNav = () => {
             initial={{ opacity: 0, transform: "translateY(10px) scale(0.95)" }}
             animate={{ opacity: 1, transform: "translateY(0px) scale(1)" }}
             exit={{ opacity: 0, transform: "translateY(10px) scale(0.95)" }}
-            className="absolute bottom-12 left-0 w-64 bg-zinc-900/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl overflow-hidden"
+            className="absolute bottom-12 left-0 w-72 max-h-[80vh] flex flex-col bg-zinc-900/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl overflow-hidden"
           >
-            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-3 px-2">Suas Rotas Ativas:</p>
-            <div className="flex flex-col gap-1">
-              <a href="#/" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col">
-                <span className="font-bold">Principal</span>
-                <span className="text-[10px] text-zinc-500">benchparkschool.com/</span>
+            <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10">
+              <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest px-1">Navegador do Projeto</p>
+              <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-500/30">
+                {AFFILIATES_LIST.length} Afiliados
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-1 overflow-y-auto pr-1">
+              {/* Central de Afiliados */}
+              <a 
+                href="#/afiliados" 
+                onClick={() => setIsOpen(false)} 
+                className="p-3 bg-cyan-950/50 hover:bg-cyan-900/50 border border-cyan-500/30 rounded-lg text-sm text-white flex flex-col transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-cyan-300">Central de Afiliados ★</span>
+                  <span className="text-[9px] font-mono bg-cyan-400 text-black px-1.5 py-0.2 rounded font-bold">NOVO</span>
+                </div>
+                <span className="text-[10px] text-cyan-200/70">Gerenciar todos os links</span>
               </a>
-              <a href="#/joao" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
-                <span className="font-bold">Check-out João</span>
-                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/joao</span>
+
+              <a href="#/" onClick={() => setIsOpen(false)} className="p-2.5 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col">
+                <span className="font-bold">Página Principal</span>
+                <span className="text-[10px] text-zinc-500">/#/</span>
               </a>
-              <a href="#/hector" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
-                <span className="font-bold">Check-out Hector</span>
-                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/hector</span>
-              </a>
-              <a href="#/pagina/nova" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
-                <span className="font-bold">Exemplo Nova Página</span>
-                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/pagina/nova</span>
-              </a>
-              <a href="#/mentoria-ruptura" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
-                <span className="font-bold">Mentoria Ruptura</span>
-                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/mentoria-ruptura</span>
-              </a>
-              <a href="#/workshop-cinema-ia" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 rounded-lg text-sm text-white flex flex-col border-t border-white/5">
-                <span className="font-bold text-cyan-400">Workshop Cinema IA</span>
-                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/workshop-cinema-ia</span>
-              </a>
-              <a href="#/gringo.exe" onClick={() => setIsOpen(false)} className="p-3 hover:bg-white/5 bg-[#DFB956]/5 border border-[#DFB956]/10 rounded-lg text-sm text-white flex flex-col border-t">
+
+              <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider px-2 pt-2 pb-1">
+                Páginas Individuais de Afiliados:
+              </p>
+              
+              <div className="max-h-44 overflow-y-auto space-y-1 pr-1 border-l border-white/5 pl-2">
+                {AFFILIATES_LIST.map((aff) => (
+                  <a 
+                    key={aff.id}
+                    href={`#/${aff.id}`} 
+                    onClick={() => setIsOpen(false)} 
+                    className="p-2 hover:bg-white/5 rounded-md text-xs text-white flex items-center justify-between group"
+                  >
+                    <span className="font-medium group-hover:text-cyan-300 transition-colors">{aff.name}</span>
+                    <span className="text-[9px] font-mono text-zinc-500">/{aff.id}</span>
+                  </a>
+                ))}
+              </div>
+
+              <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider px-2 pt-3 pb-1 border-t border-white/5">
+                Outros Projetos:
+              </p>
+              <a href="#/gringo.exe" onClick={() => setIsOpen(false)} className="p-2.5 hover:bg-white/5 bg-[#DFB956]/5 border border-[#DFB956]/10 rounded-lg text-xs text-white flex flex-col">
                 <span className="font-bold text-[#DFB956]">Gringo.exe 🌟</span>
-                <span className="text-[10px] text-zinc-500">benchparkschool.com/#/gringo.exe</span>
+                <span className="text-[10px] text-zinc-500">/#/gringo.exe</span>
+              </a>
+              <a href="#/mentoria-ruptura" onClick={() => setIsOpen(false)} className="p-2.5 hover:bg-white/5 rounded-lg text-xs text-white flex flex-col">
+                <span className="font-bold">Mentoria Ruptura</span>
+                <span className="text-[10px] text-zinc-500">/#/mentoria-ruptura</span>
               </a>
             </div>
-            <p className="mt-4 text-[9px] text-cyan-500/50 italic px-2">Clique para trocar a visualização no editor →</p>
+            <p className="mt-3 text-[9px] text-cyan-500/60 italic px-1 pt-2 border-t border-white/5">
+              Clique para testar cada página de afiliado →
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -1760,22 +1966,27 @@ export default function App() {
       <Routes>
         {/* Página Principal */}
         <Route path="/" element={<WorkshopPage />} />
+
+        {/* Central e Catálogo Geral de Afiliados */}
+        <Route path="/afiliados" element={<AffiliatesDirectoryPage />} />
+        <Route path="/links" element={<AffiliatesDirectoryPage />} />
+        <Route path="/links-afiliados" element={<AffiliatesDirectoryPage />} />
         
         {/* Novas Rotas Gringo.exe */}
         <Route path="/gringo" element={<GringoExePage />} />
         <Route path="/gringo.exe" element={<GringoExePage />} />
         
-        {/* Rota de Afiliado (Subdiretório) */}
-        <Route path="/:affiliateId" element={<WorkshopPage />} />
-        
-        {/* Exemplo de Página Nova em outro Subdiretório */}
-        <Route path="/pagina/nova" element={<NewPagePlaceholder />} />
-
         {/* Nova Página de Mentoria Ruptura */}
         <Route path="/mentoria-ruptura" element={<MentoriaRupturaPage />} />
 
         {/* Duplicata para /workshop-cinema-ia */}
         <Route path="/workshop-cinema-ia" element={<WorkshopPage />} />
+
+        {/* Exemplo de Página Nova em outro Subdiretório */}
+        <Route path="/pagina/nova" element={<NewPagePlaceholder />} />
+
+        {/* Rota Dinâmica de Afiliado (Subdiretório: ex /#/jose-carlos, /#/matheus-felipe, etc.) */}
+        <Route path="/:affiliateId" element={<WorkshopPage />} />
       </Routes>
       
       {/* Navegador flutuante apenas para facilitar a edição */}
