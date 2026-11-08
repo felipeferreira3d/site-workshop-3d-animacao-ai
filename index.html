@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Serve the course pages when the static host falls back to the workshop.
+      const coursePaths = ['/todos-os-cursos', '/magneto', '/prospeccao-na-pratica-com-ia', '/codigo-da-demanda-infinita', '/gringo-exe', '/direcao-com-ia', '/blender-ai-na-pratica'];
+      if (coursePaths.includes(location.pathname)) location.replace(location.pathname + '/' + location.search + location.hash);
+    </script>
     <title>CINEMA COM IA</title>
     <meta name="description" content="Aprenda a dirigir cinema com IA generativa e 3D. Pensar cena, luz, narrativa e pipeline híbrido para criar filmes de alto impacto e monetizar no audiovisual global." />
     
