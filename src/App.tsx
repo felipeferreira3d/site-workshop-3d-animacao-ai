@@ -893,7 +893,7 @@ function CinemaComAIPage() {
 
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a 
-              href="https://wa.me/5522992824984?text=Ol%C3%A1!%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20e%20conversar%20um%20pouco%20sobre%20minha%20carreira." 
+              href="https://wa.me/5522992498134?text=Ol%C3%A1!%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20e%20conversar%20um%20pouco%20sobre%20minha%20carreira." 
               target="_blank" 
               rel="noopener noreferrer"
               className="px-8 py-4 bg-[#25D366] hover:bg-[#20bd5a] text-black font-bebas text-2xl tracking-wider uppercase rounded-full transition-all shadow-[0_0_35px_rgba(37,211,102,0.35)] hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(37,211,102,0.5)] flex items-center gap-3 group"
@@ -906,7 +906,7 @@ function CinemaComAIPage() {
 
           <div className="flex items-center justify-center gap-2 text-xs font-mono text-zinc-400 pt-1">
             <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
-            <span>(22) 99282-4984 • Atendimento direto no WhatsApp</span>
+            <span>+55 22 99249-8134 • Atendimento direto no WhatsApp</span>
           </div>
         </div>
       </section>
@@ -943,13 +943,13 @@ function CinemaComAIPage() {
                 <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">Atendimento</span>
                 <p>
                   <a 
-                    href="https://wa.me/5522992824984" 
+                    href="https://wa.me/5522992498134" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-xs text-zinc-300 hover:text-cyan-400 flex items-center gap-1.5 transition-colors"
                   >
                     <MessageSquare size={14} className="text-cyan-400" />
-                    <span>WhatsApp: (22) 99282-4984</span>
+                    <span>WhatsApp: +55 22 99249-8134</span>
                   </a>
                 </p>
               </div>
@@ -1431,7 +1431,7 @@ const MentoriaRupturaPage = () => {
 
           <div className="text-center pb-10">
             <a 
-              href="https://wa.me/5522992824984?text=Oi%20Felipe,%20quero%20entrar%20na%20mentoria%20mas%20estou%20com%20d%C3%BAvidas." 
+              href="https://wa.me/5522992498134?text=Oi%20Felipe,%20quero%20entrar%20na%20mentoria%20mas%20estou%20com%20d%C3%BAvidas." 
               target="_blank" 
               rel="noopener noreferrer" 
               className="inline-block bg-[#00e5ff] text-black font-bebas text-lg tracking-[0.08em] px-12 py-5 rounded-[2px] uppercase transition-all hover:opacity-90 hover:translate-y-[-1px] shadow-[0_10px_30px_rgba(0,229,255,0.2)]"
