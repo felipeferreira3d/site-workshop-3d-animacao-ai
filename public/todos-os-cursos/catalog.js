@@ -13,6 +13,6 @@ const motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
 let paused=motionPreference.matches;
 const motionButton=document.querySelector('.motion-toggle');
 const motionImages=[...document.querySelectorAll('.course-motion')];
-function setMotion(){motionButton.textContent=paused?'Ativar animações':'Pausar animações';motionButton.setAttribute('aria-pressed',String(paused));motionImages.forEach(img=>{img.src=(!paused&&img.dataset.visible==='true')?img.dataset.motion:img.dataset.still})}
+function setMotion(){motionButton.textContent=paused?'Ativar animações':'Pausar animações';motionButton.setAttribute('aria-pressed',String(paused));motionImages.forEach(img=>{const next=(!paused&&img.dataset.visible==='true')?img.dataset.motion:img.dataset.still;if(img.getAttribute('src')!==next)img.src=next})}
 const motionObserver=new IntersectionObserver(entries=>{entries.forEach(({target,isIntersecting})=>{target.dataset.visible=String(isIntersecting)});setMotion()},{rootMargin:'100px'});
 motionImages.forEach(img=>motionObserver.observe(img));motionButton.addEventListener('click',()=>{paused=!paused;setMotion()});motionPreference.addEventListener('change',()=>{paused=motionPreference.matches;setMotion()});setMotion();
